@@ -1,0 +1,52 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const path = Astro.url.pathname;
+const year = new Date().getFullYear();
+const links = [
+  { href: '/', label: 'Home' },
+  { href: '/products', label: 'Products' },
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Adiviath Technologies home">
+        <img src="/adiviath-mark.png" alt="" width="42" height="39" />
+        <span>adiviath <small>technologies</small></span>
+      </a>
+      <nav aria-label="Main navigation">
+        {links.map(({ href, label }) => (
+          <a href={href} aria-current={path === href ? 'page' : undefined}>{label}</a>
+        ))}
+      </nav>
+    </header>
+
+    <main><slot /></main>
+
+    <footer>
+      <div class="footer-brand">
+        <img src="/adiviath-mark.png" alt="" width="30" height="28" />
+        <p><strong>Adiviath Technologies Pvt Ltd</strong><br />Focused software for specific work.</p>
+      </div>
+      <p>© {year} Adiviath Technologies Pvt Ltd</p>
+    </footer>
+  </body>
+</html>
