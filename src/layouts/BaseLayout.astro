@@ -9,6 +9,18 @@ interface Props {
 
 const { title, description } = Astro.props;
 const path = Astro.url.pathname;
+const canonical = new URL(path === '/' ? '/' : path.replace(/\/$/, ''), Astro.site).href;
+const socialImage = new URL('/brand/social-card.png', Astro.site).href;
+const organizationId = new URL('/#organization', Astro.site).href;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'Organization', '@id': organizationId, name: 'Adiviath Technologies Pvt Ltd', url: Astro.site?.href, logo: new URL('/brand/symbol-cocoa.png', Astro.site).href, description: 'Software products and tools built for specific business needs.' },
+    { '@type': 'WebSite', '@id': new URL('/#website', Astro.site).href, url: Astro.site?.href, name: 'Adiviath Technologies', publisher: { '@id': organizationId } },
+    { '@type': path === '/about' ? 'AboutPage' : path === '/contact' ? 'ContactPage' : 'WebPage', '@id': canonical, url: canonical, name: title, description, isPartOf: { '@id': new URL('/#website', Astro.site).href } },
+    ...(path === '/products' ? [{ '@type': 'SoftwareApplication', '@id': 'https://pharmulo.com/#software', name: 'Pharmulo', url: 'https://pharmulo.com', applicationCategory: 'BusinessApplication', operatingSystem: 'Web', description: 'An online ordering storefront for pharmaceutical wholesalers and their retailers.', publisher: { '@id': organizationId } }] : []),
+  ],
+};
 const year = new Date().getFullYear();
 const links = [
   { href: '/', label: 'Home' },
@@ -25,6 +37,21 @@ const links = [
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#fffaf3" />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Adiviath Technologies" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Adiviath Technologies — software made to fit" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
   </head>

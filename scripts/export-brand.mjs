@@ -29,3 +29,4 @@ for (const [name, [color, accent]] of Object.entries(palettes)) {
 }
 await save('profile-cream', '<path fill="#fffaf3" d="M0 0h1024v1024H0z"/>' + `<g transform="translate(128,128)">${mark('#654332', '#edab78')}</g>`, 1024, 1024);
 await save('profile-cocoa', '<path fill="#654332" d="M0 0h1024v1024H0z"/>' + `<g transform="translate(128,128)">${mark('#fffaf3', '#edab78')}</g>`, 1024, 1024);
+await save('social-card', '<path fill="#fffaf3" d="M0 0h1200v630H0z"/>' + `<g transform="translate(42,110) scale(.48)">${mark('#654332', '#edab78')}</g><text x="435" y="280" font-family="Arial,sans-serif" font-size="56" font-weight="700" fill="#654332">Adiviath Technologies</text><text x="435" y="350" font-family="Arial,sans-serif" font-size="32" fill="#75685f">Software made to fit.</text>`, 1200, 630);
