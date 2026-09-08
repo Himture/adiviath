@@ -1,43 +1,39 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Logo from '../components/Logo.astro';
 ---
 
 <BaseLayout title="About | Adiviath Technologies" description="Adiviath Technologies makes niche software for specific real-world needs.">
   <section class="page-hero about-hero">
     <p class="eyebrow">About Adiviath</p>
-    <h1>Useful beats universal.</h1>
-    <p>We are a technology company that builds focused products for real, specific ways of working.</p>
+    <h1>A company built around specific needs.</h1>
+    <p>Adiviath Technologies builds niche software: products we run ourselves and tools built for specific businesses.</p>
   </section>
 
   <section class="about-grid">
     <h2>Why we exist</h2>
     <div>
-      <p class="lead">Good software does not need to serve everyone. It needs to serve its users exceptionally well.</p>
+      <p class="lead">Some jobs need a tool of their own.</p>
       <p>
-        Adiviath starts with a workflow people already depend on. We learn where it
-        slows down, where information gets lost, and where generic tools stop fitting.
-        Then we build the smallest complete product that makes that work better.
+        We start by understanding how the work gets done today: the tools people
+        use, the records they keep, and the tasks they repeat by hand.
+        That helps us decide what the software actually needs to do.
       </p>
-      <p>Pharmulo, our platform for pharmaceutical wholesalers, is the first expression of that approach.</p>
+      <p>With Pharmulo, that means letting retailers order online while wholesalers continue using their existing system.</p>
+      <p>For Naveen Logistics, it means bringing lorry receipts, freight bills, payments, and customer accounts into one system.</p>
     </div>
   </section>
 
   <section class="mark-story">
-    <img src="/adiviath-mark.png" alt="Adiviath symbol" width="320" height="320" />
+    <Logo />
     <div>
       <p class="eyebrow">Our mark</p>
       <h2>Software shaped around the need.</h2>
       <p>
-        The orange core is the specific work that matters—a person’s task, a business
-        workflow, or a problem generic software does not fit. The surrounding form is
-        the product we shape around it, leaving room for the work to grow and change.
+        A small apricot center, with a cocoa form shaped around it. Our mark is a
+        reminder to start with the need and build from there.
       </p>
     </div>
   </section>
 
-  <section class="principles">
-    <article><span>01</span><h3>Start specific</h3><p>A clear user and a real workflow come before a feature list.</p></article>
-    <article><span>02</span><h3>Fit the work</h3><p>The product adapts to the business instead of demanding a fresh system around it.</p></article>
-    <article><span>03</span><h3>Stay useful</h3><p>We measure progress in daily friction removed, not software added.</p></article>
-  </section>
 </BaseLayout>

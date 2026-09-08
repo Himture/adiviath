@@ -2,18 +2,18 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Products | Adiviath Technologies" description="Products built and operated by Adiviath Technologies, including Pharmulo.">
+<BaseLayout title="Products | Adiviath Technologies" description="Explore Pharmulo and the logistics software we built for Naveen Logistics.">
   <section class="page-hero">
     <p class="eyebrow">Products</p>
-    <h1>Built around the work.</h1>
-    <p>Each Adiviath product begins with a narrow, specific problem worth solving well.</p>
+    <h1>What we make.</h1>
+    <p>Our own products and software built for specific businesses. Each starts with a different kind of work.</p>
   </section>
 
-  <section class="product-detail">
+  <section class="product-detail" id="pharmulo">
     <div class="product-identity">
       <span class="status"><i></i> Live product</span>
-      <h2>Pharmulo</h2>
-      <p>A modern ordering storefront for pharmaceutical wholesalers and their retailers.</p>
+      <h2 class="project-heading"><img src="/pharmulo-glyph.svg" alt="" width="48" height="52" />Pharmulo</h2>
+      <p>An online ordering storefront for pharmaceutical wholesalers and their retailers.</p>
       <a class="button pharmulo" href="https://pharmulo.com" target="_blank" rel="noreferrer">Open Pharmulo</a>
     </div>
     <div class="product-points">
@@ -24,6 +24,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </section>
 
   <section class="product-shot">
-    <img src="/pharmulo-home.webp" alt="Pharmulo ordering storefront home page" width="1600" height="1000" />
+    <img src="/pharmulo-home.webp" alt="Pharmulo ordering storefront home page" width="1600" height="1000" loading="lazy" />
+  </section>
+  <section class="product-detail logistics-detail" id="naveen-logistics">
+    <div class="product-identity">
+      <img class="project-logo" src="/naveen-logistics-logo.png" alt="Naveen Logistics logo" width="512" height="512" loading="lazy" />
+      <h2>Naveen Logistics</h2>
+      <p>Software built for a freight business, covering the work from lorry receipt to settled bill.</p>
+      <a class="button" href="https://www.naveenlogistics.com/" target="_blank" rel="noreferrer">Visit Naveen Logistics</a>
+    </div>
+    <div class="product-points">
+      <article><h3>Lorry receipts and billing</h3><p>Create lorry receipts and turn them into freight bills, with downloadable documents.</p></article>
+      <article><h3>Payments and accounts</h3><p>Record payments, allocate them to bills, and keep customer ledgers together.</p></article>
+      <article><h3>A customer portal</h3><p>Customers can sign in to see their receipts, bills, payments, and running account statement.</p></article>
+    </div>
   </section>
 </BaseLayout>

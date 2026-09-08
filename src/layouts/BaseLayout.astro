@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Wordmark from '../components/Wordmark.astro';
 
 interface Props {
   title: string;
@@ -23,28 +24,50 @@ const links = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#fffaf3" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
       <a class="brand" href="/" aria-label="Adiviath Technologies home">
-        <img src="/adiviath-mark.png" alt="" width="42" height="39" />
-        <span>adiviath <small>technologies</small></span>
+        <Wordmark />
       </a>
-      <nav aria-label="Main navigation">
+      <nav class="desktop-nav" aria-label="Main navigation">
         {links.map(({ href, label }) => (
           <a href={href} aria-current={path === href ? 'page' : undefined}>{label}</a>
         ))}
       </nav>
+      <details class="mobile-menu">
+        <summary>Menu <span class="menu-icon" aria-hidden="true"></span></summary>
+        <nav aria-label="Mobile navigation">
+          {links.map(({ href, label }) => (
+            <a href={href} aria-current={path === href ? 'page' : undefined}>{label}</a>
+          ))}
+        </nav>
+      </details>
     </header>
 
-    <main><slot /></main>
+    <script>
+      const menu = document.querySelector<HTMLDetailsElement>('.mobile-menu');
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && menu?.open) {
+          menu.open = false;
+          menu.querySelector('summary')?.focus();
+        }
+      });
+      document.addEventListener('click', (event) => {
+        if (menu?.open && event.target instanceof Node && !menu.contains(event.target)) menu.open = false;
+      });
+    </script>
+
+    <main id="main-content" tabindex="-1"><slot /></main>
 
     <footer>
       <div class="footer-brand">
-        <img src="/adiviath-mark.png" alt="" width="30" height="28" />
-        <p><strong>Adiviath Technologies Pvt Ltd</strong><br />Focused software for specific work.</p>
+        <Wordmark />
+        <p>Focused software for specific work.</p>
       </div>
       <p>© {year} Adiviath Technologies Pvt Ltd</p>
     </footer>
