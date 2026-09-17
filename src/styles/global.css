@@ -138,9 +138,7 @@ footer p { margin: 0; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 /* Earthy company identity; the product retains its own teal. */
-.company-mark { display:block; position:relative; width:60px; aspect-ratio:1; flex-shrink:0; }
-.company-mark::before,.company-mark::after { content:""; position:absolute; inset:0; background:var(--brand); mask:url('/adiviath-mark.png') center/contain no-repeat; -webkit-mask:url('/adiviath-mark.png') center/contain no-repeat; }
-.company-mark::after { background:var(--accent); clip-path:circle(10% at 50% 51%); }
+.company-mark { display:block; width:60px; height:auto; flex-shrink:0; color:var(--brand); }
 .footer-brand .company-mark { width:44px; }
 .mark-story .company-mark { width:min(100%,280px); }
 h1,h2 { font-family:Georgia, "Times New Roman", serif; font-weight:400; letter-spacing:-.045em; line-height:1.08; }
@@ -184,9 +182,7 @@ a:focus-visible { outline:3px solid var(--brand); outline-offset:5px; }
 
 .wordmark { display:inline-flex; flex-direction:column; color:var(--brand); }
 .wordmark-name { display:flex; align-items:baseline; gap:1px; font-family:"Segoe UI",Arial,sans-serif; font-size:36px; font-weight:700; letter-spacing:-1.5px; line-height:1; }
-.wordmark-name .company-mark { width:27px; height:27px; align-self:flex-end; margin-bottom:2px; }
-.wordmark-name .company-mark::before,.wordmark-name .company-mark::after { mask-size:150%; -webkit-mask-size:150%; }
-.wordmark-name .company-mark::after { clip-path:circle(15% at 50% 51.5%); }
+.wordmark-name .company-mark { width:40px; height:40px; align-self:flex-end; margin:0 -4px -5px -4px; }
 .wordmark-caption { margin-top:0; font-family:"Segoe UI",Arial,sans-serif; font-size:10px; font-weight:700; letter-spacing:-.2px; line-height:1; text-align:right; color:var(--brand); }
 .footer-brand { align-items:flex-start; flex-direction:column; gap:16px; }
 .mobile-menu { display:none; }
