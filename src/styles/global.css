@@ -94,3 +94,7 @@ main { padding-top: 64px; }
 .dot-slot { width: min(100%, 220px); min-height: 120px; border: 1px dashed var(--line); border-radius: 12px; display: grid; place-items: end start; padding: 12px; font-size: 0.9rem; color: var(--muted); }
 .dot-slot.you { border-color: var(--brand); color: var(--ink); font-weight: 600; }
 @media (max-width: 640px) { .dot-stage { grid-template-columns: 1fr; } .dot-n, .dot-s, .dot-w, .dot-e { grid-column: 1; grid-row: auto; justify-self: center; } .dot-stage .dot-static { grid-area: auto; } }
+
+/* Contact page */
+.contact-talk { padding-bottom: var(--section); }
+.contact-alt { margin-top: 24px; }
