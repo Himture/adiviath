@@ -1,9 +1,21 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Talk from '../components/Talk.astro';
+import DotStage from '../components/DotStage.astro';
 ---
 
-<BaseLayout title="Contact | Adiviath Technologies" description="Talk to the founder about the software your business needs.">
-  <section class="section wrap">
+<BaseLayout title="Contact Adiviath Technologies" description="Tell the founder what is slow in your business. Replies within one business day on WhatsApp or email.">
+  <section class="section wrap contact-hero">
     <h1>Show us the work that is slowing you down.</h1>
+    <DotStage label="What your work might need">
+      <div slot="n" class="dot-slot">a form someone fills twice</div>
+      <div slot="e" class="dot-slot">a register kept by hand</div>
+      <div slot="s" class="dot-slot">a report nobody can pull</div>
+      <div slot="w" class="dot-slot you">your work</div>
+    </DotStage>
+  </section>
+  <section class="wrap" style="padding-bottom: var(--section)">
+    <Talk />
+    <p class="muted" style="margin-top: 24px">Pharmulo enquiries: <a href="https://pharmulo.com" target="_blank" rel="noreferrer">pharmulo.com</a></p>
   </section>
 </BaseLayout>

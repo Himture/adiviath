@@ -1,0 +1,24 @@
+---
+import contact from '../data/contact.json';
+interface Props { variant?: 'light' | 'brand' }
+const { variant = 'light' } = Astro.props;
+const wa = contact.whatsapp ? `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(contact.whatsappMessage)}` : null;
+const mail = `mailto:${contact.email}?subject=${encodeURIComponent(contact.emailSubject)}`;
+---
+
+<section class:list={['talk', variant]} aria-labelledby="talk-heading">
+  <div class="talk-main">
+    <h2 id="talk-heading">Show us the work that is slowing you down.</h2>
+    <p>Bring the forms, spreadsheets, registers or WhatsApp threads. You do not need a technical brief. Tell us what happens today and where it gets stuck.</p>
+    <div class="talk-actions">
+      <a class:list={['btn', { 'on-brand': variant === 'brand' }]} href={wa ?? mail}>Talk to the founder</a>
+      <a class="btn-quiet" href={mail}>Prefer email? Write to {contact.email}</a>
+    </div>
+    <p class="talk-trust">{contact.replyPromise}</p>
+  </div>
+  <aside class="talk-next">
+    <h3>What happens next</h3>
+    <p>Send two lines or a voice note about the work that is slow. The founder replies within one business day. If it looks like a fit, you have a 30-minute call to map the current workflow. Then you receive a short written scope, an indicative timeline and a clear next step. No sales hand-off and no obligation.</p>
+    <p class="talk-proof">One live product. One custom system in production. One founder from first call to launch.</p>
+  </aside>
+</section>

@@ -69,3 +69,28 @@ main { padding-top: 64px; }
 .site-footer nav { display: flex; gap: 20px; }
 .site-footer nav a { text-decoration: none; font-weight: 500; }
 @media (min-width: 768px) { .site-footer .wrap { grid-template-columns: 1fr auto; align-items: end; } }
+
+/* Talk block */
+.talk { display: grid; gap: 40px; padding: var(--section) var(--gutter); }
+.talk.light { background: var(--surface); border-radius: 20px; }
+.talk.brand { background: var(--brand); color: var(--paper); }
+.talk.brand .btn-quiet, .talk.brand .talk-trust, .talk.brand .talk-next { color: color-mix(in srgb, var(--paper) 82%, transparent); }
+.talk-main { display: grid; gap: 20px; align-content: start; }
+.talk-main p { max-width: 46ch; }
+.talk-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; margin-top: 8px; }
+.talk-trust { font-size: 0.95rem; color: var(--muted); }
+.talk-next { display: grid; gap: 12px; align-content: start; font-size: 0.98rem; }
+.talk-next h3 { font-size: 0.9rem; letter-spacing: 0.04em; text-transform: uppercase; }
+.talk-proof { font-weight: 500; }
+@media (min-width: 900px) { .talk { grid-template-columns: 1.2fr 0.8fr; gap: 64px; } }
+
+/* Dot stage for inner pages */
+.dot-stage { position: relative; display: grid; grid-template-columns: 1fr auto 1fr; grid-template-rows: auto auto auto; gap: 24px; align-items: center; justify-items: center; }
+.dot-stage .dot-static { grid-area: 2 / 2; }
+.dot-n { grid-area: 1 / 1 / 2 / 4; }
+.dot-s { grid-area: 3 / 1 / 4 / 4; }
+.dot-w { grid-area: 2 / 1; justify-self: end; }
+.dot-e { grid-area: 2 / 3; justify-self: start; }
+.dot-slot { width: min(100%, 220px); min-height: 120px; border: 1px dashed var(--line); border-radius: 12px; display: grid; place-items: end start; padding: 12px; font-size: 0.9rem; color: var(--muted); }
+.dot-slot.you { border-color: var(--brand); color: var(--ink); font-weight: 600; }
+@media (max-width: 640px) { .dot-stage { grid-template-columns: 1fr; } .dot-n, .dot-s, .dot-w, .dot-e { grid-column: 1; grid-row: auto; justify-self: center; } .dot-stage .dot-static { grid-area: auto; } }

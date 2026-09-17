@@ -1,0 +1,12 @@
+---
+interface Props { label?: string }
+const { label } = Astro.props;
+---
+
+<div class="dot-stage" role="group" aria-label={label}>
+  <span class="dot-static" aria-hidden="true"></span>
+  <div class="dot-n"><slot name="n" /></div>
+  <div class="dot-e"><slot name="e" /></div>
+  <div class="dot-s"><slot name="s" /></div>
+  <div class="dot-w"><slot name="w" /></div>
+</div>
