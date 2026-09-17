@@ -1,1 +1,8 @@
-<span class="company-mark" aria-hidden="true"></span>
+---
+import paths from '../data/logo-paths.json';
+---
+
+<svg class="company-mark" viewBox={paths.viewBox} aria-hidden="true" focusable="false">
+  <path d={paths.mark} fill="currentColor" fill-rule="evenodd" />
+  <path d={paths.dot} fill="var(--accent)" fill-rule="evenodd" />
+</svg>
