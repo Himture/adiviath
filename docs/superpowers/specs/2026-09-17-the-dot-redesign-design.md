@@ -173,7 +173,7 @@ The page ends with the conversion block.
 
 ### Contact (`/contact`)
 
-The conversion block from section 4, full page, with the dot and dashed slots around it as the static version of Home scene 4 on white.
+Page h1 "Tell us where the work gets stuck." over the dot with dashed slots around it (the static version of Home scene 4 on white), then the conversion block from section 4.
 A second quiet link for Pharmulo enquiries points to pharmulo.com.
 
 ## 7. Technical plan
