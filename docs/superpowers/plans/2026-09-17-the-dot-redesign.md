@@ -551,7 +551,7 @@ const wa = contact.whatsapp ? `https://wa.me/${contact.whatsapp}?text=${encodeUR
         </ul>
       </div>
       <div class="mark-only item" style="--ra:10%; --rb:60%"><Logo /></div>
-      <p class="brandline item" style="--ra:30%; --rb:70%">BRAND_LINE_PENDING</p>
+      <p class="brandline item" style="--ra:30%; --rb:70%">Your work. Your way. Your software.</p>
     </div>
     <p class="cue" aria-hidden="true">Scroll<i></i></p>
   </section>
@@ -603,7 +603,7 @@ const wa = contact.whatsapp ? `https://wa.me/${contact.whatsapp}?text=${encodeUR
 </BaseLayout>
 ```
 
-Fill the "repeat for the other four crops" comment with the four remaining `.frame` elements copied from the prototype with their exact `--x`, `--y` and `background-position` values. Replace `BRAND_LINE_PENDING` with the brand line the founder chose (spec section 1); if it is still pending when this task runs, use "Software that fits the work, not a tool on the side." and note it in the commit message.
+Fill the "repeat for the other four crops" comment with the four remaining `.frame` elements copied from the prototype with their exact `--x`, `--y` and `background-position` values. The brand line "Your work. Your way. Your software." is final (spec section 1).
 
 Note: `Talk` renders an `h2` inside scene 4, so this page has exactly one `h1` (scene 1) and several `h2`. Scene 4's `Talk` is the only Talk on Home.
 
@@ -862,7 +862,7 @@ const faqLd = { '@type': 'FAQPage', mainEntity: faqs.map(([q, a]) => ({ '@type':
     <div class="about-mark"><Logo /></div>
     <div>
       <p class="advaita">Adiviath is the founder's spelling of Advaita, a Sanskrit word for oneness.</p>
-      <p>We build software that is one with the work, not a tool on the side. The dot in our mark is the need. The form is shaped around it.</p>
+      <p>Your work. Your way. Your software. The dot in our mark is the need. The form is shaped around it.</p>
     </div>
   </section>
 

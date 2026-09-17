@@ -1,7 +1,7 @@
 # adiviath.com redesign: The Dot
 
 Date: 2026-09-17.
-Status: revised after Codex review, pending the brand line decision (section 1).
+Status: approved for implementation.
 Prototype: `public/mockups/the-dot.html` (throwaway, approved as the direction).
 Codex review that shaped this revision: `brand-scratch/redesign/codex-review-3.md`.
 
@@ -19,7 +19,7 @@ Copy hierarchy on the first screen, in order:
 - Eyebrow: "Custom software for Indian businesses".
 - Headline (h1): "Software built around the way your business works."
 - Supporting line: "Adiviath builds and runs systems for operations where forms, spreadsheets and WhatsApp no longer keep up."
-- Brand line: pending, chosen from the candidates in `brand-scratch/redesign/codex-taglines.md`; it signs the proposition, it does not replace it.
+- Brand line: "Your work. Your way. Your software." It signs the proposition, it does not replace it. It appears once on Home (scene 1, beneath the mark) and once on About.
 
 Voice: plain English, short sentences, no em dashes, no "empower", "seamless", "cutting-edge", no emoji.
 Newsreader italic is used only for the Advaita line on About and for a customer quotation if one is supplied.
@@ -211,7 +211,6 @@ A second quiet link for Pharmulo enquiries points to pharmulo.com.
 ## 10. Open items from the founder
 
 - The WhatsApp number (kept out of git until he says it can be published on the site).
-- The brand line choice.
 - A real screenshot of the Naveen Logistics system, with permission, and optionally one quotation from the owner.
 - CIN and registered office city.
 - Confirmation that hello@adiviath.com is live.
