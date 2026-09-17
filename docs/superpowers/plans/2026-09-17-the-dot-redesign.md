@@ -486,7 +486,7 @@ git commit -m "Add Talk conversion block, DotStage, and Contact page"
 - Rewrite: `src/pages/index.astro`
 
 **Interfaces:**
-- Consumes: `Logo.astro` (with a prop-less mark; scenes 1 and 5 hide its dot path via CSS `.mark-only .company-mark path:last-child { display: none }`), `Talk.astro` variant `brand`, tokens.
+- Consumes: `src/data/logo-paths.json` (imported for the mark-draw SVG in scenes 1 and 5), `Talk.astro` variant `brand`, tokens.
 - Produces: the five-scene structure with class names `.act.act-1` … `.act-5`, `.stage`, `.item`, `.fixed-dot`, `.progress`, `.cue`.
 
 The source of truth for the scene mechanics is the approved prototype, committed as `docs/superpowers/specs/2026-09-17-the-dot-prototype.html`. Port it; do not redesign it.
@@ -499,6 +499,41 @@ Open `docs/superpowers/specs/2026-09-17-the-dot-prototype.html`. Copy everything
 2. Delete the header, footer and wordmark rules (the layout provides them).
 3. Change the act heights to: `.act-1 { height: 160svh } .act-2, .act-3 { height: 180svh } .act-4 { height: 160svh } .act-5 { height: 100svh }`. Re-tune every `--ra`/`--rb` so that each scene still forms in the first 30% of its range, holds, and dissolves in the last 20%.
 4. Replace the dot size rule with `--dot: clamp(18px, 2.4vmin, 30px)` (already in `:root`); keep `--mark-h: calc(var(--dot) * 5.4286)` and `--mark-w: calc(var(--mark-h) * 1.026316)` and the `-44.62% / -55.53%` offset.
+4b. Replace the `clip-path: circle()` reveal with a stroke-drawn reveal. In `index.astro`, scenes 1 and 5 do not use `<Logo />`; they use an inline SVG with the same `viewBox="0 0 390 380"` and the `mark` path from `src/data/logo-paths.json` (imported at the top of the page, so the path data is still not duplicated in source), masked by a stroked centerline:
+
+```astro
+---
+import logo from '../data/logo-paths.json';
+---
+<svg class="mark-draw" viewBox="0 0 390 380" aria-hidden="true">
+  <defs>
+    <mask id="draw-1" maskUnits="userSpaceOnUse" x="0" y="0" width="390" height="380">
+      <g fill="none" stroke="#fff" stroke-width="96" stroke-linecap="round" stroke-linejoin="round" transform="translate(18 52) scale(5.073 4.786) translate(-19.5 -17.5)">
+        <path class="draw" pathLength="100" d="M35.5 25.2H53.6A19.6 19.6 0 0 1 73.2 44.8V72.3" />
+        <path class="draw" pathLength="100" d="M33.8 42.5A15.8 15.8 0 1 0 54.5 66.1" />
+      </g>
+    </mask>
+  </defs>
+  <path d={logo.mark} fill="currentColor" mask="url(#draw-1)" />
+</svg>
+```
+
+Scene 5 uses `id="draw-5"`. The two centerline paths are the mark's skeleton (the top hook, then the bowl) mapped from the historical 100-unit trace into the canonical box; the transform above is the starting estimate. Tune `stroke-width` and the transform until, with both dashes fully drawn, the mask covers the entire filled shape with no petrol pixels missing (compare against `<Logo />` rendered at the same size with `opacity: .5` overlaid during development, then remove the overlay). CSS:
+
+```css
+.mark-draw .draw { stroke-dasharray: 100 120; stroke-dashoffset: 110; }
+@supports (animation-timeline: scroll()) { @media (prefers-reduced-motion: no-preference) {
+  .act-1 .mark-draw .draw:nth-child(1) { animation: draw linear both; animation-timeline: --s; animation-range: cover 24% cover 40%; }
+  .act-1 .mark-draw .draw:nth-child(2) { animation: draw linear both; animation-timeline: --s; animation-range: cover 34% cover 50%; }
+  .act-5 .mark-draw .draw:nth-child(1) { animation: draw linear both; animation-timeline: --s; animation-range: cover 8% cover 22%; }
+  .act-5 .mark-draw .draw:nth-child(2) { animation: draw linear both; animation-timeline: --s; animation-range: cover 16% cover 32%; }
+  @keyframes draw { to { stroke-dashoffset: 0 } }
+} }
+@supports not (animation-timeline: scroll()) { .mark-draw .draw { stroke-dashoffset: 0 } }
+@media (prefers-reduced-motion: reduce) { .mark-draw .draw { stroke-dashoffset: 0 } }
+```
+
+The mask's `stroke-dasharray: 100 120` with offset 110 hides the dash completely before drawing starts (a plain offset of 100 leaves a round cap visible as a dot).
 5. Add the progress line and the scroll cue:
 
 ```css
@@ -517,7 +552,7 @@ Open `docs/superpowers/specs/2026-09-17-the-dot-prototype.html`. Copy everything
 @media (prefers-reduced-motion: reduce) { .cue i { animation: none; } }
 ```
 
-6. Scene 1 layout changes to the sales-first opening: the stage is a two-column grid on desktop (`.opening` text left, the dot centred in the right column, so the fixed dot at the viewport centre sits at the column boundary; offset `.opening` with `padding-right: calc(50vw - var(--gutter))` on desktop) and a single column with the dot above the text on mobile. Keep the mark bloom exactly as ported (clip-path circle at 44.62% 55.53%). The h1 must not be animated in from opacity 0: it is visible at scroll 0 and eases 24px left while the mark blooms.
+6. Scene 1 layout changes to the sales-first opening: the stage is a two-column grid on desktop (`.opening` text left, the dot centred in the right column, so the fixed dot at the viewport centre sits at the column boundary; offset `.opening` with `padding-right: calc(50vw - var(--gutter))` on desktop) and a single column with the dot above the text on mobile. Position the mark exactly as ported (the 44.62% / 55.53% counter offset). The h1 must not be animated in from opacity 0: it is visible at scroll 0 and eases 24px left while the mark blooms.
 
 - [ ] **Step 2: Write `src/pages/index.astro`**
 
@@ -550,7 +585,7 @@ const wa = contact.whatsapp ? `https://wa.me/${contact.whatsapp}?text=${encodeUR
           <li><strong>Naveen Logistics</strong>, custom system in production</li>
         </ul>
       </div>
-      <div class="mark-only item" style="--ra:10%; --rb:60%"><Logo /></div>
+      <div class="mark-only item" style="--ra:10%; --rb:60%">[the mark-draw SVG from Step 1 item 4b with id draw-1]</div>
       <p class="brandline item" style="--ra:30%; --rb:70%">Your work. Your way. Your software.</p>
     </div>
     <p class="cue" aria-hidden="true">Scroll<i></i></p>
@@ -592,7 +627,7 @@ const wa = contact.whatsapp ? `https://wa.me/${contact.whatsapp}?text=${encodeUR
 
   <section class="act act-5" aria-label="Closing">
     <div class="stage">
-      <div class="mark-only item" style="--ra:8%; --rb:40%"><Logo /></div>
+      <div class="mark-only item" style="--ra:8%; --rb:40%">[the mark-draw SVG from Step 1 item 4b with id draw-5]</div>
       <div class="closing item" style="--ra:20%; --rb:50%">
         <a class="btn" href={wa}>Talk to the founder</a>
         <p>Adiviath Technologies Private Limited. Registered in India.</p>
@@ -629,7 +664,7 @@ The content's `--ra` (20%) is after the circle reaches full size (18%), so text 
 Run: `ADIVIATH_ALLOW_EMPTY_WHATSAPP=1 npm run verify`. Expected: 4 pages OK.
 Browser, own tab, at 1280x800 then 390x844 then 1280x600:
 - scroll 0: eyebrow, h1, lead, button, proof row, cue visible; only the dot, no mark.
-- scroll to 40% of act 1: mark bloomed with its counter on the dot (measure: `mark.x + width*0.4462` equals the dot centre within 1px).
+- scroll to 30% of act 1: the mark half drawn along its stroke (top hook visible, bowl not yet); at 50%: fully drawn with its counter on the dot (measure: `mark.x + width*0.4462` equals the dot centre within 1px).
 - act 2 held: five crops arranged, caption readable.
 - act 3 held: four nodes, wire, caption.
 - act 4 held: full petrol, Talk block readable, white button.
