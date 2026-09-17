@@ -31,10 +31,16 @@ for (const page of pages) {
     if (!/\balt=/.test(tag)) fail(page, `img without alt: ${tag.slice(0, 80)}`);
   }
   const text = html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' ');
-  if (/not two/i.test(text)) fail(page, 'banned phrase "not two"');
-  if (/—/.test(text)) fail(page, 'em dash in page text');
-  if (/Advaith\b/.test(text)) fail(page, 'banned spelling "Advaith"');
-  if (/fonts\.googleapis\.com/.test(html)) fail(page, 'Google Fonts request');
+  const attrs = [...html.matchAll(/\b(?:content|alt)="([^"]*)"/g)].map(([, v]) => v).join(' ');
+  const combined = `${text} ${attrs}`;
+  if (/not two/i.test(combined)) fail(page, 'banned phrase "not two"');
+  if (/—/.test(combined)) fail(page, 'em dash in page text');
+  if (/Advaith\b/.test(combined)) fail(page, 'banned spelling "Advaith"');
+  for (const word of ['empower', 'seamless', 'cutting-edge']) {
+    if (new RegExp(`\\b${word}\\b`, 'i').test(combined)) fail(page, `banned word "${word}"`);
+  }
+  if (!combined.includes('Talk to the founder')) fail(page, 'missing CTA text "Talk to the founder"');
+  if (/fonts\.(googleapis|gstatic)\.com/.test(html)) fail(page, 'Google Fonts request');
   if (!/<link rel="canonical"/.test(html)) fail(page, 'missing canonical');
   const title = html.match(/<title>([^<]*)<\/title>/)?.[1] ?? '';
   if (title.length === 0 || title.length > 60) fail(page, `title length ${title.length}`);

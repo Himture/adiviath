@@ -59,6 +59,7 @@ main { padding-top: 64px; }
 .brand { text-decoration: none; color: var(--brand); }
 .wordmark { display: inline-flex; flex-direction: column; color: var(--brand); }
 .wordmark-name { display: flex; align-items: baseline; font-weight: 600; font-size: 28px; letter-spacing: -0.03em; line-height: 1; }
+.company-mark { width: 60px; height: auto; color: var(--brand); }
 .wordmark-name .company-mark { width: 32px; height: 32px; align-self: flex-end; margin: 0 -3px -4px -3px; color: var(--brand); }
 .wordmark-caption { font-size: 9px; font-weight: 600; letter-spacing: 0.02em; text-align: right; line-height: 1; }
 
