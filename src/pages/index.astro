@@ -32,12 +32,14 @@ const crops = [
 <BaseLayout
   title="Adiviath Technologies | Software built around your work"
   description="Adiviath builds and runs software for Indian businesses: Pharmulo for pharma wholesalers and custom systems like freight billing for Naveen Logistics."
+  footer={false}
 >
   <div class="progress" aria-hidden="true"></div>
-  <span class="fixed-dot" aria-hidden="true"></span>
+  <span class="dot-static fixed-dot" aria-hidden="true"></span>
 
   <section class="act act-1" aria-label="Introduction">
     <div class="stage">
+      <span class="dot-static act-dot" aria-hidden="true"></span>
       <div class="opening">
         <p class="eyebrow">Custom software for Indian businesses</p>
         <h1>Software built around the way your business works.</h1>
@@ -66,19 +68,20 @@ const crops = [
         </svg>
       </div>
 
-      <p class="brandline item" style="--y:3; --ra:58%; --rb:99%">Your work. Your way. Your software.</p>
+      <p class="brandline item" style="--ra:58%; --rb:99%">Your work. Your way. Your software.</p>
     </div>
     <p class="cue" aria-hidden="true">Scroll<i></i></p>
   </section>
 
   <section class="act act-2" aria-labelledby="pharmulo-h">
     <div class="stage">
+      <span class="dot-static act-dot" aria-hidden="true"></span>
       {crops.map((c) => (
         <div class="frame item" style={`--x:${c.x}; --y:${c.y}; --ra:${c.ra}; --rb:82%`}>
           <span class="crop" style={`--cw:${c.cw}; --ch:${c.ch}; --cs:${c.cs}; background-position: ${c.pos}`}></span>
         </div>
       ))}
-      <div class="caption item" style="--y:8; --ra:34%; --rb:82%">
+      <div class="caption item" style="--ra:34%; --rb:82%">
         <h2 id="pharmulo-h">Pharmulo. Built and operated by Adiviath. Live.</h2>
         <p>Wholesalers put their catalogue online; retailers order from any phone. Find stock, add quantity, send order.</p>
         <a class="btn-quiet" href="https://pharmulo.com" target="_blank" rel="noreferrer">See the work</a>
@@ -88,6 +91,7 @@ const crops = [
 
   <section class="act act-3" aria-labelledby="naveen-h">
     <div class="stage">
+      <span class="dot-static act-dot" aria-hidden="true"></span>
       <h2 id="naveen-h" class="item" style="--y:-7; --ra:20%; --rb:82%">How the Naveen Logistics system connects the paperwork.</h2>
       <ol class="route" aria-label="Workflow">
         <li class="node item" style="--x:-8; --y:-3; --ra:24%; --rb:82%">Lorry receipt</li>
@@ -97,7 +101,7 @@ const crops = [
       </ol>
       <div class="item" style="--y:0.5; --ra:24%; --rb:82%">
         <svg class="wire" viewBox="0 0 800 400" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M120 150 H400 V150 H680 M680 150 V250 H400 V250 H120" pathLength="100" />
+          <path d="M120 150 H680 V200 H120 V250 H680" pathLength="100" />
         </svg>
       </div>
       <div class="caption item" style="--y:9; --ra:38%; --rb:82%">
@@ -109,12 +113,14 @@ const crops = [
 
   <section class="act act-4" aria-label="Talk to the founder">
     <div class="stage">
+      <span class="dot-static act-dot" aria-hidden="true"></span>
       <div class="item talk-wrap" style="--ra:20%; --rb:82%"><Talk variant="brand" /></div>
     </div>
   </section>
 
   <section class="act act-5" aria-label="Closing">
     <div class="stage">
+      <span class="dot-static act-dot" aria-hidden="true"></span>
       <div class="mark-only item" style="--ra:8%; --rb:40%">
         <svg class="mark-draw" viewBox="0 0 390 380" aria-hidden="true">
           <defs>

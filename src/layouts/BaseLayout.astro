@@ -3,8 +3,8 @@ import '../styles/global.css';
 import Wordmark from '../components/Wordmark.astro';
 import contact from '../data/contact.json';
 
-interface Props { title: string; description: string; jsonLd?: object[] }
-const { title, description, jsonLd = [] } = Astro.props;
+interface Props { title: string; description: string; jsonLd?: object[]; footer?: boolean }
+const { title, description, jsonLd = [], footer = true } = Astro.props;
 
 if (!contact.whatsapp && !import.meta.env.ADIVIATH_ALLOW_EMPTY_WHATSAPP) {
   throw new Error('src/data/contact.json: whatsapp is empty. Add the number, or set ADIVIATH_ALLOW_EMPTY_WHATSAPP=1 for a local preview.');
@@ -65,18 +65,20 @@ const year = new Date().getFullYear();
       <a class="btn" href={wa}>Talk to the founder</a>
     </header>
     <main id="main-content" tabindex="-1"><slot /></main>
-    <footer class="site-footer">
-      <div class="wrap">
-        <div>
-          <Wordmark />
-          <p>Adiviath Technologies Private Limited. Registered in India.</p>
-          <p><a href={`mailto:${contact.email}`}>{contact.email}</a></p>
+    {footer && (
+      <footer class="site-footer">
+        <div class="wrap">
+          <div>
+            <Wordmark />
+            <p>Adiviath Technologies Private Limited. Registered in India.</p>
+            <p><a href={`mailto:${contact.email}`}>{contact.email}</a></p>
+          </div>
+          <nav aria-label="Footer navigation">
+            {links.map(({ href, label }) => <a href={href}>{label}</a>)}
+          </nav>
+          <p>© {year} Adiviath Technologies Private Limited</p>
         </div>
-        <nav aria-label="Footer navigation">
-          {links.map(({ href, label }) => <a href={href}>{label}</a>)}
-        </nav>
-        <p>© {year} Adiviath Technologies Private Limited</p>
-      </div>
-    </footer>
+      </footer>
+    )}
   </body>
 </html>
