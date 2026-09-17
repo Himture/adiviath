@@ -974,6 +974,10 @@ git commit -m "About page: company facts, how we work, FAQ with schema"
 - Create: `public/llms.txt`
 - Regenerate: `public/brand/social-card.png` via `scripts/finalize-logo.py` if it supports the palette, otherwise a one-off sharp render of a 1200x630 SVG with the mark, the wordmark and the headline on white.
 
+- [ ] **Step 0: Scope note**
+
+The founder asked for maximum search and AI-answer visibility. In addition to the steps below: the robots allow-list also names OAI-SearchBot, ChatGPT-User, Claude-Web, anthropic-ai, Applebot-Extended, Amazonbot, meta-externalagent, DuckAssistBot, YouBot, cohere-ai and Bytespider, each with `Allow: /`; add `public/llms-full.txt` containing the four pages' full copy as plain text under the same headings; `src/pages/sitemap.xml.ts` emits `<lastmod>` per page from `git log -1 --format=%cI -- src/pages/<file>` at build time (fall back to the build date if git is unavailable); the Organization schema in `BaseLayout.astro` gains `areaServed: "IN"`, `knowsAbout: ["custom business software", "pharmaceutical wholesale ordering", "freight billing"]`, and `contactPoint: { "@type": "ContactPoint", email, contactType: "sales", availableLanguage: ["en", "hi"] }`; the Work page adds a `Service` schema `{ "@type": "Service", name: "Custom business software", provider: { "@id": organizationId }, areaServed: "IN" }`; regenerate `public/brand/icons/*` PNGs from the transparent `public/favicon.svg` with sharp (apple-touch-icon on a white background, the rest transparent) and link them in the layout (`apple-touch-icon`, `icon` 32 and 16). IndexNow and Bing Webmaster need founder accounts and are recorded as open items in the final report.
+
 - [ ] **Step 1: `public/robots.txt`**
 
 ```
@@ -1072,3 +1076,45 @@ git commit -m "Verification pass for The Dot redesign"
 ```
 
 Report to the founder: the branch name, the list of pages verified with viewport counts, the outstanding open items from spec section 10, and the command to preview: `npm run dev` in the worktree.
+
+---
+
+### Task 9: Best-practice audit gate
+
+**Files:** whatever the findings require; no new pages.
+
+**Interfaces:** none new. Runs after Task 8 on the finished branch.
+
+- [ ] **Step 1: Web Interface Guidelines review**
+
+Invoke the `web-design-guidelines` skill (Skill tool). It fetches https://raw.githubusercontent.com/vercel-labs/web-interface-guidelines/main/command.md. Apply every rule to `src/layouts/BaseLayout.astro`, `src/components/*.astro`, `src/pages/*.astro`, `src/styles/global.css`, `src/styles/home.css`. Record findings in `file:line` format in the report. Fix every Critical and Important finding in the source; list Minor ones with a one-line reason if not fixed.
+
+- [ ] **Step 2: Vercel rules that apply to a zero-JS static site**
+
+From the `vercel-react-best-practices` skill, only these transfer; check each and fix:
+- `rendering-animate-svg-wrapper`: scroll-driven animations must target wrapper `div`/`span` elements, never the `<svg>` element itself (the mark-draw stroke animation on `path` is the one allowed exception, since it animates a presentation attribute of the mask, not layout).
+- `rendering-resource-hints`: add `<link rel="preload" as="font" type="font/woff2" crossorigin>` for the two variable font files Astro emits (find the hashed names in `dist/_astro/`; use Astro's `import ... ?url` in the layout so the hash is not hand-copied), and `<link rel="preload" as="image">` for `/pharmulo-home.webp` on Home only.
+- `rendering-svg-precision`: SVG paths authored in this branch (the Naveen wire, the mark-draw mask centreline) use at most one decimal place. Do not touch `src/data/logo-paths.json`.
+- `rendering-content-visibility`: not needed (no long lists); note that it was considered.
+- Cumulative layout shift: every image has width/height; fonts use `font-display: swap` with `size-adjust` if the fallback causes a visible jump on the h1 (measure with the Performance panel or by toggling the font).
+
+- [ ] **Step 3: SEO audit**
+
+Invoke the `seo-audit` skill against the built `dist/` (serve it with `npm run preview`). Cover: titles, descriptions, canonical, one h1, heading order, alt text, sitemap, robots, JSON-LD validity (paste each page's JSON-LD into the Schema.org validator by hand and record the result), Open Graph. Fix findings.
+
+- [ ] **Step 4: Accessibility pass**
+
+Keyboard-only walk of every page: focus order, visible focus rings, skip link works, the FAQ `<details>` toggles with Enter/Space, every link has a discernible name. Contrast: every text/background pair at least 4.5:1 (script from Task 8 Step 2). Touch targets at 390px: every link and button at least 44px in one dimension and not overlapping.
+
+- [ ] **Step 5: Copy pass**
+
+Run the `unslop` skill in audit-only mode over the four pages' text; fix any AI-pattern findings while keeping the approved copy from the spec verbatim (headline, brand line, CTA, trust line, conversion block).
+
+- [ ] **Step 6: Verify and commit**
+
+`npm run verify` passes. Re-run the Task 8 viewport matrix on any page you changed. Commit:
+
+```bash
+git add -A
+git commit -m "Best-practice audit: interface guidelines, resource hints, SEO, accessibility"
+```
