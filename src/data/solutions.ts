@@ -54,7 +54,7 @@ export const solutions: Solution[] = [
         h2: 'What to look for',
         body: [
           'If you are comparing ordering apps, check these before you sign up:',
-          '<ul><li>It works on the basic Android phones your retailers already carry, and on a web link for shops that will not install an app.</li><li>It carries your name. Retailers are ordering from you.</li><li>It shows live stock and applies your rates and schemes for each retailer.</li><li>It fits the billing software you already use, so your accounts and GST filing stay as they are.</li><li>Support answers during your working hours, in Indian time.</li></ul>',
+          '<ul><li>It works on the basic Android phones your retailers already carry, and on a web link for shops that will not install an app.</li><li>It carries your name. Retailers are ordering from you.</li><li>It shows live stock and applies your rates and schemes for each retailer.</li><li>It fits the billing software you already use, so your accounts and GST filing stay as they are.</li><li>Support answers during your working hours, on Indian time.</li></ul>',
           'Ask about collections too. Seeing what each shop owes, and following up without printed ledgers, matters as much as taking the order.',
         ],
       },

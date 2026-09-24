@@ -11,7 +11,9 @@ const llmsFull = {
     'astro:build:done': async ({ dir }) => {
       const text = (html) => html
         .replace(/^[\s\S]*?<main[^>]*>|<\/main>[\s\S]*$/g, '')
-        .replace(/<(script|style|svg)[\s\S]*?<\/\1>/g, '')
+        .replace(/<(script|style|svg|form)[\s\S]*?<\/\1>/g, '') // the form is inputs, not content
+        .replace(/<br\s*\/?>|<\/(a|span)>(?=<(a|span)[ >])/g, '\n') // line breaks; adjacent links or lines (problem list, address)
+        .replace(/<(p|li|dt|dd|div)[ >]/g, '\n$&') // a block after inline text (card link, then the next card's tag)
         .replace(/<(\w+)[^>]*aria-hidden="true"[^>]*>[\s\S]*?<\/\1>/g, '')
         .replace(/<h([1-3])[^>]*>/g, (_, n) => `\n\n${'#'.repeat(Number(n) + 2)} `)
         .replace(/<\/(p|li|dt|dd|h[1-3]|summary|figure)>/g, '\n')

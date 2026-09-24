@@ -14,15 +14,15 @@ not embed a raster image. The website component imports the same path data from
 
 ## SVG exports
 
-- `symbol-gradient.svg` — primary transparent mark.
-- `symbol-flat.svg` — flat violet/orange mark.
-- `symbol-gradient-dark.svg` / `symbol-gradient-light.svg` — primary mark on fixed backgrounds.
-- `symbol-purple.svg`, `symbol-black.svg`, `symbol-white.svg` — one-colour marks.
-- `wordmark-gradient.svg` — primary horizontal lockup on transparent background.
-- `wordmark-gradient-dark.svg`, `wordmark-black.svg`, `wordmark-white.svg` — lockup alternatives.
-- `profile-dark.svg` / `profile-light.svg` — square profile artwork with safe padding.
-- `social-card-dark.svg` / `social-card-light.svg` — 1200 × 630 social cards.
-- `favicon.svg` — rounded-square browser/app icon.
+- `symbol-gradient.svg` - primary transparent mark.
+- `symbol-flat.svg` - flat violet/orange mark.
+- `symbol-gradient-dark.svg` / `symbol-gradient-light.svg` - primary mark on fixed backgrounds.
+- `symbol-purple.svg`, `symbol-black.svg`, `symbol-white.svg` - one-colour marks.
+- `wordmark-gradient.svg` - primary horizontal lockup on transparent background.
+- `wordmark-gradient-dark.svg`, `wordmark-black.svg`, `wordmark-white.svg` - lockup alternatives.
+- `profile-dark.svg` / `profile-light.svg` - square profile artwork with safe padding.
+- `social-card-dark.svg` / `social-card-light.svg` - 1200 x 630 social cards.
+- `favicon.svg` - rounded-square browser/app icon.
 
 ## Bitmap exports
 
