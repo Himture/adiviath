@@ -52,9 +52,13 @@ test('declared content-length over the cap rejected', async () => {
   const c: string[] = []; const r = await handleLead(req(body, { 'content-length': '999999' }), env, ok(c));
   assert.equal(r.status, 413); assert.equal(c.length, 0);
 });
-test('multibyte body over 8 KB in bytes rejected', async () => {
-  const c: string[] = []; const r = await handleLead(req({ ...body, message: '\u0939'.repeat(3000) }), env, ok(c));
-  assert.equal(r.status, 413); assert.equal(c.length, 0);
+test('multibyte body over 16 KB in bytes rejected with the email pointer', async () => {
+  const c: string[] = []; const r = await handleLead(req({ ...body, message: '\u0939'.repeat(6000) }), env, ok(c));
+  assert.equal(r.status, 413); assert.equal(c.length, 0); assert.equal((await r.json()).message, 'Message too long. Please email contact@adiviath.com.');
+});
+test('a full 2000-character Hindi message with a full-size token is accepted', async () => {
+  const c: string[] = []; const r = await handleLead(req({ ...body, name: '\u0930'.repeat(100), business: '\u092c'.repeat(150), message: '\u0939'.repeat(2000), token: 't'.repeat(2048) }), env, ok(c));
+  assert.equal(r.status, 200); assert.equal(c.filter((u) => u.includes('resend')).length, 1);
 });
 for (const bad of ['null', '[]', '"hi"', '42', '{bad']) {
   test(`non-object JSON ${bad} rejected cleanly`, async () => {

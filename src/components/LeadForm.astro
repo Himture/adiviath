@@ -6,7 +6,9 @@ const { interest } = Astro.props;
 const key = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 ---
 {key ? (
-  <form class="lead" data-lead novalidate data-sitekey={key} method="post" action="/api/lead">
+  <>
+  {/* hidden until lead-form.ts runs: without JavaScript the visitor sees only the email line below */}
+  <form class="lead" data-lead novalidate data-sitekey={key} method="post" action="/api/lead" hidden>
     <div class="row">
       <label>Your name<input name="name" autocomplete="name" required maxlength="100" /><span class="err" data-err="name"></span></label>
       <label>Business name<input name="business" autocomplete="organization" required maxlength="150" /><span class="err" data-err="business"></span></label>
@@ -19,8 +21,9 @@ const key = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
     <p class="notice">We use these details only to reply to you. See our <a class="link" href="/privacy">privacy policy</a>.</p>
     <button class="btn" type="submit">Send</button>
     <p class="status" role="status" aria-live="polite"></p>
-    <p class="alt">Prefer email? <a class="link" href="mailto:contact@adiviath.com">contact@adiviath.com</a></p>
   </form>
+  <p class="lead-alt">Email us directly at <a class="link" href="mailto:contact@adiviath.com">contact@adiviath.com</a>.</p>
+  </>
 ) : (
   <p class="form-fallback">Email us at <a class="link" href="mailto:contact@adiviath.com">contact@adiviath.com</a>. We reply within one business day.</p>
 )}

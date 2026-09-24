@@ -168,6 +168,7 @@ h3 { font-weight: 600; font-size: 22px; letter-spacing: -0.01em; line-height: 1.
 .section.legal { padding-top: 0; } .prose > h2:first-child { margin-top: 0; }
 
 /* lead form */
+form.lead[hidden] { display: none; }
 form.lead { display: grid; gap: 18px; background: #fff; padding: clamp(20px, 3vw, 32px); border-radius: var(--r-lg); border: 1px solid var(--line); }
 form.lead .row { display: grid; gap: 18px; grid-template-columns: 1fr; } @media (min-width: 640px) { form.lead .row { grid-template-columns: 1fr 1fr; } }
 form.lead label { display: grid; gap: 8px; font-weight: 600; font-size: 16px; }
@@ -178,7 +179,7 @@ form.lead .hint { font-weight: 400; font-size: 14px; color: var(--muted); margin
 form.lead .err { font-weight: 500; font-size: 14px; color: #b3261e; } form.lead .err:empty { display: none; }
 form.lead .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 form.lead .ts:not(.shown) { height: 0; overflow: hidden; margin-top: -18px; } /* invisible until Turnstile needs an interaction; cancel the grid gap */
-form.lead .notice, form.lead .alt { font-size: 15px; color: var(--muted); } form.lead .status:empty { display: none; } form.lead .status { font-weight: 600; }
+form.lead .notice, .lead-alt { font-size: 15px; color: var(--muted); } .lead-alt { margin-top: 16px; } form.lead .status:empty { display: none; } form.lead .status { font-weight: 600; }
 form.lead .sent { font-size: 20px; font-weight: 600; color: var(--petrol); padding: 12px 0; }
 form.lead .btn { justify-self: start; min-width: 160px; }
 form.lead .btn[aria-disabled] { opacity: .7; cursor: progress; }

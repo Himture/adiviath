@@ -4,6 +4,7 @@ declare global { interface Window { turnstile?: { render: (el: HTMLElement, o: o
 const FALLBACK = 'Could not send right now. Please email contact@adiviath.com.';
 const form = document.querySelector<HTMLFormElement>('form[data-lead]');
 if (form) {
+  form.hidden = false;
   const status = form.querySelector<HTMLElement>('.status')!;
   const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
   let token = '';
