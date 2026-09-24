@@ -9,7 +9,7 @@
     "status": "live",
     "url": "https://pharmulo.com",
     "cta": "external",
-    "screenshot": { "src": "/img/pharmulo-home.webp", "alt": "Pharmulo home page with its ordering app for pharma wholesalers", "width": 1600, "height": 1000 },
+    "screenshot": { "src": "/img/pharmulo-home.webp", "alt": "Pharmulo home page with its ordering app for pharma wholesalers", "width": 1600, "height": 720 },
     "testimonial": null,
     "schema": { "applicationCategory": "BusinessApplication", "operatingSystem": "Web, Android" }
   },
