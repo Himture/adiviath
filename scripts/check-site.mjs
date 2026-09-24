@@ -7,6 +7,13 @@ const DISCLOSURES = [['Adiviath Technologies Private Limited', 'legal name'], ['
 const OTHER_CTA = /\b(Get in touch|Contact us|Let's talk|Talk to the founder|Reach out|Start a project)\b/i;
 const BANNED = ['seamless', 'empower', 'cutting-edge', 'elevate', 'unleash', 'next-gen', 'passionate'];
 
+const NAMED = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", mdash: '\u2014', ndash: '\u2013', nbsp: ' ' };
+// single pass, so "&amp;mdash;" decodes to the literal text "&mdash;", not a dash
+const decode = (s) => s.replace(/&(?:#(\d+)|#x([\da-f]+)|(\w+));/gi, (m, dec, hex, name) => {
+  const cp = dec ? +dec : hex ? parseInt(hex, 16) : NaN;
+  return cp <= 0x10ffff ? String.fromCodePoint(cp) : NAMED[name?.toLowerCase()] ?? m;
+});
+
 export function checkHtml(path, html) {
   const f = [];
   for (const [, attrs, body] of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
@@ -22,8 +29,8 @@ export function checkHtml(path, html) {
     if (!/\balt=/.test(tag)) f.push(`img without alt: ${tag.slice(0, 80)}`);
     if (!/\bwidth=/.test(tag) || !/\bheight=/.test(tag)) f.push(`img without width/height: ${tag.slice(0, 80)}`);
   }
-  const text = html.replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ').replace(/<[^>]+>/g, ' ');
-  const attrText = [...html.matchAll(/\b(?:content|alt|aria-label|title|placeholder)="([^"]*)"/g)].map(([, v]) => v).join(' ');
+  const text = decode(html.replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ').replace(/<[^>]+>/g, ' '));
+  const attrText = [...html.matchAll(/\b(?:content|alt|aria-label|title|placeholder)="([^"]*)"/g)].map(([, v]) => decode(v)).join(' ');
   const all = `${text} ${attrText}`;
   if (/[\u2013\u2014]/.test(all)) f.push('em or en dash in visible text');
   for (const w of BANNED) if (new RegExp(`\\b${w}\\b`, 'i').test(all)) f.push(`banned word "${w}"`);
@@ -32,9 +39,9 @@ export function checkHtml(path, html) {
   for (const [needle, name] of DISCLOSURES) if (!text.includes(needle)) f.push(`missing disclosure: ${name}`);
   if (/fonts\.(googleapis|gstatic)\.com/.test(html)) f.push('Google Fonts request');
   if (!/<link rel="canonical"/.test(html)) f.push('missing canonical');
-  const title = html.match(/<title>([^<]*)<\/title>/)?.[1] ?? '';
+  const title = decode(html.match(/<title>([^<]*)<\/title>/)?.[1] ?? '');
   if (!title || title.length > 60) f.push(`title length ${title.length}`);
-  const desc = html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '';
+  const desc = decode(html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '');
   if (!desc || desc.length > 155) f.push(`description length ${desc.length}`);
   return f.map((m) => `${path}: ${m}`);
 }

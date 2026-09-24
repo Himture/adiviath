@@ -17,3 +17,10 @@ test('missing CIN fails', () => assert.ok(checkHtml('/x', good.replace('U62099KA
 test('em dash fails', () => assert.ok(checkHtml('/x', good.replace('Products</h1>', 'Products \u2014 all</h1>')).some(f => f.includes('dash'))));
 test('other contact labels fail', () => assert.ok(checkHtml('/x', good.replace('Talk to us', 'Get in touch')).some(f => f.includes('label'))));
 test('missing Talk to us fails', () => assert.ok(checkHtml('/x', good.replace('Talk to us', 'Hello')).some(f => f.includes('Talk to us'))));
+test('entity-encoded contact label fails', () => assert.ok(checkHtml('/x', good.replace('Talk to us</a>', 'Talk to us</a><p>Let&#39;s talk</p>')).some(f => f.includes('label'))));
+test('named dash entity fails', () => assert.ok(checkHtml('/x', good.replace('Products</h1>', 'Products &mdash; all</h1>')).some(f => f.includes('dash'))));
+test('hex dash entity fails', () => assert.ok(checkHtml('/x', good.replace('Products</h1>', 'Products &#x2014; all</h1>')).some(f => f.includes('dash'))));
+test('title length is measured decoded', () => {
+  const title = `${'A'.repeat(55)} &amp; B`; // 63 raw, 59 decoded
+  assert.ok(!checkHtml('/x', good.replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`)).some(f => f.includes('title')));
+});
