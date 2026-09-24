@@ -1,0 +1,9 @@
+---
+// Rendered by BaseLayout only when PUBLIC_GA_ID is set at build time.
+const id = import.meta.env.PUBLIC_GA_ID;
+---
+<div class="consent" data-consent data-ga={id} hidden role="region" aria-label="Cookie choice" tabindex="-1">
+  <p>We'd like to use Google Analytics cookies to see which pages help visitors. Nothing loads unless you accept. <a class="link" href="/privacy">Privacy policy</a></p>
+  <div class="consent-actions"><button type="button" class="btn" data-choice="granted">Accept</button><button type="button" class="btn" data-choice="denied">Decline</button></div>
+</div>
+<script src="../scripts/consent.ts"></script>

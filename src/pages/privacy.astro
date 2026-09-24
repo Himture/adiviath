@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import company from '../data/company.json';
 const mail = `mailto:${company.email}`;
 const office = company.address.lines.join(', ');
+const ga = Boolean(import.meta.env.PUBLIC_GA_ID); // the analytics wording must match the build
 ---
 
 <BaseLayout path="/privacy">
@@ -23,14 +24,14 @@ const office = company.address.lines.join(', ');
       <ul>
         <li>What you type in the contact form: your name, business name, email or phone number, what you are interested in, and your message.</li>
         <li>Emails you send us, including your email address and anything you write or attach.</li>
-        <li>With your consent only: analytics data about the pages you visit, your device and your approximate location, through Google Analytics.</li>
+        {ga && <li>With your consent only: analytics data about the pages you visit, your device and your approximate location, through Google Analytics.</li>}
         <li>Basic server logs kept by our host (IP address, time and page requested), used for security.</li>
       </ul>
 
       <h2>Why we collect it</h2>
       <ul>
         <li>To reply to your enquiry and discuss work with you.</li>
-        <li>To understand which pages help visitors. We use analytics only if you accept it.</li>
+        {ga && <li>To understand which pages help visitors. We use analytics only if you accept it.</li>}
         <li>To protect the site from abuse.</li>
       </ul>
 
@@ -40,7 +41,7 @@ const office = company.address.lines.join(', ');
         <li>Vercel Inc.: hosts the website and keeps its server logs.</li>
         <li>Resend: delivers contact form messages to our inbox.</li>
         <li>Cloudflare: runs Turnstile, which checks that a form submission comes from a person and not a bot.</li>
-        <li>Google: runs Google Analytics, only if you consent.</li>
+        {ga && <li>Google: runs Google Analytics, only if you consent.</li>}
         <li>Our email provider: stores the mail sent to and from {company.email}.</li>
       </ul>
       <p>Some of these providers process data outside India.</p>
@@ -49,7 +50,7 @@ const office = company.address.lines.join(', ');
       <p>When you send the form, your enquiry is stored in our mailbox and in Resend's delivery logs. Emails you send us are stored in our mailbox.</p>
       <ul>
         <li>Enquiries and email: up to 24 months after our last contact with you, then deleted.</li>
-        <li>Analytics data: up to 14 months.</li>
+        {ga && <li>Analytics data: up to 14 months.</li>}
         <li>Server logs: for our host's standard retention period.</li>
       </ul>
 
@@ -63,7 +64,9 @@ const office = company.address.lines.join(', ');
 
       <h2>Your choices and rights</h2>
       <ul>
-        <li>You can withdraw analytics consent at any time from "Cookie settings" in the footer of any page.</li>
+        {ga
+          ? <li>You can withdraw analytics consent at any time from "Cookie settings" in the footer of any page.</li>
+          : <li>This website does not currently use analytics or cookies. If that changes, we will ask for your consent first and update this policy.</li>}
         <li>You can ask to see, correct or delete the information we hold about you by emailing our grievance contact at <a class="link" href={mail}>{company.email}</a>.</li>
       </ul>
       <p>We reply within 30 days.</p>
