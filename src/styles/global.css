@@ -59,8 +59,8 @@ h3 { font-weight: 600; font-size: 22px; letter-spacing: -0.01em; line-height: 1.
 @media (min-width: 900px) { .nav-wide { display: flex; } .nav-narrow { display: none; } }
 
 /* Compact footer: browsing above, company disclosures at the lower right. */
-.site-footer { background: var(--ink); color: #dce6e6; padding: 36px 0 28px; font-size: 16px; }
-.footer-layout { display: grid; gap: 24px 48px; }
+.site-footer { background: var(--ink); color: #dce6e6; padding: 28px 0 20px; font-size: 16px; }
+.footer-layout { display: grid; gap: 20px 48px; }
 .brand.light { color: #fff; }
 .since { margin-top: 12px; max-width: 34ch; color: #bacdce; }
 .footer-nav { display: flex; flex-wrap: wrap; align-content: start; gap: 0 24px; }
@@ -68,16 +68,20 @@ h3 { font-weight: 600; font-size: 22px; letter-spacing: -0.01em; line-height: 1.
 .footer-nav a { min-width: 44px; text-decoration: none; }
 .footer-nav a:hover { text-decoration: underline; }
 .footer-contact p { margin-top: 8px; }
-.footer-contact .copyright { color: #bacdce; margin-top: 16px; }
+.footer-legal { display: flex; flex-wrap: wrap; align-items: center; gap: 0 20px; margin-top: 12px; font-size: 15px; }
+.footer-legal nav { display: flex; flex-wrap: wrap; gap: 0 16px; }
+.footer-legal a { min-width: 44px; }
+.footer-legal .copyright { color: #bacdce; }
+.footer-address span { display: block; }
 .footer-company { border-top: 1px solid #526267; padding-top: 24px; font-size: 15px; line-height: 1.6; color: #bacdce; }
 .footer-company h2 { font-size: 16px; color: #fff; font-weight: 600; margin-bottom: 8px; letter-spacing: 0; }
 .footer-company p + p { margin-top: 4px; }
 .linkish { background: none; border: 0; padding: 0; font: inherit; text-decoration: underline; cursor: pointer; }
 .site-footer :focus-visible { outline-color: var(--coral); }
 @media (min-width: 800px) {
-  .footer-layout { grid-template-columns: 1fr 1fr; gap: 24px 64px; }
+  .footer-layout { grid-template-columns: 1fr 1fr; gap: 16px 48px; }
   .footer-nav { justify-content: flex-end; gap: 0 24px; }
-  .footer-company { text-align: right; padding-top: 0; border: 0; }
+  .footer-company { text-align: right; padding-top: 0; border: 0; max-width: 400px; justify-self: end; }
   .footer-contact { align-self: end; }
 }
 

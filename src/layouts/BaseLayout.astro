@@ -23,8 +23,8 @@ const org = {
   identifier: { '@type': 'PropertyValue', propertyID: 'CIN', value: company.cin },
   address: { '@type': 'PostalAddress', streetAddress: company.address.street, addressLocality: company.address.locality, addressRegion: company.address.region, postalCode: company.address.postalCode, addressCountry: company.address.country },
   founder: { '@type': 'Person', name: company.director, jobTitle: 'Director' },
-  contactPoint: { '@type': 'ContactPoint', email: company.email, contactType: 'sales', areaServed: 'IN', availableLanguage: ['en'] },
-  areaServed: 'IN', knowsAbout: ['custom business software', 'pharmaceutical wholesale ordering', 'freight billing', 'Tally integration'],
+  contactPoint: { '@type': 'ContactPoint', email: company.email, contactType: 'sales', areaServed: 'Worldwide', availableLanguage: ['en'] },
+  areaServed: 'Worldwide', knowsAbout: ['custom business software', 'pharmaceutical wholesale ordering', 'freight billing', 'Tally integration'],
   sameAs: ['https://pharmulo.com'],
 };
 const graph = [

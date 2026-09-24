@@ -4,7 +4,7 @@ import FounderForm from '../components/FounderForm.astro';
 import { stepsHtml } from '../data/solutions';
 
 const builds = ['Ordering and billing systems', 'Inventory and stock tracking', 'Customer and retailer portals', 'Android and iOS apps', 'Tally, Busy and Marg integrations', 'WhatsApp and SMS notifications', 'Dashboards and reports'];
-const service = { '@type': 'Service', name: 'Custom business software', serviceType: 'Custom software development', provider: { '@id': `${new URL('/', Astro.site).href}#organization` }, areaServed: 'IN' };
+const service = { '@type': 'Service', name: 'Custom business software', serviceType: 'Custom software development', provider: { '@id': `${new URL('/', Astro.site).href}#organization` }, areaServed: 'Worldwide' };
 ---
 
 <BaseLayout path="/custom-software" jsonLd={[service]}>
