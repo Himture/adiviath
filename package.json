@@ -2,11 +2,12 @@
   "name": "adiviath",
   "type": "module",
   "version": "0.0.1",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "astro dev",
     "build": "astro build && node scripts/vercel-headers.mjs",
-    "preview": "astro preview",
     "astro": "astro",
     "check": "node scripts/check-site.mjs",
     "verify": "npm run build && node scripts/check-site.mjs",

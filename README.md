@@ -1,43 +1,38 @@
-# Astro Starter Kit: Minimal
+# adiviath.com
 
-```sh
-npm create astro@latest -- --template minimal
-```
+The website of Adiviath Technologies Private Limited.
+Astro 5 static site on Vercel, with one serverless function for the contact form.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Commands
 
-## 🚀 Project Structure
+| Command | What it does |
+|---|---|
+| `npm run dev` | Local dev server at http://localhost:4321 |
+| `npm run build` | Builds the site and injects the security headers into `.vercel/output` |
+| `npm test` | Unit tests (Node 22.18 or later) |
+| `npm run verify` | Build, then check every page for compliance, SEO and copy rules |
+| `npm run serve` | Serves the built static pages locally |
+| `npm run matrix` | Device matrix: every page in Chromium, WebKit and Firefox at 8 sizes |
+| `npm run indexnow` | Tells Bing and partners the pages changed (run after a deploy) |
 
-Inside of your Astro project, you'll see the following folders and files:
+## Where things live
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+- `src/data/company.json`: legal name, CIN, registered office, contact and grievance details.
+- `src/data/products.json`: the product catalogue. Add a product here; testimonials and screenshots are optional fields.
+- `src/data/pages.json`: every route with its title and description. It drives the sitemap, `llms.txt`, `llms-full.txt` and the build checks.
+- `src/data/solutions.ts`: copy and FAQs for the three solution pages.
+- `src/data/logo-paths.json`: the canonical logo shape. Never retrace the logo from an image.
+- `src/pages/api/lead.ts`: the contact form endpoint.
+- `docs/superpowers/`: the spec and plan this site was built from.
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Environment variables (Vercel)
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+| Name | Purpose |
+|---|---|
+| `RESEND_API_KEY` | Sends form enquiries by email |
+| `TURNSTILE_SECRET_KEY` | Verifies the form's bot check |
+| `PUBLIC_TURNSTILE_SITE_KEY` | Shows the form (without it, pages show the email address instead) |
+| `PUBLIC_GA_ID` | Google Analytics, loaded only after the visitor accepts |
+| `LEAD_TO`, `LEAD_FROM` | Optional overrides for the enquiry email addresses |
 
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build to `.vercel/output/` (static pages also in `./dist/client/`) |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+`PUBLIC_` values are read at build time, so redeploy after changing them.

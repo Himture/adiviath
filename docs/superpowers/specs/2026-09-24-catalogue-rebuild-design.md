@@ -2,7 +2,7 @@
 
 Date: 2026-09-24.
 Status: approved in conversation, awaiting written-spec review.
-Supersedes: `2026-09-17-the-dot-redesign-design.md` (The Dot scroll-scene design, retired as not production-ready).
+Supersedes: The Dot scroll-scene design of 2026-09-17 (retired as not production-ready; its spec was removed and lives in git history).
 
 ## 1. Purpose and success
 
@@ -115,7 +115,7 @@ The CTA label "Talk to us" is the only contact label across the site.
 
 ## 8. Page designs
 
-Reference mockup: `.superpowers/mockups/b-catalogue.html` (local, not committed).
+Reference: the approved "B. Catalogue" brainstorm mockup (not kept; the built site is now the reference).
 
 ### Home
 
@@ -165,7 +165,7 @@ The form, the email address, the founder note, and the full disclosures.
 The only animation beyond hover and focus states: on Home load, the mark's outline is traced (about 1.3 s), the shape fills with petrol, then the coral dot lands with a small overshoot.
 Total about 2 s, plays once, never on scroll.
 Under `prefers-reduced-motion: reduce`, the finished mark shows immediately.
-Prototype: `.superpowers/mockups/draw.mjs`, option "trace".
+Implemented in `src/components/LogoDraw.astro`.
 
 ## 11. Contact form
 
