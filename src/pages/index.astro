@@ -51,7 +51,7 @@ const crops = [
         <p class="lead">Adiviath builds and runs systems for operations where forms, spreadsheets and WhatsApp no longer keep up.</p>
         <div class="talk-actions">
           <a class="btn" href={wa}>Talk to the founder</a>
-          <a class="btn-quiet" href={mail}>Prefer email? Write to {contact.email}</a>
+          <a class="btn-quiet" href={mail}>{contact.whatsapp ? 'Prefer email? Write to ' : 'Or write to '}{contact.email}</a>
         </div>
         <ul class="proof" aria-label="Proof">
           <li><strong>Pharmulo</strong>, live, built and operated by Adiviath</li>

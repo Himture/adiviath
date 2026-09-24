@@ -6,10 +6,6 @@ import contact from '../data/contact.json';
 interface Props { title: string; description: string; jsonLd?: object[]; footer?: boolean }
 const { title, description, jsonLd = [], footer = true } = Astro.props;
 
-if (!contact.whatsapp && !import.meta.env.ADIVIATH_ALLOW_EMPTY_WHATSAPP) {
-  throw new Error('src/data/contact.json: whatsapp is empty. Add the number, or set ADIVIATH_ALLOW_EMPTY_WHATSAPP=1 for a local preview.');
-}
-
 const path = Astro.url.pathname;
 const canonical = new URL(path === '/' ? '/' : path.replace(/\/$/, ''), Astro.site).href;
 const socialImage = new URL('/brand/social-card.png', Astro.site).href;
