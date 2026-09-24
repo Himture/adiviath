@@ -1,9 +1,51 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import DotStage from '../components/DotStage.astro';
+import Talk from '../components/Talk.astro';
+const organizationId = new URL('/#organization', Astro.site).href;
+const pharmulo = { '@type': 'SoftwareApplication', '@id': 'https://pharmulo.com/#software', name: 'Pharmulo', url: 'https://pharmulo.com', applicationCategory: 'BusinessApplication', operatingSystem: 'Web', description: 'Online ordering storefront for pharmaceutical wholesalers and their retailers.', publisher: { '@id': organizationId } };
+const service = { '@type': 'Service', name: 'Custom business software', serviceType: 'Custom software development', provider: { '@id': organizationId }, areaServed: 'IN', description: 'Custom systems built around how a specific business already works, such as freight billing for a logistics company.' };
 ---
 
-<BaseLayout title="Work | Adiviath Technologies" description="Products and custom software Adiviath Technologies has built for specific businesses.">
+<BaseLayout title="Work | Adiviath Technologies" description="Pharmulo, our live ordering product for pharma wholesalers, and the custom freight billing system we built for Naveen Logistics." jsonLd={[pharmulo, service]}>
   <section class="section wrap">
-    <h1>Work</h1>
+    <p class="eyebrow">Work</p>
+    <h1>Two kinds of work. One way of building.</h1>
+    <p class="lead">Products we run ourselves, and systems we build for one business at a time. Each starts at a specific need.</p>
   </section>
+
+  <article class="case wrap" id="pharmulo" aria-labelledby="case-pharmulo">
+    <DotStage label="Pharmulo">
+      <div slot="w" class="case-need"><p class="eyebrow">The need</p><p>Wholesalers wanted retailers to order without phone calls and price lists.</p></div>
+      <figure slot="e" class="case-shot"><img src="/pharmulo-home.webp" alt="Pharmulo storefront home page showing the catalogue and ordering steps" width="1600" height="1000" loading="lazy" decoding="async" /></figure>
+      <div slot="s" class="case-body">
+        <h2 id="case-pharmulo">Pharmulo. Built and operated by Adiviath. Live.</h2>
+        <dl>
+          <dt>What we built</dt><dd>An online storefront that sits on the wholesale system they already run.</dd>
+          <dt>What changed</dt><dd>Retailers browse live stock and order from any phone; the order flows back as a bill.</dd>
+        </dl>
+        <a class="btn-quiet" href="https://pharmulo.com" target="_blank" rel="noreferrer">See pharmulo.com</a>
+      </div>
+    </DotStage>
+  </article>
+
+  <article class="case wrap" id="naveen-logistics" aria-labelledby="case-naveen">
+    <DotStage label="Naveen Logistics">
+      <div slot="w" class="case-need"><p class="eyebrow">The need</p><p>Lorry receipts, freight bills and payments never lined up.</p></div>
+      <figure slot="e" class="case-map" aria-label="How the system connects the paperwork">
+        <ol class="route-static"><li>Lorry receipt</li><li>Freight bill</li><li>Payment</li><li>Settled account</li></ol>
+        <img src="/naveen-logistics-logo.webp" alt="Naveen Logistics logo" width="256" height="256" loading="lazy" decoding="async" />
+      </figure>
+      <div slot="s" class="case-body">
+        <h2 id="case-naveen">Custom software for Naveen Logistics. In production.</h2>
+        <dl>
+          <dt>What we built</dt><dd>One system from receipt to settled bill, with a customer portal.</dd>
+          <dt>What changed</dt><dd>Documents connect, payments allocate to bills, customers see their own statement.</dd>
+        </dl>
+        <a class="btn-quiet" href="https://www.naveenlogistics.com/" target="_blank" rel="noreferrer">See naveenlogistics.com</a>
+      </div>
+    </DotStage>
+  </article>
+
+  <section class="wrap" style="padding-bottom: var(--section)"><Talk /></section>
 </BaseLayout>
