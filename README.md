@@ -25,13 +25,17 @@ Astro 5 static site on Vercel, with one serverless function for the contact form
 - `src/pages/api/lead.ts`: the contact form endpoint.
 - `docs/superpowers/`: the spec and plan this site was built from.
 
+## Email-only launch
+
+`CONTACT_FORM_ENABLED` in `src/data/features.ts` is deliberately `false`. Pages show the email contact panel even if Turnstile keys exist, and `/api/lead` rejects submissions without contacting external services. Keep this disabled until form delivery is ready to test. To re-enable later, set the flag to `true`, configure the required keys, test delivery, and redeploy.
+
 ## Environment variables (Vercel)
 
 | Name | Purpose |
 |---|---|
 | `RESEND_API_KEY` | Sends form enquiries by email |
 | `TURNSTILE_SECRET_KEY` | Verifies the form's bot check |
-| `PUBLIC_TURNSTILE_SITE_KEY` | Shows the form (without it, pages show the email address instead) |
+| `PUBLIC_TURNSTILE_SITE_KEY` | Required for the form when `CONTACT_FORM_ENABLED` is enabled |
 | `PUBLIC_GA_ID` | Google Analytics, loaded only after the visitor accepts |
 | `LEAD_TO`, `LEAD_FROM` | Optional overrides for the enquiry email addresses |
 

@@ -21,7 +21,7 @@ const app = { '@type': 'SoftwareApplication', name: p.name, applicationCategory:
         <h1>{p.name}</h1>
         <p class="sub">{p.oneLiner}</p>
         <p class="detail">{p.detail}</p>
-        {p.cta === 'external' && p.url ? <a class="btn" href={p.url} rel="noopener">Visit {new URL(p.url).hostname}</a> : <a class="btn" href={p.cta === 'form' ? '#enquiry' : '/contact'}>Talk to us</a>}
+        {p.cta === 'external' && p.url ? <a class="btn" href={p.url} rel="noopener">Visit {new URL(p.url).hostname}</a> : <a class="btn" href="/contact">Talk to us</a>}
         {p.cta === 'external' && <p class="also">Questions first? <a class="link" href="/contact">Talk to us</a></p>}
       </div>
       {p.screenshot && <img src={p.screenshot.src} alt={p.screenshot.alt} width={p.screenshot.width} height={p.screenshot.height} />}
@@ -36,8 +36,8 @@ const app = { '@type': 'SoftwareApplication', name: p.name, applicationCategory:
   )}
   {p.cta === 'form' && (
     <FounderForm interest={INTERESTS.find((i) => i === p.name)}>
-      <h2>Tell us how the work happens today</h2>
-      <p class="build-lead">A short call is enough to know whether this system fits your business.</p>
+      <h2>Let's start with how you work</h2>
+      <p class="build-lead">Tell us how you handle billing today. We'll explore how this system could fit your business.</p>
     </FounderForm>
   )}
 </BaseLayout>

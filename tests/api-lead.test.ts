@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { handleLead, UPSTREAM_TIMEOUT_MS } from '../src/pages/api/lead.ts';
+import { POST, handleLead, UPSTREAM_TIMEOUT_MS } from '../src/pages/api/lead.ts';
 
 const env = { RESEND_API_KEY: 'k', TURNSTILE_SECRET_KEY: 's', ALLOWED_ORIGINS: ['https://www.adiviath.com'] };
 const body = { name: 'Ravi', business: 'Balaji Pharma', contact: 'ravi@balaji.in', interest: 'Pharmulo', message: 'Hi', company_site: '', token: 't' };
@@ -132,4 +132,13 @@ test('logs never include field values', async (t) => {
   await handleLead(req(body), env, g);
   assert.ok(logged.length >= 2);
   for (const v of ['Ravi', 'Balaji', 'ravi@balaji.in', 'Hi']) assert.ok(!logged.some((l) => l.includes(v)), v);
+});
+
+// The public route must stay closed even though the future form handler is retained.
+test('email-only launch rejects form submissions before reading the request', async () => {
+  const request = req(body);
+  const response = await POST({ request } as Parameters<typeof POST>[0]);
+  assert.equal(response.status, 503);
+  assert.equal(request.bodyUsed, false);
+  assert.match((await response.json()).message, /contact@adiviath\.com/);
 });

@@ -6,11 +6,10 @@ const links = ['/products', '/custom-software', '/about', '/contact', '/privacy'
 const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
-  <div class="wrap cols">
-    <div><a class="brand light" href="/" aria-label="Adiviath Technologies home"><Wordmark /></a><p class="since">Software products and custom systems for Indian businesses.</p></div>
-    <div><h2 class="fh">Registered office</h2><p>{company.legalName}</p>{company.address.lines.map((l) => <p>{l}</p>)}<p>CIN {company.cin}</p></div>
-    <div><h2 class="fh">Contact</h2><p><a href={`mailto:${company.email}`}>{company.email}</a></p>{company.phone && <p><a href={`tel:${company.phone}`}>{company.phone}</a></p>}<p>Queries and grievances: <br />{company.grievance}</p></div>
-    <nav aria-label="Footer"><h2 class="fh">Company</h2>{links.map((l) => <p><a href={l.href}>{l.label}</a></p>)}{import.meta.env.PUBLIC_GA_ID && <p><button type="button" class="linkish" data-consent-open hidden>Cookie settings</button></p>}</nav>
-    <p class="base">© {year} {company.legalName}</p>
+  <div class="wrap footer-layout">
+    <div class="footer-brand"><a class="brand light" href="/" aria-label="Adiviath Technologies home"><Wordmark /></a><p class="since">Software products and custom systems<br />for Indian businesses.</p></div>
+    <nav class="footer-nav" aria-label="Footer">{links.map((l) => <a href={l.href}>{l.label}</a>)}{import.meta.env.PUBLIC_GA_ID && <button type="button" class="linkish" data-consent-open hidden>Cookie settings</button>}</nav>
+    <div class="footer-contact"><a href={`mailto:${company.email}`}>{company.email}</a>{company.phone && <a href={`tel:${company.phone}`}>{company.phone}</a>}<p>Queries and grievances:<br />{company.grievance}</p><p class="copyright">© {year} {company.shortName}</p></div>
+    <div class="footer-company"><h2>Registered office</h2><p>{company.legalName}</p><p>{company.address.lines.join(', ')}</p><p>CIN {company.cin}</p></div>
   </div>
 </footer>

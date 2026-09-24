@@ -1,3 +1,4 @@
+import { CONTACT_FORM_ENABLED } from '../../data/features.ts';
 import type { APIRoute } from 'astro';
 import { validateLead, renderLeadEmail } from '../../lib/lead.ts';
 import { allow } from '../../lib/throttle.ts';
@@ -51,5 +52,7 @@ export async function handleLead(req: Request, env: Env, f: typeof fetch = fetch
 
 // Read at request time: Astro 5 inlines import.meta.env at build time, which would bake secrets into the bundle.
 const origins = () => ['https://www.adiviath.com', ...(process.env.VERCEL_ENV !== 'production' ? [process.env.VERCEL_URL, process.env.VERCEL_BRANCH_URL].filter(Boolean).map((h) => `https://${h}`) : []), ...(import.meta.env.DEV ? ['http://localhost:4321'] : [])];
-export const POST: APIRoute = ({ request }) => { const e = process.env; return handleLead(request, { RESEND_API_KEY: e.RESEND_API_KEY, TURNSTILE_SECRET_KEY: e.TURNSTILE_SECRET_KEY, LEAD_TO: e.LEAD_TO, LEAD_FROM: e.LEAD_FROM, ALLOWED_ORIGINS: origins() }); };
+export const POST: APIRoute = ({ request }) => {
+  if (!CONTACT_FORM_ENABLED) return json(503, { ok: false, message: 'Please email contact@adiviath.com to send an enquiry.' });
+  const e = process.env; return handleLead(request, { RESEND_API_KEY: e.RESEND_API_KEY, TURNSTILE_SECRET_KEY: e.TURNSTILE_SECRET_KEY, LEAD_TO: e.LEAD_TO, LEAD_FROM: e.LEAD_FROM, ALLOWED_ORIGINS: origins() }); };
 export const ALL: APIRoute = () => json(405, { ok: false, message: 'Method not allowed.' });

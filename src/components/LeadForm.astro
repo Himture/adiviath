@@ -1,11 +1,12 @@
 ---
-// The enquiry form. Without a Turnstile site key at build time it renders only the email line.
+// Email-only until the launch flag is enabled and a Turnstile key is configured.
+import { CONTACT_FORM_ENABLED } from '../data/features.ts';
 import { INTERESTS, type Lead } from '../lib/lead.ts';
 interface Props { interest?: Lead['interest'] }
 const { interest } = Astro.props;
 const key = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 ---
-{key ? (
+{CONTACT_FORM_ENABLED && key ? (
   <>
   {/* Without JavaScript the form cannot pass Turnstile, so it is hidden (CSS scripting query, noscript for older engines) and only the email line shows. */}
   <noscript><style is:inline>form.lead{display:none}</style></noscript>
@@ -15,18 +16,23 @@ const key = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
       <div class="field"><label for="lead-name">Your name</label><input id="lead-name" name="name" autocomplete="name" required maxlength="100" aria-describedby="lead-name-err" /><span class="err" id="lead-name-err" data-err="name"></span></div>
       <div class="field"><label for="lead-business">Business name</label><input id="lead-business" name="business" autocomplete="organization" required maxlength="150" aria-describedby="lead-business-err" /><span class="err" id="lead-business-err" data-err="business"></span></div>
     </div>
-    <div class="field"><label for="lead-contact">Email or phone</label><span class="hint" id="lead-contact-hint">Whichever you check more.</span><input id="lead-contact" name="contact" autocomplete="on" required maxlength="150" aria-describedby="lead-contact-hint lead-contact-err" /><span class="err" id="lead-contact-err" data-err="contact"></span></div>
-    <div class="field"><label for="lead-interest">You're interested in</label><select id="lead-interest" name="interest" required aria-describedby="lead-interest-err">{!interest && <option value="">Choose one</option>}{INTERESTS.map((i) => <option selected={i === interest}>{i}</option>)}</select><span class="err" id="lead-interest-err" data-err="interest"></span></div>
-    <div class="field"><label for="lead-message">What's slow or broken today?</label><textarea id="lead-message" name="message" required maxlength="2000" aria-describedby="lead-message-err" placeholder="Example: orders come on WhatsApp and we type them into Marg by hand"></textarea><span class="err" id="lead-message-err" data-err="message"></span></div>
+    <div class="field"><label for="lead-contact">Email or phone</label><span class="hint" id="lead-contact-hint">Use the email you check or an Indian phone number where we can reach you.</span><input id="lead-contact" name="contact" autocomplete="on" required maxlength="150" aria-describedby="lead-contact-hint lead-contact-err" /><span class="err" id="lead-contact-err" data-err="contact"></span></div>
+    <div class="field"><label for="lead-interest">What are you interested in?</label><select id="lead-interest" name="interest" required aria-describedby="lead-interest-err">{!interest && <option value="">Choose one</option>}{INTERESTS.map((i) => <option selected={i === interest}>{i}</option>)}</select><span class="err" id="lead-interest-err" data-err="interest"></span></div>
+    <div class="field"><label for="lead-message">What would you like help with?</label><textarea id="lead-message" name="message" required maxlength="2000" aria-describedby="lead-message-err" placeholder="For example: Our orders come through WhatsApp, and we enter each one into Marg by hand."></textarea><span class="err" id="lead-message-err" data-err="message"></span></div>
     <div class="hp" aria-hidden="true"><label>Leave this empty<input name="company_site" tabindex="-1" autocomplete="off" /></label></div>
     <div class="ts" data-ts></div>
     <p class="notice">We use these details only to reply to you. See our <a class="link" href="/privacy">privacy policy</a>.</p>
-    <button class="btn" type="submit">Send</button>
+    <button class="btn" type="submit">Send message</button>
     <p class="status" role="status" aria-live="polite"></p>
   </form>
   <p class="lead-alt">Email us directly at <a class="link" href="mailto:contact@adiviath.com">contact@adiviath.com</a>.</p>
   </>
 ) : (
-  <p class="form-fallback">Email us at <a class="link" href="mailto:contact@adiviath.com">contact@adiviath.com</a>. We reply within one business day.</p>
+  <div class="form-fallback">
+    <h3>What's on your mind?</h3>
+    <p>Ask about a product, share an idea, or tell us what takes too much time. A few lines are enough.</p>
+    <a class="email-action" href="mailto:contact@adiviath.com">contact@adiviath.com<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7" /></svg></a>
+    <p class="email-help">This opens your email app. You can also copy the address.</p>
+  </div>
 )}
 <script src="../scripts/lead-form.ts"></script>

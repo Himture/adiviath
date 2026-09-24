@@ -16,10 +16,10 @@ export type Solution = {
 
 // The four engagement steps, lead then detail. Home, /custom-software and the distributor page all render stepsHtml.
 export const buildSteps: [string, string][] = [
-  ['A call about how the work happens today.', 'Bring the forms, registers or spreadsheets.'],
-  ['A fixed written scope and price.', 'Nothing starts until you agree to it.'],
-  ['Weekly progress you can click through,', 'so there are no surprises.'],
-  ['Support and changes after launch.', 'The people who built it keep it running.'],
+  ['Show us how you work.', 'We start with a call about your day-to-day work. Bring the forms, registers or spreadsheets you use.'],
+  ['Agree on the plan and price.', 'You get a written scope and a fixed price. Work starts only when you agree.'],
+  ['Try it as we build.', 'Review working software each week so you can see the progress for yourself.'],
+  ['Keep it working after launch.', 'The team who built your software handles support and changes.'],
 ];
 export const stepsHtml = `<ol class="steps-list">${buildSteps.map(([lead, rest]) => `<li><strong>${lead}</strong> ${rest}</li>`).join('')}</ol>`;
 

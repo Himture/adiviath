@@ -5,13 +5,13 @@ import LeadForm from './LeadForm.astro';
 import type { Lead } from '../lib/lead.ts';
 interface Props { interest?: Lead['interest'] }
 ---
-<section class="section" id="enquiry">
+<section class="section enquiry" id="enquiry">
   <div class="wrap build">
-    <div>
+    <div class="enquiry-copy">
       <slot />
-      <p class="note">I read every message myself and reply within one business day.<br /><strong>Himanshu Agarwal, Director</strong></p>
+      <div class="founder-note"><span class="founder-monogram" aria-hidden="true">HA</span><p>I read every message myself and reply within one business day.<strong>Himanshu Agarwal, Director</strong></p></div>
     </div>
-    <div>
+    <div class="enquiry-action">
       <LeadForm interest={Astro.props.interest} />
     </div>
   </div>

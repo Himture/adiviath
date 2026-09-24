@@ -1,7 +1,7 @@
 import { validateLead } from '../lib/lead.ts';
 
 declare global { interface Window { turnstile?: { render: (el: HTMLElement, o: object) => string; reset: (id?: string) => void }; onTsLoad?: () => void } }
-const FALLBACK = 'Could not send right now. Please email contact@adiviath.com.';
+const FALLBACK = 'Your message could not be sent. Please try again or email contact@adiviath.com.';
 const CHECK = 'Please try again in a moment, or email contact@adiviath.com.';
 const form = document.querySelector<HTMLFormElement>('form[data-lead]');
 if (form) {
@@ -57,7 +57,7 @@ if (form) {
       const res = await fetch('/api/lead', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...data, token }) });
       const out = (await res.json()) as { ok: boolean; errors?: Record<string, string>; message?: string };
       if (out.ok) {
-        const sent = Object.assign(document.createElement('p'), { className: 'sent', tabIndex: -1, textContent: 'Thank you. Your message reached us. Himanshu will reply within one business day.' });
+        const sent = Object.assign(document.createElement('p'), { className: 'sent', tabIndex: -1, textContent: 'Thanks for your message. Himanshu will reply within one business day.' });
         form.replaceChildren(sent); sent.focus();
         return;
       }

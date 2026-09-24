@@ -3,15 +3,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import LogoDraw from '../components/LogoDraw.astro';
 import ProductCard from '../components/ProductCard.astro';
 import FounderForm from '../components/FounderForm.astro';
-import { stepsHtml } from '../data/solutions';
+import { buildSteps } from '../data/solutions';
 import products from '../data/products.json';
 
 const bySlug = (slug: string) => products.find((p) => p.slug === slug)!;
 const problems = [
-  ['Orders arrive on WhatsApp and calls, then get typed in again', '/solutions/pharma-distributor-ordering', 'Pharmulo'],
-  ['LRs, freight bills and payments never line up', '/solutions/freight-billing-software', 'Freight billing'],
-  ['Bills and stock live in Excel or Tally, updated by hand', '/solutions/distributor-software', 'Custom software'],
-  ['Customers keep calling to ask for their statement', '/custom-software', 'Custom software'],
+  ['Orders come by WhatsApp or phone. Your team types them in again.', '/solutions/pharma-distributor-ordering', 'Pharmulo'],
+  ['Matching lorry receipts, bills and payments takes too long.', '/solutions/freight-billing-software', 'Freight billing'],
+  ['Bills and stock need constant manual updates in Excel or Tally.', '/solutions/distributor-software', 'Custom software'],
+  ['Customers have to call whenever they need a statement.', '/custom-software', 'Custom software'],
 ];
 type Testimonial = { quote: string; name: string; role: string; business: string };
 const testimonials = products.map((p) => p.testimonial as Testimonial | null).filter((t): t is Testimonial => !!t);
@@ -19,17 +19,20 @@ const testimonials = products.map((p) => p.testimonial as Testimonial | null).fi
 
 <BaseLayout path="/">
   <section class="hero">
-    <div class="wrap">
-      <LogoDraw />
-      <h1>Software built around the way your business works.</h1>
-      <p class="sub">Pick a product that's already running, or have one built for you.</p>
-      <a class="btn" href="/contact">Talk to us</a>
+    <div class="wrap hero-layout">
+      <div class="hero-copy">
+        <div class="hero-mobile-mark"><LogoDraw /></div>
+        <h1>Software built around <span>the way your business works.</span></h1>
+        <p class="sub">Choose software we already run, or let us build a system around your business.</p>
+        <div class="hero-actions"><a class="btn" href="/contact">Talk to us</a><a class="link" href="#cat-h">Explore our software</a></div>
+      </div>
+      <div class="hero-signature" aria-hidden="true"><LogoDraw /></div>
     </div>
   </section>
 
   <section class="section cat" aria-labelledby="cat-h">
     <div class="wrap">
-      <h2 id="cat-h" class="sr-only">Products and custom software</h2>
+      <h2 id="cat-h" class="catalogue-heading">Products and custom software</h2>
       <div class="catalogue">
         <ProductCard product={bySlug('pharmulo')} tone="mineral" />
         <ProductCard product={bySlug('freight-billing')} tone="ink" />
@@ -38,11 +41,11 @@ const testimonials = products.map((p) => p.testimonial as Testimonial | null).fi
     </div>
   </section>
 
-  <section class="section tint">
-    <div class="wrap">
-      <h2>Sound familiar?</h2>
+  <section class="section tint familiar">
+    <div class="wrap familiar-layout">
+      <div class="familiar-intro"><h2>Sound<br />familiar?</h2><p class="sub">Which part of your working day would you like to make easier?</p></div>
       <div class="problems">
-        {problems.map(([text, href, label]) => <a href={href}>{text} <span>{label}</span></a>)}
+        {problems.map(([text, href, label]) => <a href={href}><span class="problem-text">{text}<span class="problem-destination">{label}</span></span><svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 12h15M13 5l7 7-7 7" /></svg></a>)}
       </div>
     </div>
   </section>
@@ -57,8 +60,14 @@ const testimonials = products.map((p) => p.testimonial as Testimonial | null).fi
     </section>
   )}
 
+  <section class="section home-process" aria-labelledby="process-heading">
+    <div class="wrap">
+      <h2 id="process-heading">From first conversation to everyday use</h2>
+      <ol class="process-track">{buildSteps.map(([lead, detail], index) => <li><span class="step-number" aria-hidden="true">{index + 1}</span><h3>{lead}</h3><p>{detail}</p></li>)}</ol>
+    </div>
+  </section>
   <FounderForm>
-    <h2>How a custom build goes</h2>
-    <Fragment set:html={stepsHtml} />
+    <h2>Good software starts<br />with a conversation.</h2>
+    <p class="build-lead">Tell us what you'd like to make easier. We'll work out the next step together.</p>
   </FounderForm>
 </BaseLayout>

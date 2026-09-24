@@ -15,7 +15,7 @@ const current = (href: string) => (path === href || path.startsWith(href + '/') 
     <div class="nav-narrow">
       <a class="btn" href="/contact">Talk to us</a>
       <details class="menu">
-        <summary>Menu</summary>
+        <summary><span class="sr-only">Navigation menu</span><svg class="menu-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path class="menu-open" d="M4 6h16M4 12h16M4 18h16" /><path class="menu-close" d="m6 6 12 12M18 6 6 18" /></svg></summary>
         <nav aria-label="Main"><a href="/">Home</a>{nav.map((p) => <a href={p.path} aria-current={current(p.path)}>{p.nav}</a>)}<a href="/contact">Contact</a></nav>
       </details>
     </div>

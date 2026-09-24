@@ -5,9 +5,9 @@ const { product, tone = 'mineral', custom = false, note = false } = Astro.props 
 {custom ? (
   <a class="card card-custom" href="/custom-software">
     <p class="card-tag">Custom software</p>
-    <h3>Something built for you</h3>
-    <p>Ordering, billing, portals, apps and integrations, shaped around how you already work.</p>
-    <span class="card-go">See how we build</span>
+    <h3>Built for your business</h3>
+    <p>From orders and billing to apps and connected systems, built around the way your team works.</p>
+    <span class="card-go">Explore custom software</span>
   </a>
 ) : product && (
   <a class={`card card-${tone}`} href={`/products/${product.slug}`}>
