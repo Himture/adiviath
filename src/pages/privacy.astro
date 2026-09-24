@@ -66,7 +66,7 @@ const ga = Boolean(import.meta.env.PUBLIC_GA_ID); // the analytics wording must 
       <ul>
         {ga
           ? <li>You can withdraw analytics consent at any time from "Cookie settings" in the footer of any page.</li>
-          : <li>This website does not currently use analytics or cookies. If that changes, we will ask for your consent first and update this policy.</li>}
+          : <li>This site does not use analytics and sets no cookies of its own. The contact form uses Cloudflare Turnstile to check for bots, which may store information on Cloudflare's own domain.</li>}
         <li>You can ask to see, correct or delete the information we hold about you by emailing our grievance contact at <a class="link" href={mail}>{company.email}</a>.</li>
       </ul>
       <p>We reply within 30 days.</p>
