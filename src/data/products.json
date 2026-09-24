@@ -4,13 +4,14 @@
     "name": "Pharmulo",
     "audience": "For pharma wholesalers",
     "oneLiner": "Retailers order from their phone. The order reaches you as a ready bill.",
+    "catalogueNote": "Wholesalers use it to take orders from medical shops across their area without phone calls or retyping.",
     "detail": "Pharmulo gives a pharma wholesaler an ordering app under their own name. Retailers see live stock and order from their phone, and each order opens as a GST bill with no retyping. Stock, collections and supplier payments run in the same place.",
     "status": "live",
     "url": "https://pharmulo.com",
     "cta": "external",
     "screenshot": { "src": "/img/pharmulo-home.webp", "alt": "Pharmulo home page with its ordering app for pharma wholesalers", "width": 1600, "height": 1000 },
     "testimonial": null,
-    "schema": { "applicationCategory": "BusinessApplication" }
+    "schema": { "applicationCategory": "BusinessApplication", "operatingSystem": "Web, Android" }
   },
   {
     "slug": "freight-billing",
@@ -18,12 +19,13 @@
     "cardLink": "See the freight billing system",
     "audience": "For transport companies",
     "oneLiner": "Lorry receipts, freight bills and payments in one place.",
+    "catalogueNote": "Transport companies use it to keep every LR, bill and payment in one place and send customers their statement on demand.",
     "detail": "One system from lorry receipt to settled bill. Every LR links to its freight bill, payments are allocated against bills, and customers can see their own statement. Built first for Naveen Logistics, a family-run transport business in Bengaluru, and running their operations daily.",
     "status": "live",
     "url": null,
     "cta": "form",
     "screenshot": null,
     "testimonial": null,
-    "schema": { "applicationCategory": "BusinessApplication" }
+    "schema": { "applicationCategory": "BusinessApplication", "operatingSystem": "Web" }
   }
 ]

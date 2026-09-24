@@ -17,8 +17,8 @@ const bySlug = (slug: string) => products.find((p) => p.slug === slug)!;
     <div class="wrap">
       <h2 id="cat-h" class="sr-only">Products and custom software</h2>
       <div class="catalogue">
-        <ProductCard product={bySlug('pharmulo')} tone="mineral" />
-        <ProductCard product={bySlug('freight-billing')} tone="ink" />
+        <ProductCard product={bySlug('pharmulo')} tone="mineral" note />
+        <ProductCard product={bySlug('freight-billing')} tone="ink" note />
         <ProductCard custom />
       </div>
     </div>

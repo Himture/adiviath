@@ -1,6 +1,6 @@
 ---
-interface Product { slug: string; name: string; cardLink?: string; audience: string; oneLiner: string; screenshot: { src: string; alt: string; width: number; height: number } | null; }
-const { product, tone = 'mineral', custom = false } = Astro.props as { product?: Product; tone?: 'mineral' | 'ink'; custom?: boolean };
+interface Product { slug: string; name: string; cardLink?: string; catalogueNote?: string; audience: string; oneLiner: string; screenshot: { src: string; alt: string; width: number; height: number } | null; }
+const { product, tone = 'mineral', custom = false, note = false } = Astro.props as { product?: Product; tone?: 'mineral' | 'ink'; custom?: boolean; note?: boolean };
 ---
 {custom ? (
   <a class="card card-custom" href="/custom-software">
@@ -14,6 +14,7 @@ const { product, tone = 'mineral', custom = false } = Astro.props as { product?:
     <p class="card-tag">Live · {product.audience}</p>
     <h3>{product.name}</h3>
     <p>{product.oneLiner}</p>
+    {note && product.catalogueNote && <p>{product.catalogueNote}</p>}
     <span class="card-go">{product.cardLink ?? `See ${product.name}`}</span>
     {product.screenshot && <img src={product.screenshot.src} alt={product.screenshot.alt} width={product.screenshot.width} height={product.screenshot.height} loading="lazy" decoding="async" />}
   </a>

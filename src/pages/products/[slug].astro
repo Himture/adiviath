@@ -7,7 +7,7 @@ export function getStaticPaths() { return products.map((p) => ({ params: { slug:
 const { p } = Astro.props;
 const testimonial = p.testimonial as Testimonial | null;
 const site = new URL('/', Astro.site).href;
-const app = { '@type': 'SoftwareApplication', name: p.name, applicationCategory: p.schema.applicationCategory, operatingSystem: 'Web, Android', description: p.detail, ...(p.url ? { url: p.url } : {}), publisher: { '@id': `${site}#organization` } };
+const app = { '@type': 'SoftwareApplication', name: p.name, applicationCategory: p.schema.applicationCategory, operatingSystem: p.schema.operatingSystem, description: p.detail, ...(p.url ? { url: p.url } : {}), publisher: { '@id': `${site}#organization` } };
 ---
 
 <BaseLayout path={`/products/${p.slug}`} jsonLd={[app]}>
