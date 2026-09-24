@@ -4,6 +4,7 @@ import products from '../../data/products.json';
 import FounderForm from '../../components/FounderForm.astro';
 import { INTERESTS } from '../../lib/lead.ts';
 
+// products.json `testimonial` is null or this shape; adding the first one is a data change only.
 type Testimonial = { quote: string; name: string; role: string; business: string };
 export function getStaticPaths() { return products.map((p) => ({ params: { slug: p.slug }, props: { p } })); }
 const { p } = Astro.props;
@@ -23,7 +24,7 @@ const app = { '@type': 'SoftwareApplication', name: p.name, applicationCategory:
         {p.cta === 'external' && p.url ? <a class="btn" href={p.url} rel="noopener">Visit {new URL(p.url).hostname}</a> : <a class="btn" href={p.cta === 'form' ? '#enquiry' : '/contact'}>Talk to us</a>}
         {p.cta === 'external' && <p class="also">Questions first? <a class="link" href="/contact">Talk to us</a></p>}
       </div>
-      {p.screenshot && <img src={p.screenshot.src} alt={p.screenshot.alt} width={p.screenshot.width} height={p.screenshot.height} fetchpriority="high" />}
+      {p.screenshot && <img src={p.screenshot.src} alt={p.screenshot.alt} width={p.screenshot.width} height={p.screenshot.height} />}
     </div>
   </section>
   {testimonial && (

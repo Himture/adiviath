@@ -16,6 +16,7 @@
   {
     "slug": "freight-billing",
     "name": "Freight billing system",
+    "inSentence": "a freight billing system",
     "cardLink": "See the freight billing system",
     "audience": "For transport companies",
     "oneLiner": "Lorry receipts, freight bills and payments in one place.",
