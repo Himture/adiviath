@@ -2,8 +2,7 @@
 import { defineConfig } from 'astro/config';
 import vercel from '@astrojs/vercel';
 import { readFile, writeFile } from 'node:fs/promises';
-
-const pages = [['Home', '/'], ['Work', '/products'], ['About', '/about'], ['Contact', '/contact']];
+import pages from './src/data/pages.json' with { type: 'json' };
 
 // llms-full.txt: every page's main copy as plain text, read from the built HTML so it never drifts
 const llmsFull = {
@@ -20,9 +19,9 @@ const llmsFull = {
         .replace(/&#39;/g, "'").replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
         .replace(/[ \t]+/g, ' ').replace(/ *\n */g, '\n').replace(/\n{3,}/g, '\n\n').trim();
       let out = '# Adiviath Technologies: full site text\n';
-      for (const [name, path] of pages) {
+      for (const { title, path } of pages) {
         const file = new URL(path === '/' ? 'index.html' : `${path.slice(1)}/index.html`, dir);
-        out += `\n\n## ${name} (https://www.adiviath.com${path})\n\n${text(await readFile(file, 'utf8'))}`;
+        out += `\n\n## ${title} (https://www.adiviath.com${path})\n\n${text(await readFile(file, 'utf8'))}`;
       }
       await writeFile(new URL('llms-full.txt', dir), out.trim() + '\n');
     },
