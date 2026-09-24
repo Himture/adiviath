@@ -10,30 +10,34 @@ const write = (c: Choice['c']) => { try { localStorage.setItem(KEY, JSON.stringi
 const clearGa = () => document.cookie.split(';').map((c) => c.split('=')[0].trim()).filter((n) => n.startsWith('_ga')).forEach((n) => {
   for (const d of ['', location.hostname, location.hostname.replace(/^www\./, '.')]) document.cookie = `${n}=; Max-Age=0; path=/${d ? `; domain=${d}` : ''}`;
 });
+let loaded = false; // gtag running on this page; only a reload unloads it
 function loadGa(id: string) {
+  loaded = true;
   w.dataLayer = w.dataLayer || [];
   w.gtag = function () { w.dataLayer.push(arguments); };
-  w.gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'granted' });
-  w.gtag('js', new Date()); w.gtag('config', id, { anonymize_ip: true });
+  w.gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied' });
+  w.gtag('consent', 'update', { analytics_storage: 'granted' });
+  w.gtag('js', new Date()); w.gtag('config', id);
   const s = document.createElement('script'); s.async = true; s.src = `https://www.googletagmanager.com/gtag/js?id=${id}`; document.head.append(s);
 }
 if (bar) {
   const id = bar.dataset.ga!;
   const choice = read();
+  let openedFrom: HTMLButtonElement | null = null; // return focus here after a choice made from Cookie settings
   if (choice?.c === 'granted') loadGa(id); else if (!choice) bar.hidden = false;
   bar.addEventListener('click', (e) => {
     const c = (e.target as HTMLElement).closest<HTMLElement>('[data-choice]')?.dataset.choice as Choice['c'] | undefined;
     if (!c) return;
-    const was = read()?.c;
     write(c); bar.hidden = true;
-    if (c === 'granted' && was !== 'granted') loadGa(id);
+    if (openedFrom) { openedFrom.focus(); openedFrom = null; }
+    if (c === 'granted' && !loaded) loadGa(id);
     if (c === 'denied') {
-      if (w.gtag) w.gtag('consent', 'update', { analytics_storage: 'denied' });
+      if (loaded) w.gtag('consent', 'update', { analytics_storage: 'denied' });
       clearGa();
-      if (was === 'granted') location.reload(); // the only way to unload a running gtag
+      if (loaded) location.reload(); // the only way to unload a running gtag
     }
   });
   const open = document.querySelector<HTMLButtonElement>('[data-consent-open]');
-  if (open) { open.hidden = false; open.addEventListener('click', () => { bar.hidden = false; bar.focus(); }); }
+  if (open) { open.hidden = false; open.addEventListener('click', () => { openedFrom = open; bar.hidden = false; bar.focus(); }); }
 }
 export {};
