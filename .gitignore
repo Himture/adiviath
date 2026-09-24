@@ -27,3 +27,5 @@ pnpm-debug.log*
 # logo exploration scratch (not for deploy)
 brand-scratch/
 .claude/
+
+.superpowers/
