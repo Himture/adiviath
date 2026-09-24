@@ -1,5 +1,26 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import products from '../../data/products.json';
+
+const bySlug = (slug: string) => products.find((p) => p.slug === slug)!;
 ---
 
-<BaseLayout path="/products"><section class="section"><div class="wrap"><h1>Products</h1></div></section></BaseLayout>
+<BaseLayout path="/products">
+  <section class="section page-head">
+    <div class="wrap">
+      <h1>Products</h1>
+      <p class="sub">Software we build and run ourselves, used by businesses every day.</p>
+    </div>
+  </section>
+  <section class="section cat" aria-labelledby="cat-h">
+    <div class="wrap">
+      <h2 id="cat-h" class="sr-only">Products and custom software</h2>
+      <div class="catalogue">
+        <ProductCard product={bySlug('pharmulo')} tone="mineral" />
+        <ProductCard product={bySlug('freight-billing')} tone="ink" />
+        <ProductCard custom />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

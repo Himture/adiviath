@@ -1,5 +1,5 @@
 ---
-interface Product { slug: string; name: string; audience: string; oneLiner: string; screenshot: { src: string; alt: string; width: number; height: number } | null; }
+interface Product { slug: string; name: string; cardLink?: string; audience: string; oneLiner: string; screenshot: { src: string; alt: string; width: number; height: number } | null; }
 const { product, tone = 'mineral', custom = false } = Astro.props as { product?: Product; tone?: 'mineral' | 'ink'; custom?: boolean };
 ---
 {custom ? (
@@ -14,7 +14,7 @@ const { product, tone = 'mineral', custom = false } = Astro.props as { product?:
     <p class="card-tag">Live · {product.audience}</p>
     <h3>{product.name}</h3>
     <p>{product.oneLiner}</p>
-    <span class="card-go">About {product.name}</span>
+    <span class="card-go">{product.cardLink ?? `See ${product.name}`}</span>
     {product.screenshot && <img src={product.screenshot.src} alt={product.screenshot.alt} width={product.screenshot.width} height={product.screenshot.height} loading="lazy" decoding="async" />}
   </a>
 )}

@@ -15,6 +15,7 @@
   {
     "slug": "freight-billing",
     "name": "Freight billing system",
+    "cardLink": "See the freight billing system",
     "audience": "For transport companies",
     "oneLiner": "Lorry receipts, freight bills and payments in one place.",
     "detail": "One system from lorry receipt to settled bill. Every LR links to its freight bill, payments are allocated against bills, and customers can see their own statement. Built first for Naveen Logistics, a family-run transport business in Bengaluru, and running their operations daily.",
