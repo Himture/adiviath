@@ -14,6 +14,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.
 @media (min-width: 768px) { body { font-size: 18px; } }
 img, svg { display: block; max-width: 100%; height: auto; }
 h1, h2, h3, p, ul, ol, dl, figure { margin: 0; }
+p, li, dd, figcaption, blockquote { text-wrap: pretty; } /* no one-word last lines */
 a { color: inherit; }
 [hidden] { display: none !important; }
 :focus-visible { outline: 3px solid var(--petrol); outline-offset: 3px; border-radius: 4px; }
@@ -63,6 +64,7 @@ h3 { font-weight: 600; font-size: 22px; letter-spacing: -0.01em; line-height: 1.
 .site-footer p { margin: 0 0 6px; } .site-footer a, .linkish { color: #fff; }
 .site-footer .cols a, .linkish { display: inline-flex; min-height: 44px; align-items: center; }
 .site-footer nav p { margin: 0; }
+.site-footer .fh + p:has(> a) { margin-top: -10px; } /* a 44 px link row centres its text; pull it up to line up with plain text columns */
 .fh { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: #a9c2c2; font-weight: 600; margin-bottom: 12px; }
 .brand.light { color: #fff; } .since { margin-top: 14px; color: #a9c2c2; }
 .base { grid-column: 1 / -1; border-top: 1px solid #3a484d; padding-top: 18px; color: #a9c2c2; }
@@ -86,7 +88,7 @@ h3 { font-weight: 600; font-size: 22px; letter-spacing: -0.01em; line-height: 1.
 .hero { padding-block: clamp(40px, 7vw, 88px) 40px; }
 /* the mark sits 19.5 units inside its 390-unit viewBox; pull it left so its ink lines up with the headline */
 .hero .logo-draw { margin-left: calc(-96px * 19.5 / 390); }
-.hero h1 { margin-top: 24px; max-width: 18ch; }
+.hero h1 { margin-top: 24px; max-width: 24ch; } /* two lines from 1024 px up */
 .section.cat { padding-top: 24px; }
 .hero .sub { margin-top: 20px; }
 .hero .btn { margin-top: 28px; }
@@ -126,6 +128,7 @@ h3 { font-weight: 600; font-size: 22px; letter-spacing: -0.01em; line-height: 1.
 .section.product { padding-top: clamp(40px, 7vw, 88px); }
 .product .card-tag { margin-bottom: 12px; }
 .page-head .sub { margin-top: 18px; }
+.page-head:has(+ .tint) { padding-bottom: clamp(56px, 7vw, 88px); } /* same air above a tinted band as above the heading */
 .product-grid { display: grid; gap: 40px; align-items: center; grid-template-columns: 1fr; }
 @media (min-width: 900px) { .product-grid:has(img) { grid-template-columns: 1fr 1.2fr; } }
 .product .sub { margin-top: 18px; } .product .detail { margin: 18px 0 28px; max-width: 58ch; }
@@ -177,7 +180,7 @@ form.lead [aria-invalid] { border-color: #b3261e; }
 form.lead .hint { font-weight: 400; font-size: 14px; color: var(--muted); margin-top: -4px; }
 form.lead .err { font-weight: 500; font-size: 14px; color: #b3261e; } form.lead .err:empty { display: none; }
 form.lead .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-form.lead .ts:not(.shown) { height: 0; overflow: hidden; margin-top: -18px; } /* invisible until Turnstile needs an interaction; cancel the grid gap */
+form.lead .ts:not(.shown) { position: absolute; width: 0; height: 0; overflow: hidden; } /* invisible until Turnstile needs an interaction; out of flow so it takes no grid row or gap */
 form.lead .notice, .lead-alt { font-size: 15px; color: var(--muted); } .lead-alt { margin-top: 16px; } form.lead .status:empty { display: none; } form.lead .status { font-weight: 600; }
 form.lead .sent { font-size: 20px; font-weight: 600; color: var(--petrol); padding: 12px 0; }
 form.lead .btn { justify-self: start; min-width: 160px; }
