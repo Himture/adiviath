@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import vercel from '@astrojs/vercel';
 import { readFile, writeFile } from 'node:fs/promises';
 
 const pages = [['Home', '/'], ['Work', '/products'], ['About', '/about'], ['Contact', '/contact']];
@@ -32,4 +33,5 @@ export default defineConfig({
   site: 'https://www.adiviath.com',
   trailingSlash: 'never',
   integrations: [llmsFull],
+  adapter: vercel(),
 });

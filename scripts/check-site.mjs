@@ -67,7 +67,7 @@ export function checkSite(dist) {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const failures = checkSite(fileURLToPath(new URL('../dist/', import.meta.url)));
+  const failures = checkSite(fileURLToPath(new URL('../dist/client/', import.meta.url)));
   if (failures.length) { console.error(failures.join('\n')); process.exit(1); }
   console.log(`check-site: ${pagesData.length} pages OK`);
 }
