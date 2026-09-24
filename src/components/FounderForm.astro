@@ -1,16 +1,18 @@
 ---
-// The closing block on Home, custom software and solution pages: whatever the page slots in (heading, steps),
+// The closing block on Home, custom software, solution, product and contact pages: whatever the page slots in (heading, steps),
 // the founder note under it, and the contact form beside it.
+import LeadForm from './LeadForm.astro';
+import type { Lead } from '../lib/lead.ts';
+interface Props { interest?: Lead['interest'] }
 ---
-<section class="section">
+<section class="section" id="enquiry">
   <div class="wrap build">
     <div>
       <slot />
       <p class="note">I read every message myself and reply within one business day.<br /><strong>Himanshu Agarwal, Director</strong></p>
     </div>
     <div>
-      {/* Interim until LeadForm lands in Task 7: replace this block with <LeadForm />. */}
-      <p class="form-fallback">Email us at <a class="link" href="mailto:contact@adiviath.com">contact@adiviath.com</a>. We reply within one business day.</p>
+      <LeadForm interest={Astro.props.interest} />
     </div>
   </div>
 </section>

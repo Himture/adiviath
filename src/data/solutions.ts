@@ -1,6 +1,8 @@
 // Copy and FAQs for the /solutions/* pages. Body strings are trusted HTML: a string starting with "<" renders as-is
 // (lists), anything else is wrapped in a <p>.
 
+import type { Lead } from '../lib/lead.ts';
+
 export type Faq = { q: string; a: string };
 export type Solution = {
   slug: string;
@@ -8,6 +10,7 @@ export type Solution = {
   answer: string;
   sections: { h2: string; body: string[] }[];
   leadsTo: { label: string; href: string };
+  interest: Lead['interest'];
   faqs: Faq[];
 };
 
@@ -64,6 +67,7 @@ export const solutions: Solution[] = [
       },
     ],
     leadsTo: { label: 'See Pharmulo', href: '/products/pharmulo' },
+    interest: 'Pharmulo',
     faqs: [
       { q: 'Do retailers need to install anything?', a: 'Retailers use an app or a web link on their phone.' },
       { q: 'Can we keep using our existing billing software?', a: 'Yes. Orders arrive as bills in the system you use; tell us which one and we confirm on the first call.' },
@@ -105,6 +109,7 @@ export const solutions: Solution[] = [
       },
     ],
     leadsTo: { label: 'See the freight billing system', href: '/products/freight-billing' },
+    interest: 'Freight billing system',
     faqs: [
       { q: 'Can it handle part payments and TDS?', a: 'Yes. Payments are allocated against one or more bills, including part payments and deductions.' },
       { q: 'Can customers see their own statement?', a: 'Yes. Each customer gets a login to see their bills, payments and balance.' },
@@ -148,6 +153,7 @@ export const solutions: Solution[] = [
       },
     ],
     leadsTo: { label: 'How custom builds work', href: '/custom-software' },
+    interest: 'Something custom',
     faqs: [
       { q: 'Will we have to stop using Tally?', a: 'No. We connect to it so your books stay where they are.' },
       { q: 'Who owns the software?', a: 'Your data is always yours. Ownership of the code is agreed in the written scope before work starts.' },

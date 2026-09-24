@@ -9,7 +9,7 @@
   --wrap: 1200px; --gutter: clamp(20px, 4vw, 48px); --section: clamp(64px, 10vw, 112px); --r: 10px; --r-lg: 18px;
 }
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 88px; } /* focus and anchors land below the sticky header */
 body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.55 var(--sans); }
 @media (min-width: 768px) { body { font-size: 18px; } }
 img, svg { display: block; max-width: 100%; height: auto; }
@@ -166,3 +166,19 @@ h3 { font-weight: 600; font-size: 22px; letter-spacing: -0.01em; line-height: 1.
 .brand-line { margin-top: 1.2em; font-size: clamp(28px, 4vw, 44px); font-weight: 600; line-height: 1.15; color: var(--petrol); }
 .updated { margin-top: 14px; color: var(--muted); }
 .section.legal { padding-top: 0; } .prose > h2:first-child { margin-top: 0; }
+
+/* lead form */
+form.lead { display: grid; gap: 18px; background: #fff; padding: clamp(20px, 3vw, 32px); border-radius: var(--r-lg); border: 1px solid var(--line); }
+form.lead .row { display: grid; gap: 18px; grid-template-columns: 1fr; } @media (min-width: 640px) { form.lead .row { grid-template-columns: 1fr 1fr; } }
+form.lead label { display: grid; gap: 8px; font-weight: 600; font-size: 16px; }
+form.lead input, form.lead select, form.lead textarea { width: 100%; font: inherit; font-size: 17px; font-weight: 400; min-height: 50px; padding: 12px 14px; border: 1.5px solid var(--field); border-radius: var(--r); background: #fff; color: var(--ink); }
+form.lead textarea { min-height: 120px; resize: vertical; }
+form.lead [aria-invalid] { border-color: #b3261e; }
+form.lead .hint { font-weight: 400; font-size: 14px; color: var(--muted); margin-top: -4px; }
+form.lead .err { font-weight: 500; font-size: 14px; color: #b3261e; } form.lead .err:empty { display: none; }
+form.lead .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+form.lead .ts:not(.shown) { height: 0; overflow: hidden; margin-top: -18px; } /* invisible until Turnstile needs an interaction; cancel the grid gap */
+form.lead .notice, form.lead .alt { font-size: 15px; color: var(--muted); } form.lead .status:empty { display: none; } form.lead .status { font-weight: 600; }
+form.lead .sent { font-size: 20px; font-weight: 600; color: var(--petrol); padding: 12px 0; }
+form.lead .btn { justify-self: start; min-width: 160px; }
+form.lead .btn[aria-disabled] { opacity: .7; cursor: progress; }

@@ -32,7 +32,7 @@ const { s } = Astro.props as { s: Solution };
       <Faq items={s.faqs} />
     </div>
   </section>
-  <FounderForm>
+  <FounderForm interest={s.interest}>
     <h2>Tell us how the work happens today</h2>
     <p class="build-lead">A short call is enough to know whether a product fits or a custom build makes sense.</p>
   </FounderForm>

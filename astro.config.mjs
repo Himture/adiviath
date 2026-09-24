@@ -34,4 +34,6 @@ export default defineConfig({
   trailingSlash: 'never',
   integrations: [llmsFull],
   adapter: vercel(),
+  // Never inline processed scripts: check-site and the CSP allow only external /_astro/*.js.
+  vite: { build: { assetsInlineLimit: 0 } },
 });

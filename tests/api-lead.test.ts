@@ -15,14 +15,24 @@ test('honeypot silently dropped', async () => { const c: string[] = []; const r 
 test('big body rejected', async () => { const c: string[] = []; const r = await handleLead(req({ ...body, message: 'x'.repeat(50000) }), env, ok(c)); assert.equal(r.status, 413); assert.equal(c.length, 0); });
 test('missing token rejected', async () => { const c: string[] = []; const r = await handleLead(req({ ...body, token: '' }), env, ok(c)); assert.equal(r.status, 400); assert.equal(c.length, 0); });
 test('turnstile wrong hostname rejected', async () => {
-  const f = (async (u: string) => new Response(JSON.stringify(String(u).includes('turnstile') ? { success: true, hostname: 'evil.example', action: 'lead' } : { id: 1 }))) as typeof fetch;
-  const r = await handleLead(req(body), env, f); assert.equal(r.status, 400);
+  const c: string[] = [];
+  const f = (async (u: string) => { c.push(String(u)); return new Response(JSON.stringify(String(u).includes('turnstile') ? { success: true, hostname: 'evil.example', action: 'lead' } : { id: 1 })); }) as typeof fetch;
+  const r = await handleLead(req(body), env, f); assert.equal(r.status, 400); assert.equal(c.filter((u) => u.includes('resend')).length, 0);
 });
 test('resend down gives the email fallback message', async () => {
   const f = (async (u: string) => String(u).includes('turnstile') ? new Response(JSON.stringify({ success: true, hostname: 'www.adiviath.com', action: 'lead' })) : new Response('x', { status: 500 })) as typeof fetch;
   const r = await handleLead(req(body), env, f); assert.equal(r.status, 502); assert.match((await r.json()).message, /contact@adiviath\.com/);
 });
-test('missing secrets gives the email fallback message', async () => { const r = await handleLead(req(body), { ALLOWED_ORIGINS: env.ALLOWED_ORIGINS }, ok([])); assert.equal(r.status, 503); });
+test('missing secrets gives the email fallback message', async () => {
+  const c: string[] = []; const r = await handleLead(req(body), { ALLOWED_ORIGINS: env.ALLOWED_ORIGINS }, ok(c));
+  assert.equal(r.status, 503); assert.match((await r.json()).message, /contact@adiviath\.com/); assert.equal(c.length, 0);
+});
+test('content-type check ignores case', async () => { assert.equal((await handleLead(req(body, { 'content-type': 'Application/JSON' }), env, ok([]))).status, 200); });
+test('invalid submissions do not use up the throttle', async () => {
+  const ip = { 'x-forwarded-for': '10.9.9.9' };
+  for (let i = 0; i < 6; i++) assert.equal((await handleLead(req({ ...body, contact: 'nope' }, ip), env, ok([]))).status, 422);
+  const c: string[] = []; assert.equal((await handleLead(req(body, ip), env, ok(c))).status, 200); assert.equal(c.filter((u) => u.includes('resend')).length, 1);
+});
 test('validation errors are returned per field', async () => { const r = await handleLead(req({ ...body, contact: 'nope' }), env, ok([])); assert.equal(r.status, 422); assert.ok((await r.json()).errors.contact); });
 
 const passTs = { success: true, hostname: 'www.adiviath.com', action: 'lead' };

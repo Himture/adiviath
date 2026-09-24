@@ -1,0 +1,27 @@
+---
+// The enquiry form. Without a Turnstile site key at build time it renders only the email line.
+import { INTERESTS, type Lead } from '../lib/lead.ts';
+interface Props { interest?: Lead['interest'] }
+const { interest } = Astro.props;
+const key = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+---
+{key ? (
+  <form class="lead" data-lead novalidate data-sitekey={key} method="post" action="/api/lead">
+    <div class="row">
+      <label>Your name<input name="name" autocomplete="name" required maxlength="100" /><span class="err" data-err="name"></span></label>
+      <label>Business name<input name="business" autocomplete="organization" required maxlength="150" /><span class="err" data-err="business"></span></label>
+    </div>
+    <label>Email or phone<span class="hint">Whichever you check more.</span><input name="contact" inputmode="email" autocomplete="email" required maxlength="150" /><span class="err" data-err="contact"></span></label>
+    <label>You're interested in<select name="interest" required>{!interest && <option value="">Choose one</option>}{INTERESTS.map((i) => <option selected={i === interest}>{i}</option>)}</select><span class="err" data-err="interest"></span></label>
+    <label>What's slow or broken today?<textarea name="message" required maxlength="2000" placeholder="Example: orders come on WhatsApp and we type them into Marg by hand"></textarea><span class="err" data-err="message"></span></label>
+    <div class="hp" aria-hidden="true"><label>Leave this empty<input name="company_site" tabindex="-1" autocomplete="off" /></label></div>
+    <div class="ts" data-ts></div>
+    <p class="notice">We use these details only to reply to you. See our <a class="link" href="/privacy">privacy policy</a>.</p>
+    <button class="btn" type="submit">Send</button>
+    <p class="status" role="status" aria-live="polite"></p>
+    <p class="alt">Prefer email? <a class="link" href="mailto:contact@adiviath.com">contact@adiviath.com</a></p>
+  </form>
+) : (
+  <p class="form-fallback">Email us at <a class="link" href="mailto:contact@adiviath.com">contact@adiviath.com</a>. We reply within one business day.</p>
+)}
+<script src="../scripts/lead-form.ts"></script>
