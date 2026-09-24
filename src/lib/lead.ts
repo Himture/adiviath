@@ -3,7 +3,9 @@ export type Lead = { name: string; business: string; contact: string; interest: 
 const LIMITS = { name: 100, business: 150, contact: 150, message: 2000 } as const;
 // Conservative on purpose: no quotes, commas, angle brackets or colons, so the value is safe as a reply-to header.
 const EMAIL = /^[\w.%+'-]+@[a-z\d-]+(?:\.[a-z\d-]+)*\.[a-z]{2,}$/i;
-const PHONE = /^(?:\+?91[\s-]?)?0?[6-9]\d{4}[\s-]?\d{5}$/;
+// Indian mobile or landline with STD code, checked after stripping spaces, hyphens, dots and parentheses.
+const PHONE = /^(?:\+91|0091|91|0)?[2-9]\d{9}$/;
+const isPhone = (v: string) => PHONE.test(v.replace(/[\s.()-]/g, ''));
 const clean = (v: unknown) => (typeof v === 'string' ? v.replace(/\s+/g, ' ').trim() : '');
 const esc = (s: string) => s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
@@ -15,7 +17,7 @@ export function validateLead(input: unknown): { ok: true; lead: Lead } | { ok: f
   if (!lead.name) errors.name = 'Please enter your name.'; else if (lead.name.length > LIMITS.name) errors.name = 'Please keep this under 100 characters.';
   if (!lead.business) errors.business = 'Please enter your business name.'; else if (lead.business.length > LIMITS.business) errors.business = 'Please keep this under 150 characters.';
   if (!lead.contact) errors.contact = 'Please enter an email or phone number.';
-  else if (lead.contact.length > LIMITS.contact || !(EMAIL.test(lead.contact) || PHONE.test(lead.contact))) errors.contact = 'Please enter a valid email or a 10-digit mobile number.';
+  else if (lead.contact.length > LIMITS.contact || !(EMAIL.test(lead.contact) || isPhone(lead.contact))) errors.contact = 'Please enter a valid email or a 10-digit phone number.';
   if (!INTERESTS.includes(lead.interest as Lead['interest'])) errors.interest = 'Please choose one.';
   if (!lead.message) errors.message = 'Please tell us a little about what is slow.'; else if (lead.message.length > LIMITS.message) errors.message = 'Please keep this under 2000 characters.';
   return Object.keys(errors).length ? { ok: false, errors } : { ok: true, lead: lead as Lead };
