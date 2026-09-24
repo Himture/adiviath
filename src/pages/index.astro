@@ -1,5 +1,76 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import LogoDraw from '../components/LogoDraw.astro';
+import ProductCard from '../components/ProductCard.astro';
+import products from '../data/products.json';
+
+const bySlug = (slug: string) => products.find((p) => p.slug === slug)!;
+const problems = [
+  ['Orders arrive on WhatsApp and calls, then get typed in again', '/solutions/pharma-distributor-ordering', 'Pharmulo'],
+  ['LRs, freight bills and payments never line up', '/solutions/freight-billing-software', 'Freight billing'],
+  ['Bills and stock live in Excel or Tally, updated by hand', '/solutions/distributor-software', 'Custom software'],
+  ['Customers keep calling to ask for their statement', '/custom-software', 'Custom software'],
+];
+type Testimonial = { quote: string; name: string; role: string; business: string };
+const testimonials = products.map((p) => p.testimonial as Testimonial | null).filter((t): t is Testimonial => !!t);
 ---
 
-<BaseLayout path="/"><section class="section"><div class="wrap"><h1>Software built around the way your business works.</h1></div></section></BaseLayout>
+<BaseLayout path="/">
+  <section class="hero">
+    <div class="wrap">
+      <LogoDraw />
+      <h1>Software built around the way your business works.</h1>
+      <p class="sub">Pick a product that's already running, or have one built for you.</p>
+      <a class="btn" href="/contact">Talk to us</a>
+    </div>
+  </section>
+
+  <section class="section cat" aria-labelledby="cat-h">
+    <div class="wrap">
+      <h2 id="cat-h" class="sr-only">Products and custom software</h2>
+      <div class="catalogue">
+        <ProductCard product={bySlug('pharmulo')} tone="mineral" />
+        <ProductCard product={bySlug('freight-billing')} tone="ink" />
+        <ProductCard custom />
+      </div>
+    </div>
+  </section>
+
+  <section class="section tint">
+    <div class="wrap">
+      <h2>Sound familiar?</h2>
+      <div class="problems">
+        {problems.map(([text, href, label]) => <a href={href}>{text} <span>{label}</span></a>)}
+      </div>
+    </div>
+  </section>
+
+  {testimonials.length > 0 && (
+    <section class="section testimonials">
+      <div class="wrap">
+        {testimonials.map((t) => (
+          <figure><blockquote>“{t.quote}”</blockquote><figcaption>{t.name}, {t.role}, {t.business}</figcaption></figure>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="section">
+    <div class="wrap build">
+      <div>
+        <h2>How a custom build goes</h2>
+        <ol class="steps-list">
+          <li>A call about how the work happens today</li>
+          <li>A fixed written scope and price before anything starts</li>
+          <li>Weekly progress you can click through</li>
+          <li>Support and changes after launch</li>
+        </ol>
+        <p class="note">I read every message myself and reply within one business day.<br /><strong>Himanshu Agarwal, Director</strong></p>
+      </div>
+      <div>
+        {/* Interim until LeadForm lands in Task 7: replace this block with <LeadForm />. */}
+        <p class="form-fallback">Email us at <a class="link" href="mailto:contact@adiviath.com">contact@adiviath.com</a>. We reply within one business day.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

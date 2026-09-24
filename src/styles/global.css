@@ -67,3 +67,55 @@ h3 { font-weight: 600; font-size: 22px; letter-spacing: -0.01em; line-height: 1.
 .brand.light { color: #fff; } .since { margin-top: 14px; color: #a9c2c2; }
 .base { grid-column: 1 / -1; border-top: 1px solid #3a484d; padding-top: 18px; color: #a9c2c2; }
 .linkish { background: none; border: 0; padding: 0; font: inherit; text-decoration: underline; cursor: pointer; }
+
+/* logo trace-and-fill (Home hero). Pure CSS so it starts with the first paint: a script that arrives late on a slow
+   network would show the finished mark, then blank it and redraw. Plays once per load, never on scroll.
+   Under reduced motion the finished mark shows. */
+.logo-draw { width: 96px; color: var(--petrol); overflow: visible; }
+.logo-draw .ld-outline { fill: none; stroke: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .logo-draw .ld-outline { stroke: currentColor; stroke-width: 3; stroke-dasharray: 1; animation: ld-trace 1.3s cubic-bezier(.45,0,.3,1) .15s both; }
+  .logo-draw .ld-fill { animation: ld-fill .45s ease 1.35s both; }
+  .logo-draw .ld-dot { transform-box: fill-box; transform-origin: center; animation: ld-land .45s cubic-bezier(.3,1.6,.5,1) 1.7s both; }
+}
+@keyframes ld-trace { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes ld-fill { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ld-land { from { scale: 0; } to { scale: 1; } }
+
+/* home */
+.hero { padding-block: clamp(40px, 7vw, 88px) 40px; }
+/* the mark sits 19.5 units inside its 390-unit viewBox; pull it left so its ink lines up with the headline */
+.hero .logo-draw { margin-left: calc(-96px * 19.5 / 390); }
+.hero h1 { margin-top: 24px; max-width: 18ch; }
+.section.cat { padding-top: 24px; }
+.hero .sub { margin-top: 20px; }
+.hero .btn { margin-top: 28px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.problems { margin-top: 32px; display: grid; gap: 0 48px; grid-template-columns: 1fr; }
+@media (min-width: 900px) { .problems { grid-template-columns: 1fr 1fr; } }
+.problems a { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--line); text-decoration: none; font-size: 19px; font-weight: 500; min-height: 44px; }
+.problems a span { color: var(--petrol); font-size: 15px; font-weight: 600; white-space: nowrap; }
+.problems a:hover { color: var(--petrol); }
+.testimonials .wrap { display: grid; gap: 24px; }
+@media (min-width: 900px) { .testimonials .wrap { grid-template-columns: 1fr 1fr; } }
+.testimonials figure { padding: clamp(22px, 3vw, 36px); border-radius: var(--r-lg); background: var(--mineral); }
+.testimonials blockquote { margin: 0; font-size: 22px; line-height: 1.4; letter-spacing: -0.01em; }
+.testimonials figcaption { margin-top: 14px; font-size: 15px; color: var(--muted); }
+.build { display: grid; gap: 48px; }
+@media (min-width: 900px) { .build { grid-template-columns: 1fr 1.1fr; gap: 64px; } }
+.steps-list { margin-top: 24px; padding-left: 22px; display: grid; gap: 12px; font-size: 19px; }
+.steps-list li::marker { color: var(--coral); font-weight: 700; }
+.note { margin-top: 28px; padding: 20px 22px; border-left: 4px solid var(--coral); background: var(--mineral); border-radius: 0 var(--r) var(--r) 0; }
+
+/* product cards */
+.catalogue { display: grid; gap: 20px; grid-template-columns: 1fr; }
+@media (min-width: 900px) { .catalogue { grid-template-columns: 1.4fr 1fr; } .catalogue > .card:first-child { grid-row: span 2; } }
+.card { display: flex; flex-direction: column; gap: 12px; padding: clamp(22px, 3vw, 34px); border-radius: var(--r-lg); text-decoration: none; transition: transform .15s, box-shadow .15s; }
+.card:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgb(18 91 99 / .12); }
+.card h3 { font-size: clamp(24px, 2.4vw, 30px); }
+.card-tag { font-size: 14px; font-weight: 600; }
+.card-go { font-weight: 600; margin-top: 4px; text-decoration: underline; text-underline-offset: 5px; }
+.card img { margin-top: auto; border-radius: var(--r); border: 1px solid var(--line); }
+.card-mineral { background: var(--mineral); } .card-mineral .card-tag, .card-mineral .card-go { color: var(--petrol); } .card-mineral p { color: var(--muted); }
+.card-ink { background: var(--ink); color: #fff; } .card-ink .card-tag { color: #ffb3a3; } .card-ink p { color: #c9d6d6; }
+.card-custom { background: var(--petrol); color: #fff; } .card-custom .card-tag { color: #ffd3c9; } .card-custom p { color: #d4e6e6; }
