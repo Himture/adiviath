@@ -1,0 +1,23 @@
+---
+import Wordmark from './Wordmark.astro';
+import pages from '../data/pages.json';
+const { path } = Astro.props as { path: string };
+const nav = pages.filter((p) => p.nav);
+const current = (href: string) => (path === href || path.startsWith(href + '/') ? 'page' : undefined);
+---
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="/" aria-label="Adiviath Technologies home"><Wordmark /></a>
+    <nav class="nav-wide" aria-label="Main">
+      {nav.map((p) => <a href={p.path} aria-current={current(p.path)}>{p.nav}</a>)}
+      <a class="btn" href="/contact">Talk to us</a>
+    </nav>
+    <div class="nav-narrow">
+      <a class="btn" href="/contact">Talk to us</a>
+      <details class="menu">
+        <summary>Menu</summary>
+        <nav aria-label="Main"><a href="/">Home</a>{nav.map((p) => <a href={p.path} aria-current={current(p.path)}>{p.nav}</a>)}<a href="/contact">Contact</a></nav>
+      </details>
+    </div>
+  </div>
+</header>

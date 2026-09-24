@@ -1,28 +1,36 @@
 ---
 import '../styles/global.css';
-import Wordmark from '../components/Wordmark.astro';
-import contact from '../data/contact.json';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import company from '../data/company.json';
+import pages from '../data/pages.json';
 
-interface Props { title: string; description: string; jsonLd?: object[]; footer?: boolean }
-const { title, description, jsonLd = [], footer = true } = Astro.props;
+interface Props { path: string; jsonLd?: object[] }
+const { path, jsonLd = [] } = Astro.props;
 
-const path = Astro.url.pathname;
-const canonical = new URL(path === '/' ? '/' : path.replace(/\/$/, ''), Astro.site).href;
-const socialImage = new URL('/brand/social-card.png', Astro.site).href;
-const organizationId = new URL('/#organization', Astro.site).href;
+const page = pages.find((p) => p.path === path);
+if (!page) throw new Error(`BaseLayout: ${path} is not in src/data/pages.json`);
+const { title, description } = page;
+
+const site = Astro.site!.href;
+const canonical = new URL(path, site).href;
+const socialImage = new URL('/brand/social-card.png', site).href;
+const org = {
+  '@type': 'Organization', '@id': `${site}#organization`, name: company.legalName, alternateName: company.shortName, url: site,
+  logo: `${site}brand/symbol-flat.svg`, email: company.email, foundingDate: '2026',
+  identifier: { '@type': 'PropertyValue', propertyID: 'CIN', value: company.cin },
+  address: { '@type': 'PostalAddress', streetAddress: company.address.street, addressLocality: company.address.locality, addressRegion: company.address.region, postalCode: company.address.postalCode, addressCountry: company.address.country },
+  founder: { '@type': 'Person', name: company.director, jobTitle: 'Director' },
+  contactPoint: { '@type': 'ContactPoint', email: company.email, contactType: 'sales', areaServed: 'IN', availableLanguage: ['en'] },
+  areaServed: 'IN', knowsAbout: ['custom business software', 'pharmaceutical wholesale ordering', 'freight billing', 'Tally integration'],
+  sameAs: ['https://pharmulo.com'],
+};
 const graph = [
-  { '@type': 'Organization', '@id': organizationId, name: 'Adiviath Technologies Private Limited', alternateName: 'Adiviath', url: Astro.site?.href, logo: new URL('/brand/symbol-flat.svg', Astro.site).href, email: contact.email, sameAs: ['https://pharmulo.com'], identifier: { '@type': 'PropertyValue', propertyID: 'CIN', value: 'U62099KA2026PTC228442' }, areaServed: 'IN', address: { '@type': 'PostalAddress', addressLocality: 'Bangalore', addressRegion: 'Karnataka', addressCountry: 'IN' }, knowsAbout: ['custom business software', 'pharmaceutical wholesale ordering', 'freight billing'], contactPoint: { '@type': 'ContactPoint', email: contact.email, contactType: 'sales', availableLanguage: ['en', 'hi'] }, description: 'Software company registered in India. Builds and runs its own products and builds custom systems for specific businesses.' },
-  { '@type': 'WebSite', '@id': new URL('/#website', Astro.site).href, url: Astro.site?.href, name: 'Adiviath Technologies', publisher: { '@id': organizationId } },
-  { '@type': path === '/about' ? 'AboutPage' : path === '/contact' ? 'ContactPage' : 'WebPage', '@id': canonical, url: canonical, name: title, description, isPartOf: { '@id': new URL('/#website', Astro.site).href } },
+  org,
+  { '@type': 'WebSite', '@id': `${site}#website`, url: site, name: 'Adiviath Technologies', publisher: { '@id': org['@id'] } },
+  { '@type': path === '/about' ? 'AboutPage' : path === '/contact' ? 'ContactPage' : 'WebPage', '@id': canonical, url: canonical, name: title, description, isPartOf: { '@id': `${site}#website` } },
   ...jsonLd,
 ];
-const links = [
-  { href: '/products', label: 'Work' },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
-];
-const wa = contact.whatsapp ? `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(contact.whatsappMessage)}` : `mailto:${contact.email}?subject=${encodeURIComponent(contact.emailSubject)}`;
-const year = new Date().getFullYear();
 ---
 
 <!doctype html>
@@ -56,31 +64,9 @@ const year = new Date().getFullYear();
     <title>{title}</title>
   </head>
   <body>
-    <a class="skip-link" href="#main-content">Skip to content</a>
-    <header class="site-header">
-      <a class="brand" href="/" aria-label="Adiviath Technologies home"><Wordmark /></a>
-      <nav aria-label="Main navigation">
-        {links.map(({ href, label }) => <a href={href} aria-current={path === href ? 'page' : undefined}>{label}</a>)}
-        <a class="btn" href={wa}>Talk to the founder</a>
-      </nav>
-      <a class="btn" href={wa}>Talk to the founder</a>
-    </header>
-    <main id="main-content" tabindex="-1"><slot /></main>
-    {footer && (
-      <footer class="site-footer">
-        <div class="wrap">
-          <div>
-            <Wordmark />
-            <p>Adiviath Technologies Private Limited. Bangalore, India.</p>
-            <p>CIN: U62099KA2026PTC228442</p>
-            <p><a href={`mailto:${contact.email}`}>{contact.email}</a></p>
-          </div>
-          <nav aria-label="Footer navigation">
-            {links.map(({ href, label }) => <a href={href}>{label}</a>)}
-          </nav>
-          <p>© {year} Adiviath Technologies Private Limited</p>
-        </div>
-      </footer>
-    )}
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header path={path} />
+    <main id="main" tabindex="-1"><slot /></main>
+    <Footer />
   </body>
 </html>

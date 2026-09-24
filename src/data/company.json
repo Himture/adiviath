@@ -1,0 +1,18 @@
+{
+  "legalName": "Adiviath Technologies Private Limited",
+  "shortName": "Adiviath",
+  "cin": "U62099KA2026PTC228442",
+  "address": {
+    "lines": ["WorkFlo Ranka Junction, Property No. 224, 3rd Floor", "#80/3, Vijinapur Village, Old Madras Road", "K R Puram Hobli, Bengaluru, Karnataka 560016"],
+    "locality": "Bengaluru",
+    "region": "Karnataka",
+    "postalCode": "560016",
+    "country": "IN",
+    "street": "WorkFlo Ranka Junction, Property No. 224, 3rd Floor, #80/3, Vijinapur Village, Old Madras Road, K R Puram Hobli"
+  },
+  "email": "contact@adiviath.com",
+  "phone": null,
+  "director": "Himanshu Agarwal",
+  "grievance": "Himanshu Agarwal, Director",
+  "since": 2020
+}

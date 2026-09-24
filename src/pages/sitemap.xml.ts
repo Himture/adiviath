@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { execFileSync } from 'node:child_process';
 
-const pages: [string, string][] = [['/', 'index'], ['/products', 'products'], ['/about', 'about'], ['/contact', 'contact']];
+const pages: [string, string][] = [['/', 'index'], ['/products', 'products/index'], ['/about', 'about'], ['/contact', 'contact']];
 
 // last commit that touched the page, or the build date when git history is unavailable (shallow CI clones)
 const lastmod = (file: string) => {

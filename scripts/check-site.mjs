@@ -1,53 +1,66 @@
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const root = new URL('../dist/', import.meta.url).pathname;
-const pages = [];
-(function walk(dir) {
-  for (const name of readdirSync(dir)) {
-    const p = join(dir, name);
-    if (statSync(p).isDirectory()) walk(p);
-    // Search Console verification files are not pages.
-    else if (name.endsWith('.html') && !/^google[0-9a-f]+\.html$/i.test(name)) pages.push(p);
-  }
-})(root);
+const pagesData = JSON.parse(readFileSync(new URL('../src/data/pages.json', import.meta.url), 'utf8'));
+const DISCLOSURES = [['Adiviath Technologies Private Limited', 'legal name'], ['U62099KA2026PTC228442', 'CIN'], ['WorkFlo Ranka Junction', 'registered office'], ['contact@adiviath.com', 'email'], ['Himanshu Agarwal, Director', 'grievance contact']];
+const OTHER_CTA = /\b(Get in touch|Contact us|Let's talk|Talk to the founder|Reach out|Start a project)\b/i;
+const BANNED = ['seamless', 'empower', 'cutting-edge', 'elevate', 'unleash', 'next-gen', 'passionate'];
 
-const failures = [];
-const fail = (page, msg) => failures.push(`${page.replace(root, '/')}: ${msg}`);
-
-for (const page of pages) {
-  const html = readFileSync(page, 'utf8');
-  const scripts = [...html.matchAll(/<script\b([^>]*)>/g)];
-  for (const [, attrs] of scripts) {
-    if (!/type="application\/ld\+json"/.test(attrs)) fail(page, `client script found: <script${attrs}>`);
+export function checkHtml(path, html) {
+  const f = [];
+  for (const [, attrs, body] of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/g)) {
+    if (/type="application\/ld\+json"/.test(attrs)) {
+      try { JSON.parse(body); } catch (e) { f.push(`JSON-LD does not parse: ${e.message}`); }
+    } else if (!/type="module"/.test(attrs) || !/\bsrc="\/_astro\//.test(attrs) || body.trim()) {
+      f.push(`script not allowed: <script${attrs}>`);
+    }
   }
-  const h1s = (html.match(/<h1\b/g) || []).length;
-  if (h1s !== 1) fail(page, `expected 1 h1, found ${h1s}`);
-  for (const [, json] of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
-    try { JSON.parse(json); } catch (e) { fail(page, `JSON-LD does not parse: ${e.message}`); }
-  }
+  const h1 = (html.match(/<h1\b/g) || []).length;
+  if (h1 !== 1) f.push(`expected 1 h1, found ${h1}`);
   for (const [tag] of html.matchAll(/<img\b[^>]*>/g)) {
-    if (!/\bwidth=/.test(tag) || !/\bheight=/.test(tag)) fail(page, `img without width/height: ${tag.slice(0, 80)}`);
-    if (!/\balt=/.test(tag)) fail(page, `img without alt: ${tag.slice(0, 80)}`);
+    if (!/\balt=/.test(tag)) f.push(`img without alt: ${tag.slice(0, 80)}`);
+    if (!/\bwidth=/.test(tag) || !/\bheight=/.test(tag)) f.push(`img without width/height: ${tag.slice(0, 80)}`);
   }
-  const text = html.replace(/<script[\s\S]*?<\/script>/g, '').replace(/<[^>]+>/g, ' ');
-  const attrs = [...html.matchAll(/\b(?:content|alt)="([^"]*)"/g)].map(([, v]) => v).join(' ');
-  const combined = `${text} ${attrs}`;
-  if (/not two/i.test(combined)) fail(page, 'banned phrase "not two"');
-  if (/—/.test(combined)) fail(page, 'em dash in page text');
-  if (/Advaith\b/.test(combined)) fail(page, 'banned spelling "Advaith"');
-  for (const word of ['empower', 'seamless', 'cutting-edge']) {
-    if (new RegExp(`\\b${word}\\b`, 'i').test(combined)) fail(page, `banned word "${word}"`);
-  }
-  if (!combined.includes('Talk to the founder')) fail(page, 'missing CTA text "Talk to the founder"');
-  if (/fonts\.(googleapis|gstatic)\.com/.test(html)) fail(page, 'Google Fonts request');
-  if (!/<link rel="canonical"/.test(html)) fail(page, 'missing canonical');
+  const text = html.replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ').replace(/<[^>]+>/g, ' ');
+  const attrText = [...html.matchAll(/\b(?:content|alt|aria-label|title|placeholder)="([^"]*)"/g)].map(([, v]) => v).join(' ');
+  const all = `${text} ${attrText}`;
+  if (/[\u2013\u2014]/.test(all)) f.push('em or en dash in visible text');
+  for (const w of BANNED) if (new RegExp(`\\b${w}\\b`, 'i').test(all)) f.push(`banned word "${w}"`);
+  if (OTHER_CTA.test(all)) f.push(`other contact label: "${all.match(OTHER_CTA)[0]}"`);
+  if (!text.includes('Talk to us')) f.push('missing CTA "Talk to us"');
+  for (const [needle, name] of DISCLOSURES) if (!text.includes(needle)) f.push(`missing disclosure: ${name}`);
+  if (/fonts\.(googleapis|gstatic)\.com/.test(html)) f.push('Google Fonts request');
+  if (!/<link rel="canonical"/.test(html)) f.push('missing canonical');
   const title = html.match(/<title>([^<]*)<\/title>/)?.[1] ?? '';
-  if (title.length === 0 || title.length > 60) fail(page, `title length ${title.length}`);
+  if (!title || title.length > 60) f.push(`title length ${title.length}`);
   const desc = html.match(/<meta name="description" content="([^"]*)"/)?.[1] ?? '';
-  if (desc.length === 0 || desc.length > 155) fail(page, `description length ${desc.length}`);
+  if (!desc || desc.length > 155) f.push(`description length ${desc.length}`);
+  return f.map((m) => `${path}: ${m}`);
 }
 
-if (pages.length < 4) failures.push(`expected at least 4 pages, found ${pages.length}`);
-if (failures.length) { console.error(failures.join('\n')); process.exit(1); }
-console.log(`check-site: ${pages.length} pages OK`);
+export function checkSite(dist) {
+  const failures = [];
+  for (const { path } of pagesData) {
+    const file = join(dist, path === '/' ? 'index.html' : `${path.slice(1)}/index.html`);
+    if (!existsSync(file)) { failures.push(`${path}: page missing from build`); continue; }
+    failures.push(...checkHtml(path, readFileSync(file, 'utf8')));
+  }
+  const read = (name) => (existsSync(join(dist, name)) ? readFileSync(join(dist, name), 'utf8') : '');
+  const sitemap = read('sitemap.xml');
+  const full = read('llms-full.txt');
+  const llms = read('llms.txt');
+  for (const { path } of pagesData) {
+    const url = `https://www.adiviath.com${path}`;
+    if (!sitemap.includes(`<loc>${url}</loc>`)) failures.push(`${path}: not in sitemap.xml`);
+    if (!full.includes(`(${url})`)) failures.push(`${path}: not in llms-full.txt`);
+    if (!llms.includes(url)) failures.push(`${path}: not in llms.txt`);
+  }
+  return failures;
+}
+
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  const failures = checkSite(fileURLToPath(new URL('../dist/', import.meta.url)));
+  if (failures.length) { console.error(failures.join('\n')); process.exit(1); }
+  console.log(`check-site: ${pagesData.length} pages OK`);
+}
