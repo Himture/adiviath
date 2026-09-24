@@ -20,12 +20,17 @@ const skeleton = {
   bowl: 'M33.8 42.5A15.8 15.8 0 1 0 54.5 66.1',
 };
 
+// gx/gy: where each crop lands once the five assemble into one storefront.
+// Centre offsets in px at --cm 1, measured from the dot; the assembly scales
+// with --cm so the grid tracks the crops on short and small viewports.
+// top row: logo then headline, tops aligned; middle: buttons; bottom: two cards
+// either side of the dot.
 const crops = [
-  { x: -9, y: -6, ra: '20%', cw: 614, ch: 212, cs: 0.62, pos: '49.5% 34%' },
-  { x: 9, y: -6, ra: '23%', cw: 186, ch: 56, cs: 1, pos: '12.4% 2.1%' },
-  { x: 10, y: -2.2, ra: '26%', cw: 398, ch: 70, cs: 0.9, pos: '49.9% 69%' },
-  { x: -10, y: 2.4, ra: '28%', cw: 356, ch: 212, cs: 0.74, pos: '20.3% 100%' },
-  { x: 11, y: 2.4, ra: '32%', cw: 356, ch: 212, cs: 0.74, pos: '79.7% 100%' },
+  { x: -9, y: -6, ra: '20%', cw: 614, ch: 212, cs: 0.62, pos: '49.5% 34%', gx: 98, gy: -180 },
+  { x: 9, y: -6, ra: '23%', cw: 186, ch: 56, cs: 1, pos: '12.4% 2.1%', gx: -195, gy: -218 },
+  { x: 10, y: -2.2, ra: '26%', cw: 398, ch: 70, cs: 0.9, pos: '49.9% 69%', gx: 0, gy: -73 },
+  { x: -10, y: 2.4, ra: '28%', cw: 356, ch: 212, cs: 0.74, pos: '20.3% 100%', gx: -144, gy: 47, gs: -1 },
+  { x: 11, y: 2.4, ra: '32%', cw: 356, ch: 212, cs: 0.74, pos: '79.7% 100%', gx: 144, gy: 47, gs: 1 },
 ];
 ---
 
@@ -77,10 +82,11 @@ const crops = [
     <div class="stage">
       <span class="dot-static act-dot" aria-hidden="true"></span>
       {crops.map((c) => (
-        <div class="frame item" style={`--x:${c.x}; --y:${c.y}; --ra:${c.ra}; --rb:82%`}>
+        <div class="frame item" style={`--x:${c.x}; --y:${c.y}; --ra:${c.ra}; --rb:82%; --gx:${c.gx}; --gy:${c.gy}; --gs:${c.gs ?? 0}`}>
           <span class="crop" style={`--cw:${c.cw}; --ch:${c.ch}; --cs:${c.cs}; background-position: ${c.pos}`}></span>
         </div>
       ))}
+      <ol class="steps item" aria-label="How ordering works"><li>Find stock</li><li>Add quantity</li><li>Send order</li></ol>
       <div class="caption item" style="--ra:34%; --rb:82%">
         <h2 id="pharmulo-h">Pharmulo. Built and operated by Adiviath. Live.</h2>
         <p>Wholesalers put their catalogue online; retailers order from any phone. Find stock, add quantity, send order.</p>
@@ -99,9 +105,10 @@ const crops = [
         <li class="node item" style="--x:-8; --y:4; --ra:30%; --rb:82%">Payment</li>
         <li class="node item" style="--x:8; --y:4; --ra:33%; --rb:82%">Settled account</li>
       </ol>
-      <div class="item" style="--y:0.5; --ra:24%; --rb:82%">
+      {/* --ra matches the draw range below, so the wrapper is present as the line starts */}
+      <div class="item" style="--y:0.5; --ra:14%; --rb:82%">
         <svg class="wire" viewBox="0 0 800 400" preserveAspectRatio="none" aria-hidden="true">
-          <path d="M120 150 H680 V200 H120 V250 H680" pathLength="100" />
+          <path d="M120 150 H680 V200 H120 V250 H680" />
         </svg>
       </div>
       <div class="caption item" style="--y:9; --ra:38%; --rb:82%">
