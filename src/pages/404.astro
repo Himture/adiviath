@@ -1,0 +1,14 @@
+---
+// Vercel serves this for any unknown path. It is not in pages.json, so it stays out of the sitemap and llms files.
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout path="/404" title="Page not found | Adiviath Technologies" description="This page does not exist or has moved. Go to the Adiviath home page, our products or custom software." noindex>
+  <section class="section page-head">
+    <div class="wrap">
+      <h1>Page not found</h1>
+      <p class="sub">This page does not exist or has moved.</p>
+      <nav class="lost" aria-label="Where to go instead"><a class="link" href="/">Home</a><a class="link" href="/products">Products</a><a class="link" href="/custom-software">Custom software</a><a class="btn" href="/contact">Talk to us</a></nav>
+    </div>
+  </section>
+</BaseLayout>

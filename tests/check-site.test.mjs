@@ -33,8 +33,11 @@ test('title length is measured decoded', () => {
 // that a page missing from any of the three discovery files fails the build, not just a bad HTML page.
 const urlOf = (path) => `https://www.adiviath.com${path}`;
 
-const writeFixture = ({ skipFromSitemap, skipFromLlms, skipFromFull } = {}) => {
+const notFound = good.replace('</head>', '<meta name="robots" content="noindex"></head>');
+
+const writeFixture = ({ skipFromSitemap, skipFromLlms, skipFromFull, notFoundHtml = notFound } = {}) => {
   const dist = mkdtempSync(join(tmpdir(), 'check-site-'));
+  if (notFoundHtml) writeFileSync(join(dist, '404.html'), notFoundHtml);
   for (const { path } of pages) {
     const dir = path === '/' ? dist : join(dist, path.slice(1));
     mkdirSync(dir, { recursive: true });
@@ -73,3 +76,13 @@ for (const missing of ['/', '/products', '/about']) {
     try { assert.ok(checkSite(dist).some((f) => f === `${missing}: not in llms-full.txt`)); } finally { rmSync(dist, { recursive: true, force: true }); }
   });
 }
+
+test('a 404 page without noindex fails checkSite', () => {
+  const dist = writeFixture({ notFoundHtml: good });
+  try { assert.ok(checkSite(dist).includes('/404: missing robots noindex')); } finally { rmSync(dist, { recursive: true, force: true }); }
+});
+
+test('a missing 404 page fails checkSite', () => {
+  const dist = writeFixture({ notFoundHtml: '' });
+  try { assert.ok(checkSite(dist).includes('/404: 404.html missing from build')); } finally { rmSync(dist, { recursive: true, force: true }); }
+});

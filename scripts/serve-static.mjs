@@ -23,6 +23,6 @@ createServer(async (req, res) => {
   try { path = normalize(join(root, decodeURIComponent(new URL(req.url, 'http://x').pathname))); }
   catch { res.writeHead(400, headers).end('Bad request'); return; } // malformed percent-encoding
   const file = path.startsWith(root) && (await find(path));
-  if (!file) { res.writeHead(404, headers).end('Not found'); return; }
+  if (!file) { res.writeHead(404, { ...headers, 'content-type': types['.html'] }).end(await readFile(join(root, '404.html'))); return; } // as Vercel does
   res.writeHead(200, { ...headers, 'content-type': types[extname(file)] ?? 'application/octet-stream' }).end(await readFile(file));
 }).listen(port, () => console.log(`serving dist/client on http://localhost:${port}`));

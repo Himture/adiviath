@@ -63,6 +63,16 @@ export function checkSite(dist) {
     if (!full.includes(`(${url})`)) failures.push(`${path}: not in llms-full.txt`);
     if (!llms.includes(`](${url})`)) failures.push(`${path}: not in llms.txt`);
   }
+  // The 404 page: same per-page checks, noindex, and kept out of the sitemap and llms files.
+  const notFound = read('404.html');
+  if (!notFound) failures.push('/404: 404.html missing from build');
+  else {
+    failures.push(...checkHtml('/404', notFound));
+    if (!/<meta name="robots" content="noindex"/.test(notFound)) failures.push('/404: missing robots noindex');
+    for (const [name, body] of [['sitemap.xml', sitemap], ['llms.txt', llms], ['llms-full.txt', full]]) {
+      if (body.includes('adiviath.com/404')) failures.push(`/404: listed in ${name}`);
+    }
+  }
   return failures;
 }
 

@@ -5,7 +5,10 @@
 // Usage: node scripts/device-matrix.mjs [chromium,webkit,firefox]   (BASE defaults to http://localhost:4330)
 import { chromium, webkit, firefox } from 'playwright';
 import { mkdir } from 'node:fs/promises';
-import pages from '../src/data/pages.json' with { type: 'json' };
+import pagesData from '../src/data/pages.json' with { type: 'json' };
+
+// Every listed page, plus an unknown path that must get the 404 page with status 404.
+const pages = [...pagesData, { path: '/no-such-page', status: 404 }];
 
 const BASE = process.env.BASE ?? 'http://localhost:4330';
 const OUT = process.env.OUT ?? '/tmp/adiviath-matrix';
@@ -72,14 +75,18 @@ async function runEngine(engineName) {
     const [width, height] = vp.split('x').map(Number);
     const phone = width < 768 && engineName !== 'firefox'; // Firefox has no mobile emulation in Playwright
     const context = await browser.newContext({ viewport: { width, height }, isMobile: phone, hasTouch: phone, reducedMotion: 'reduce' });
-    for (const { path } of pages) {
+    for (const { path, status = 200 } of pages) {
       const where = `${engineName} ${vp} ${path}`;
       const page = await context.newPage();
       const errors = [];
-      page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
+      page.on('console', (m) => {
+        if (m.type() !== 'error') return;
+        if (status !== 200 && m.location().url === BASE + path) return; // the browser's own note about the expected 404 status
+        errors.push(m.text());
+      });
       page.on('pageerror', (e) => errors.push(e.message));
       const res = await page.goto(BASE + path, { waitUntil: 'load' });
-      if (!res || res.status() !== 200) fail(where, `HTTP ${res?.status()}`);
+      if (!res || res.status() !== status) fail(where, `HTTP ${res?.status()}`);
       await page.evaluate(() => document.fonts.ready);
       for (const p of await page.evaluate(audit)) fail(where, p);
       for (const e of errors) fail(where, `console error: ${e}`);

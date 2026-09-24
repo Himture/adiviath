@@ -10,7 +10,8 @@
 }
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-padding-top: 88px; } /* focus and anchors land below the sticky header */
-body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.55 var(--sans); }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.55 var(--sans); min-height: 100vh; display: flex; flex-direction: column; }
+main { flex: 1; } /* a short page (404) still ends with the footer at the bottom of the screen */
 @media (min-width: 768px) { body { font-size: 18px; } }
 img, svg { display: block; max-width: 100%; height: auto; }
 h1, h2, h3, p, ul, ol, dl, figure { margin: 0; }
@@ -139,6 +140,7 @@ h3 { font-weight: 600; font-size: 22px; letter-spacing: -0.01em; line-height: 1.
 
 /* custom software and solutions */
 .page-head .head-btn { margin-top: 28px; }
+.lost { margin-top: 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 28px; } .lost .link { min-height: 44px; display: inline-flex; align-items: center; }
 .build-list { list-style: none; padding: 0; margin-top: 28px; display: grid; gap: 0 48px; grid-template-columns: 1fr; }
 @media (min-width: 700px) { .build-list { grid-template-columns: 1fr 1fr; } }
 .build-list li { padding: 16px 0; border-bottom: 1px solid var(--line); font-size: 19px; font-weight: 500; }

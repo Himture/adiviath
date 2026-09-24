@@ -6,10 +6,11 @@ import ConsentBar from '../components/ConsentBar.astro';
 import company from '../data/company.json';
 import pages from '../data/pages.json';
 
-interface Props { path: string; jsonLd?: object[] }
-const { path, jsonLd = [] } = Astro.props;
+// Pages outside pages.json (only 404) pass title and description themselves and set noindex, so they stay out of the sitemap and llms files.
+interface Props { path: string; jsonLd?: object[]; title?: string; description?: string; noindex?: boolean }
+const { path, jsonLd = [], noindex = false } = Astro.props;
 
-const page = pages.find((p) => p.path === path);
+const page = pages.find((p) => p.path === path) ?? (Astro.props.title && Astro.props.description ? { title: Astro.props.title, description: Astro.props.description } : undefined);
 if (!page) throw new Error(`BaseLayout: ${path} is not in src/data/pages.json`);
 const { title, description } = page;
 
@@ -18,7 +19,7 @@ const canonical = new URL(path, site).href;
 const socialImage = new URL('/brand/social-card.png', site).href;
 const org = {
   '@type': 'Organization', '@id': `${site}#organization`, name: company.legalName, alternateName: company.shortName, url: site,
-  logo: `${site}brand/symbol-flat.svg`, email: company.email, foundingDate: '2026',
+  logo: `${site}brand/icons/icon-512.png`, email: company.email, foundingDate: '2026',
   identifier: { '@type': 'PropertyValue', propertyID: 'CIN', value: company.cin },
   address: { '@type': 'PostalAddress', streetAddress: company.address.street, addressLocality: company.address.locality, addressRegion: company.address.region, postalCode: company.address.postalCode, addressCountry: company.address.country },
   founder: { '@type': 'Person', name: company.director, jobTitle: 'Director' },
@@ -40,6 +41,7 @@ const graph = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     <meta name="theme-color" content="#ffffff" />
     <link rel="canonical" href={canonical} />
     <meta property="og:type" content="website" />
