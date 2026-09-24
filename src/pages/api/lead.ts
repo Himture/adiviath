@@ -4,6 +4,7 @@ import { allow } from '../../lib/throttle.ts';
 
 export const prerender = false;
 const MAX_BYTES = 16384; // 2000 non-Latin characters (3 bytes each) plus a Turnstile token fit
+const TOO_BIG = 'Message too long. Please email contact@adiviath.com.';
 const CHECK = 'Please try again in a moment, or email contact@adiviath.com.';
 const FALLBACK = 'Could not send right now. Please email contact@adiviath.com.';
 type Env = { RESEND_API_KEY?: string; TURNSTILE_SECRET_KEY?: string; LEAD_TO?: string; LEAD_FROM?: string; ALLOWED_ORIGINS: string[] };
@@ -15,10 +16,10 @@ export async function handleLead(req: Request, env: Env, f: typeof fetch = fetch
   if (req.method !== 'POST') return json(405, { ok: false, message: 'Method not allowed.' });
   if (!env.ALLOWED_ORIGINS.includes(req.headers.get('origin') ?? '')) return json(403, { ok: false, message: 'Forbidden.' });
   if (!(req.headers.get('content-type') ?? '').toLowerCase().startsWith('application/json')) return json(415, { ok: false, message: 'Unsupported.' });
-  if (Number(req.headers.get('content-length') ?? 0) > MAX_BYTES) return json(413, { ok: false, message: 'Message too long. Please email contact@adiviath.com.' });
+  if (Number(req.headers.get('content-length') ?? 0) > MAX_BYTES) return json(413, { ok: false, message: TOO_BIG });
   // ponytail: reads the whole body before the byte check; Vercel caps request bodies at 4.5 MB, stream with a cap if that ever matters.
   const raw = await req.text();
-  if (Buffer.byteLength(raw) > MAX_BYTES) return json(413, { ok: false, message: 'Message too long. Please email contact@adiviath.com.' });
+  if (Buffer.byteLength(raw) > MAX_BYTES) return json(413, { ok: false, message: TOO_BIG });
   let body: Record<string, unknown>;
   try { body = JSON.parse(raw); } catch { return json(400, { ok: false, message: 'Invalid submission.' }); }
   if (!body || typeof body !== 'object' || Array.isArray(body)) return json(400, { ok: false, message: 'Invalid submission.' });

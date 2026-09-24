@@ -241,7 +241,7 @@ These override earlier sections where they conflict.
 
 ### Lead endpoint security
 
-- POST only, `Content-Type: application/json` only, body capped at 8 KB.
+- POST only, `Content-Type: application/json` only, body capped at 16 KB.
 - `Origin` must be `https://www.adiviath.com` (plus the preview and local origins in non-production).
 - Turnstile token verified server-side, including `hostname` and `action`; the widget resets on expiry or error.
 - Best-effort per-IP throttle in the function (5 submissions per 10 minutes), plus a Vercel Firewall rate-limit rule the founder enables once.

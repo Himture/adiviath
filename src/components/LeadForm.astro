@@ -7,8 +7,9 @@ const key = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 ---
 {key ? (
   <>
-  {/* hidden until lead-form.ts runs: without JavaScript the visitor sees only the email line below */}
-  <form class="lead" data-lead novalidate data-sitekey={key} method="post" action="/api/lead" hidden>
+  {/* Without JavaScript the form cannot pass Turnstile, so it is hidden (CSS scripting query, noscript for older engines) and only the email line shows. */}
+  <noscript><style is:inline>form.lead{display:none}</style></noscript>
+  <form class="lead" data-lead novalidate data-sitekey={key} method="post" action="/api/lead">
     <div class="row">
       <label>Your name<input name="name" autocomplete="name" required maxlength="100" /><span class="err" data-err="name"></span></label>
       <label>Business name<input name="business" autocomplete="organization" required maxlength="150" /><span class="err" data-err="business"></span></label>

@@ -2,9 +2,9 @@ import { validateLead } from '../lib/lead.ts';
 
 declare global { interface Window { turnstile?: { render: (el: HTMLElement, o: object) => string; reset: (id?: string) => void }; onTsLoad?: () => void } }
 const FALLBACK = 'Could not send right now. Please email contact@adiviath.com.';
+const CHECK = 'Please try again in a moment, or email contact@adiviath.com.';
 const form = document.querySelector<HTMLFormElement>('form[data-lead]');
 if (form) {
-  form.hidden = false;
   const status = form.querySelector<HTMLElement>('.status')!;
   const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
   let token = '';
@@ -48,8 +48,11 @@ if (form) {
     // Same rules as the server, so an empty or mistyped form never costs a round trip.
     const v = validateLead(data);
     if (!v.ok) return showErrors(v.errors, 'Please check the highlighted fields.');
+    // No Turnstile token yet (still loading, or blocked): the server would refuse it, so say so here.
+    if (!token) { status.textContent = CHECK; return; }
     // aria-disabled, not disabled: a disabled button drops keyboard focus to <body>.
     busy = true; btn.setAttribute('aria-disabled', 'true'); status.textContent = 'Sending…';
+    let spent = true; // a 422 is answered before Turnstile, so the token is still good for the corrected resubmit
     try {
       const res = await fetch('/api/lead', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...data, token }) });
       const out = (await res.json()) as { ok: boolean; errors?: Record<string, string>; message?: string };
@@ -58,9 +61,10 @@ if (form) {
         form.replaceChildren(sent); sent.focus();
         return;
       }
+      if (res.status === 422) spent = false;
       showErrors(out.errors ?? {}, out.message || FALLBACK);
     } catch { status.textContent = FALLBACK; }
-    finally { busy = false; btn.removeAttribute('aria-disabled'); token = ''; window.turnstile?.reset(widget); }
+    finally { busy = false; btn.removeAttribute('aria-disabled'); if (spent) { token = ''; window.turnstile?.reset(widget); } }
   });
 }
 export {};

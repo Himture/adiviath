@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import products from '../../data/products.json';
 import FounderForm from '../../components/FounderForm.astro';
+import { INTERESTS } from '../../lib/lead.ts';
 
 type Testimonial = { quote: string; name: string; role: string; business: string };
 export function getStaticPaths() { return products.map((p) => ({ params: { slug: p.slug }, props: { p } })); }
@@ -33,7 +34,7 @@ const app = { '@type': 'SoftwareApplication', name: p.name, applicationCategory:
     </section>
   )}
   {p.cta === 'form' && (
-    <FounderForm interest="Freight billing system">
+    <FounderForm interest={INTERESTS.find((i) => i === p.name)}>
       <h2>Tell us how the work happens today</h2>
       <p class="build-lead">A short call is enough to know whether this system fits your business.</p>
     </FounderForm>
