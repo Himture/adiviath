@@ -11,7 +11,7 @@ const canonical = new URL(path === '/' ? '/' : path.replace(/\/$/, ''), Astro.si
 const socialImage = new URL('/brand/social-card.png', Astro.site).href;
 const organizationId = new URL('/#organization', Astro.site).href;
 const graph = [
-  { '@type': 'Organization', '@id': organizationId, name: 'Adiviath Technologies Private Limited', alternateName: 'Adiviath', url: Astro.site?.href, logo: new URL('/brand/symbol-flat.svg', Astro.site).href, email: contact.email, sameAs: ['https://pharmulo.com'], areaServed: 'IN', knowsAbout: ['custom business software', 'pharmaceutical wholesale ordering', 'freight billing'], contactPoint: { '@type': 'ContactPoint', email: contact.email, contactType: 'sales', availableLanguage: ['en', 'hi'] }, description: 'Software company registered in India. Builds and runs its own products and builds custom systems for specific businesses.' },
+  { '@type': 'Organization', '@id': organizationId, name: 'Adiviath Technologies Private Limited', alternateName: 'Adiviath', url: Astro.site?.href, logo: new URL('/brand/symbol-flat.svg', Astro.site).href, email: contact.email, sameAs: ['https://pharmulo.com'], identifier: { '@type': 'PropertyValue', propertyID: 'CIN', value: 'U62099KA2026PTC228442' }, areaServed: 'IN', address: { '@type': 'PostalAddress', addressLocality: 'Bangalore', addressRegion: 'Karnataka', addressCountry: 'IN' }, knowsAbout: ['custom business software', 'pharmaceutical wholesale ordering', 'freight billing'], contactPoint: { '@type': 'ContactPoint', email: contact.email, contactType: 'sales', availableLanguage: ['en', 'hi'] }, description: 'Software company registered in India. Builds and runs its own products and builds custom systems for specific businesses.' },
   { '@type': 'WebSite', '@id': new URL('/#website', Astro.site).href, url: Astro.site?.href, name: 'Adiviath Technologies', publisher: { '@id': organizationId } },
   { '@type': path === '/about' ? 'AboutPage' : path === '/contact' ? 'ContactPage' : 'WebPage', '@id': canonical, url: canonical, name: title, description, isPartOf: { '@id': new URL('/#website', Astro.site).href } },
   ...jsonLd,
@@ -71,7 +71,8 @@ const year = new Date().getFullYear();
         <div class="wrap">
           <div>
             <Wordmark />
-            <p>Adiviath Technologies Private Limited. Registered in India.</p>
+            <p>Adiviath Technologies Private Limited. Bangalore, India.</p>
+            <p>CIN: U62099KA2026PTC228442</p>
             <p><a href={`mailto:${contact.email}`}>{contact.email}</a></p>
           </div>
           <nav aria-label="Footer navigation">

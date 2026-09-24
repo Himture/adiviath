@@ -36,6 +36,7 @@ h2 { font-weight: 600; font-size: clamp(28px, 3.6vw, 44px); letter-spacing: -0.0
 h3 { font-weight: 600; font-size: 1.15rem; letter-spacing: -0.01em; }
 .eyebrow { font-weight: 500; font-size: 0.9rem; color: var(--brand); }
 .lead { font-size: clamp(1.1rem, 1.6vw, 1.35rem); color: var(--muted); max-width: 40ch; }
+h1 + .lead { margin-top: 20px; }
 .muted { color: var(--muted); }
 .advaita { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 1.15em; }
 
@@ -47,7 +48,7 @@ h3 { font-weight: 600; font-size: 1.15rem; letter-spacing: -0.01em; }
 .dot-static { width: var(--dot); height: var(--dot); border-radius: 50%; background: var(--accent); }
 
 /* header */
-.site-header { position: fixed; inset: 0 0 auto 0; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; padding: 0 var(--gutter); background: color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter: blur(8px); }
+.site-header { position: fixed; inset: 0 0 auto 0; z-index: 32; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 64px; padding: 0 var(--gutter); background: color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter: blur(8px); }
 .site-header nav { display: none; align-items: center; gap: clamp(16px, 2.5vw, 32px); }
 .site-header nav a:not(.btn) { font-weight: 500; text-decoration: none; color: var(--muted); min-height: 44px; display: inline-flex; align-items: center; }
 .site-header nav a[aria-current="page"] { color: var(--brand); text-decoration: underline; text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 6px; }

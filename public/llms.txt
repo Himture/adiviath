@@ -1,9 +1,10 @@
 # Adiviath Technologies
 
-> Adiviath Technologies Private Limited is a founder-led software company registered in India. It builds and runs its own products and builds custom systems for specific businesses.
+> Adiviath Technologies Private Limited is a founder-led software company based in Bangalore, India. It builds and runs its own products and builds custom systems for specific businesses.
 
 - Products: Pharmulo (https://pharmulo.com), an online ordering storefront for pharmaceutical wholesalers, live.
 - Client work: a custom freight billing system for Naveen Logistics (https://www.naveenlogistics.com/), in production.
+- CIN: U62099KA2026PTC228442
 - Contact: contact@adiviath.com. Replies within one business day.
 
 ## Pages

@@ -79,6 +79,9 @@
   font-size: 0.95rem;
   font-weight: 500;
   white-space: nowrap;
+  position: relative;
+  /* above the wire: the route connects the boxes, it never strikes through a label */
+  z-index: 1;
 }
 .wire { width: 100%; max-width: 640px; height: 120px; fill: none; stroke: var(--line); stroke-width: 1; pointer-events: none; }
 .wire path { vector-effect: non-scaling-stroke; }
@@ -140,7 +143,7 @@
       background: var(--brand);
       transform-origin: left;
       scale: 0 1;
-      z-index: 30;
+      z-index: 33;
       animation: grow linear both;
       animation-timeline: scroll(root);
     }
@@ -185,8 +188,9 @@
     }
     .stage a { pointer-events: auto; }
     .act-1 .stage { z-index: 11; animation-name: veil1; animation-range: cover 0% cover 100%; }
-    .act-2 .stage { z-index: 12 }
-    .act-3 .stage { z-index: 13 }
+    /* opaque, so the scene before cannot ghost through while it fades */
+    .act-2 .stage { z-index: 12; background: var(--paper) }
+    .act-3 .stage { z-index: 13; background: var(--paper) }
     .act-4 .stage { z-index: 14 }
     /* acts 2 to 4 hand over late: act 1 needs its scroll to draw the mark */
     .act-2 .stage, .act-3 .stage, .act-4 .stage { animation-range: cover 17% cover 82%; }
@@ -290,7 +294,9 @@
          grid, and non-scaling-stroke measures dashes in rendered px, so
          pathLength normalisation would leave the line short of the last node.
          3 runs of 560 and 2 drops of 50 viewBox units, in --ux/--uy terms. */
-      --len: calc(48 * var(--ux) + 7 * var(--uy));
+      /* overestimated on purpose: a dash longer than the path still ends fully drawn,
+         a short one leaves the last node unreached */
+      --len: calc(1.3 * (48 * var(--ux) + 7 * var(--uy)));
       stroke-dasharray: var(--len) calc(var(--len) * 1.2);
       stroke-dashoffset: var(--len);
       animation: draw linear both;
@@ -361,6 +367,8 @@
 
 /* ---------- small screens: the ring tightens, the text drops below the dot ---------- */
 @media (max-width: 900px) {
+  /* on a phone the talk copy runs through the centre: the petrol scene covers the dot */
+  .act-4 .stage { z-index: 31 }
   .act { --ux: calc(var(--dot) * 0.5); --uy: calc(var(--dot) * 1.13); }
   /* the crops shrink but the dot does not: push the two cards out to clear it */
   .frame { --cm: 0.46; --split: 8px }
