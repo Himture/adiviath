@@ -225,3 +225,72 @@ Until these exist, the form falls back to showing the email address, and analyti
 ## 15. Out of scope
 
 Blog or guides, pricing, dark mode, Hindi or other languages, a named freight product, WhatsApp as a public channel, a published phone number.
+
+## 16. Revisions after Codex review and founder follow-up (2026-09-24)
+
+These override earlier sections where they conflict.
+
+### Compliance
+
+- Rule 26 names the telephone number and asks for the disclosures on the landing page. The founder has chosen not to publish a phone number; this is an open legal risk to confirm with a company secretary. `company.json` carries an optional `phone` field, and the footer renders it the moment it is filled.
+- The full disclosure footer renders on Home as well (the current Home hides the footer; the rebuild does not).
+- The privacy policy states retention periods (enquiry emails kept up to 24 months after the last contact, then deleted; analytics data per the GA4 retention setting of 14 months), names each processor and its role (Vercel hosting and function logs, Resend email delivery, Cloudflare Turnstile bot checks, Google Analytics after consent), notes cross-border processing, gives the complaint and deletion procedure through the grievance contact, and describes breach notification.
+- It does not claim that nothing is stored: enquiries are stored in the recipient mailbox and in Resend's delivery logs.
+- The form carries a one-line notice at collection with a link to the privacy policy.
+- The Naveen Logistics name and the "running their operations daily" claim publish only with the founder's confirmation of their written permission.
+
+### Lead endpoint security
+
+- POST only, `Content-Type: application/json` only, body capped at 8 KB.
+- `Origin` must be `https://www.adiviath.com` (plus the preview and local origins in non-production).
+- Turnstile token verified server-side, including `hostname` and `action`; the widget resets on expiry or error.
+- Best-effort per-IP throttle in the function (5 submissions per 10 minutes), plus a Vercel Firewall rate-limit rule the founder enables once.
+- Upstream calls (Turnstile, Resend) have a 8 second timeout and fail closed with the email-us message.
+- Resend call uses an idempotency key derived from the Turnstile token.
+- Values are validated, length-capped, stripped of CR and LF where they reach headers (subject, reply-to), and HTML-escaped in the body.
+- Logs never include field values.
+
+### Headers
+
+`vercel.json` sets a Content-Security-Policy (self, plus `challenges.cloudflare.com` for Turnstile and the Google Tag Manager and Analytics origins), `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy` denying camera, microphone and geolocation, `X-Frame-Options: DENY`, and HSTS.
+
+### Analytics consent
+
+- Consent Mode v2 defaults to denied; GA's script loads only after "Accept".
+- Withdrawing consent updates consent to denied, deletes `_ga` cookies, and stops loading GA on later pages.
+- The consent record stores a version; a policy change re-asks.
+- If `localStorage` is unavailable, the bar shows on each visit and GA never loads without an explicit accept.
+- The bar links to the privacy policy and is reopened from "Cookie settings" in the footer, keyboard accessible.
+
+### Build checks
+
+- `scripts/check-site.mjs` is rewritten: it allows the approved scripts only (logo draw, form, consent), enforces "Talk to us" as the only contact label, checks the disclosures on every page, one h1 per page, alt text, and that every page is in the sitemap and `llms-full.txt`.
+- Page routes, titles and descriptions come from one `src/data/pages.ts` list that drives the sitemap, `llms.txt`, `llms-full.txt` and the check script.
+
+### Phone navigation
+
+Below 768 px the header shows the wordmark, "Talk to us" and a "Menu" button that opens a full-width, keyboard-accessible panel with all links. The complete form is tested at 360 px.
+
+### Solution pages
+
+Each targets a distinct search intent and carries different substance:
+pharma ordering (retailer ordering, GST bill without retyping, Marg and similar software), freight billing (LR, freight bill, payment allocation, customer statements), distributor software (custom builds and Tally, Busy, Marg integration).
+Each has its own FAQs and links to the others only where relevant.
+
+### Every device
+
+- Tested in Chromium, WebKit (Safari engine) and Firefox through Playwright at 360x640, 390x844, 412x915, 768x1024, 1024x768, 1280x800, 1440x900 and 1920x1080.
+- No horizontal overflow, no clipped text, tap targets at least 44 px, form usable with the on-screen keyboard open.
+- Works with JavaScript off, except the form, which then shows the email address.
+- System font fallback metrics are tuned so the web font swap does not shift layout.
+
+### Search engines and AI agents
+
+Nobody can guarantee rankings or AI citations; the site does everything that is in its control:
+
+- Server-rendered HTML for every page, so crawlers and AI agents read full content without running JavaScript.
+- Structured data per section 12, validated against schema.org shapes in the check script.
+- IndexNow key file and a post-deploy ping so Bing, Yandex and partners pick up changes fast (no account needed); Google via the sitemap already submitted in Search Console.
+- `robots.txt` AI crawler allow-list, `llms.txt` and generated `llms-full.txt`.
+- Clear, quotable answer sentences near the top of each solution page, which AI answers tend to cite.
+- Core Web Vitals targets: LCP under 2.5 s, CLS under 0.1, INP under 200 ms on a mid-range phone profile.
