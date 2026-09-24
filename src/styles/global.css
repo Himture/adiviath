@@ -159,3 +159,10 @@ h3 { font-weight: 600; font-size: 22px; letter-spacing: -0.01em; line-height: 1.
 .faq details p { padding-bottom: 18px; color: var(--muted); }
 /* two white sections in a row share one gap */
 .section.joined + .section { padding-top: 0; }
+.facts { margin-top: 28px; display: grid; gap: 0; max-width: 68ch; }
+.facts > div { display: grid; gap: 4px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+@media (min-width: 700px) { .facts > div { grid-template-columns: 12rem 1fr; gap: 24px; } }
+.facts dt { font-weight: 600; color: var(--muted); } .facts dd { margin: 0; overflow-wrap: anywhere; } .facts .line { display: block; }
+.brand-line { margin-top: 1.2em; font-size: clamp(28px, 4vw, 44px); font-weight: 600; line-height: 1.15; color: var(--petrol); }
+.updated { margin-top: 14px; color: var(--muted); }
+.section.legal { padding-top: 0; } .prose > h2:first-child { margin-top: 0; }

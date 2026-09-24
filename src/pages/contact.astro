@@ -1,5 +1,18 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import FounderForm from '../components/FounderForm.astro';
+import company from '../data/company.json';
 ---
 
-<BaseLayout path="/contact"><section class="section"><div class="wrap"><h1>Talk to us</h1></div></section></BaseLayout>
+<BaseLayout path="/contact">
+  <section class="section page-head">
+    <div class="wrap">
+      <h1>Talk to us</h1>
+      <p class="sub">Tell us what's slow or broken today. We reply within one business day.</p>
+    </div>
+  </section>
+  <FounderForm>
+    <h2>Email</h2>
+    <p class="build-lead">Prefer email? Write to <a class="link" href={`mailto:${company.email}`}>{company.email}</a>.</p>
+  </FounderForm>
+</BaseLayout>

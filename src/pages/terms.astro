@@ -1,5 +1,41 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import company from '../data/company.json';
+const mail = `mailto:${company.email}`;
 ---
 
-<BaseLayout path="/terms"><section class="section"><div class="wrap"><h1>Terms of use</h1></div></section></BaseLayout>
+<BaseLayout path="/terms">
+  <section class="section page-head">
+    <div class="wrap">
+      <h1>Terms of use</h1>
+      <p class="updated">Last updated: 24 September 2026</p>
+    </div>
+  </section>
+  <section class="section legal">
+    <div class="wrap"><div class="prose">
+      <h2>Who we are</h2>
+      <p>This website is run by {company.legalName} (CIN {company.cin}), registered office {company.address.lines.join(', ')}. By using the site you agree to these terms.</p>
+
+      <h2>What this site is for</h2>
+      <p>The site is for information. It describes our products and services. Any work we do for you is covered by a separate written agreement, not by this page.</p>
+
+      <h2>No warranty</h2>
+      <p>We try to keep the content accurate, but we do not promise that it is complete or current. The site is provided as it is.</p>
+
+      <h2>Content and trademarks</h2>
+      <p>The content, logo and names on this site belong to Adiviath or to their respective owners. Please do not copy or reuse them without permission.</p>
+
+      <h2>Links to other sites</h2>
+      <p>We link to other websites, such as pharmulo.com. Those sites are governed by their own terms and policies.</p>
+
+      <h2>Limitation of liability</h2>
+      <p>To the extent the law allows, we are not liable for any loss that comes from using this site or relying on its content.</p>
+
+      <h2>Governing law</h2>
+      <p>These terms are governed by the laws of India. The courts at Bengaluru have jurisdiction over any dispute about them.</p>
+
+      <h2>Questions</h2>
+      <p>For questions about these terms, email <a class="link" href={mail}>{company.email}</a>. Queries and grievances are handled by {company.grievance}.</p>
+    </div></div>
+  </section>
+</BaseLayout>

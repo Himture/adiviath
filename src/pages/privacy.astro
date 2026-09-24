@@ -1,5 +1,82 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import company from '../data/company.json';
+const mail = `mailto:${company.email}`;
+const office = company.address.lines.join(', ');
 ---
 
-<BaseLayout path="/privacy"><section class="section"><div class="wrap"><h1>Privacy policy</h1></div></section></BaseLayout>
+<BaseLayout path="/privacy">
+  <section class="section page-head">
+    <div class="wrap">
+      <h1>Privacy policy</h1>
+      <p class="updated">Last updated: 24 September 2026</p>
+    </div>
+  </section>
+  <section class="section legal">
+    <div class="wrap"><div class="prose">
+      <p>This policy explains what information this website collects, why, who handles it, how long we keep it and what you can ask us to do with it.</p>
+
+      <h2>Who we are</h2>
+      <p>This website is run by {company.legalName} (CIN {company.cin}), registered office {office}. Our grievance contact is {company.grievance}, at <a class="link" href={mail}>{company.email}</a>.</p>
+
+      <h2>What we collect</h2>
+      <ul>
+        <li>What you type in the contact form: your name, business name, email or phone number, what you are interested in, and your message.</li>
+        <li>Emails you send us, including your email address and anything you write or attach.</li>
+        <li>With your consent only: analytics data about the pages you visit, your device and your approximate location, through Google Analytics.</li>
+        <li>Basic server logs kept by our host (IP address, time and page requested), used for security.</li>
+      </ul>
+
+      <h2>Why we collect it</h2>
+      <ul>
+        <li>To reply to your enquiry and discuss work with you.</li>
+        <li>To understand which pages help visitors. We use analytics only if you accept it.</li>
+        <li>To protect the site from abuse.</li>
+      </ul>
+
+      <h2>Who processes it</h2>
+      <p>We use these providers to run the site. Each handles only what it needs for its role.</p>
+      <ul>
+        <li>Vercel Inc.: hosts the website and keeps its server logs.</li>
+        <li>Resend: delivers contact form messages to our inbox.</li>
+        <li>Cloudflare: runs Turnstile, which checks that a form submission comes from a person and not a bot.</li>
+        <li>Google: runs Google Analytics, only if you consent.</li>
+        <li>Our email provider: stores the mail sent to and from {company.email}.</li>
+      </ul>
+      <p>Some of these providers process data outside India.</p>
+
+      <h2>Where it is stored and for how long</h2>
+      <p>When you send the form, your enquiry is stored in our mailbox and in Resend's delivery logs. Emails you send us are stored in our mailbox.</p>
+      <ul>
+        <li>Enquiries and email: up to 24 months after our last contact with you, then deleted.</li>
+        <li>Analytics data: up to 14 months.</li>
+        <li>Server logs: for our host's standard retention period.</li>
+      </ul>
+
+      <h2>How we protect it</h2>
+      <ul>
+        <li>The whole site uses HTTPS.</li>
+        <li>Passwords and keys are kept out of the website's code.</li>
+        <li>Access to enquiries is limited to the founder.</li>
+        <li>We do not sell your information or share it with anyone for marketing.</li>
+      </ul>
+
+      <h2>Your choices and rights</h2>
+      <ul>
+        <li>You can withdraw analytics consent at any time from "Cookie settings" in the footer of any page.</li>
+        <li>You can ask to see, correct or delete the information we hold about you by emailing our grievance contact at <a class="link" href={mail}>{company.email}</a>.</li>
+      </ul>
+      <p>We reply within 30 days.</p>
+
+      <h2>Grievances</h2>
+      <p>If you have a complaint about how we handle your information, email our grievance contact:</p>
+      <p class="address">{company.grievance}<br /><a class="link" href={mail}>{company.email}</a><br />{company.legalName}<br />{company.address.lines.map((l) => <>{l}<br /></>)}</p>
+
+      <h2>If something goes wrong</h2>
+      <p>If a data breach affects your information, we will tell you and the relevant authority as the law requires.</p>
+
+      <h2>Changes to this policy</h2>
+      <p>When this policy changes, the date at the top of this page changes with it.</p>
+    </div></div>
+  </section>
+</BaseLayout>

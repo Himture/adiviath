@@ -1,5 +1,37 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import company from '../data/company.json';
+import { stepsHtml } from '../data/solutions';
 ---
 
-<BaseLayout path="/about"><section class="section"><div class="wrap"><h1>About Adiviath</h1></div></section></BaseLayout>
+<BaseLayout path="/about">
+  <section class="section page-head">
+    <div class="wrap">
+      <h1>About Adiviath Technologies</h1>
+      <p class="sub">A founder-led software company in Bengaluru. We build and run our own products and build custom systems for specific businesses.</p>
+    </div>
+  </section>
+  <section class="section tint">
+    <div class="wrap">
+      <h2>Company</h2>
+      <dl class="facts">
+        <div><dt>Legal name</dt><dd>{company.legalName}</dd></div>
+        <div><dt>CIN</dt><dd>{company.cin}</dd></div>
+        <div><dt>Registered office</dt><dd>{company.address.lines.map((l) => <span class="line">{l}</span>)}</dd></div>
+        <div><dt>Director</dt><dd>{company.director}</dd></div>
+        <div><dt>Email</dt><dd><a class="link" href={`mailto:${company.email}`}>{company.email}</a></dd></div>
+      </dl>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap"><div class="prose">
+      <h2>The founder</h2>
+      <p>{company.director}, Director. Building software for businesses since {company.since}.</p>
+      <h2>The name</h2>
+      <p>Adiviath is the founder's spelling of Advaita, a Sanskrit word for oneness: software that fits the work it serves.</p>
+      <p class="brand-line">Your work. Your way. Your software.</p>
+      <h2>How we work</h2>
+      <Fragment set:html={stepsHtml} />
+    </div></div>
+  </section>
+</BaseLayout>
