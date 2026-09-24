@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import LogoDraw from '../components/LogoDraw.astro';
 import ProductCard from '../components/ProductCard.astro';
 import FounderForm from '../components/FounderForm.astro';
+import { stepsHtml } from '../data/solutions';
 import products from '../data/products.json';
 
 const bySlug = (slug: string) => products.find((p) => p.slug === slug)!;
@@ -58,11 +59,6 @@ const testimonials = products.map((p) => p.testimonial as Testimonial | null).fi
 
   <FounderForm>
     <h2>How a custom build goes</h2>
-    <ol class="steps-list">
-      <li>A call about how the work happens today</li>
-      <li>A fixed written scope and price before anything starts</li>
-      <li>Weekly progress you can click through</li>
-      <li>Support and changes after launch</li>
-    </ol>
+    <Fragment set:html={stepsHtml} />
   </FounderForm>
 </BaseLayout>

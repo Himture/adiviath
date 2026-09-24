@@ -103,7 +103,7 @@ h3 { font-weight: 600; font-size: 22px; letter-spacing: -0.01em; line-height: 1.
 .testimonials figcaption { margin-top: 14px; font-size: 15px; color: var(--muted); }
 .build { display: grid; gap: 48px; }
 @media (min-width: 900px) { .build { grid-template-columns: 1fr 1.1fr; gap: 64px; } }
-.steps-list { margin-top: 24px; padding-left: 22px; display: grid; gap: 12px; font-size: 19px; }
+.steps-list { max-width: 62ch; margin-top: 24px; padding-left: 22px; display: grid; gap: 12px; font-size: 19px; }
 .steps-list li::marker { color: var(--coral); font-weight: 700; }
 .note { margin-top: 28px; padding: 20px 22px; border-left: 4px solid var(--coral); background: var(--mineral); border-radius: 0 var(--r) var(--r) 0; }
 
@@ -142,7 +142,7 @@ h3 { font-weight: 600; font-size: 22px; letter-spacing: -0.01em; line-height: 1.
 .build-list li::before { content: ''; display: inline-block; width: 8px; height: 8px; margin-right: 14px; border-radius: 50%; background: var(--coral); vertical-align: middle; }
 .dont { margin-top: clamp(48px, 6vw, 72px); font-size: clamp(24px, 2.6vw, 30px); }
 .dont-text { margin-top: 12px; max-width: 58ch; color: var(--muted); }
-.steps-list.detailed { font-size: 18px; gap: 16px; } .steps-list strong { font-weight: 600; }
+.steps-list strong { font-weight: 600; }
 .build-lead { margin-top: 16px; color: var(--muted); max-width: 44ch; }
 .page-head .answer { max-width: 52ch; }
 .section.solution { padding-top: 0; }
@@ -157,3 +157,5 @@ h3 { font-weight: 600; font-size: 22px; letter-spacing: -0.01em; line-height: 1.
 .faq summary::after { content: '+'; flex: none; color: var(--petrol); font-size: 26px; line-height: 1; }
 .faq details[open] summary::after { content: '\2212'; }
 .faq details p { padding-bottom: 18px; color: var(--muted); }
+/* two white sections in a row share one gap */
+.section.joined + .section { padding-top: 0; }

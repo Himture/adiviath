@@ -11,14 +11,14 @@ export type Solution = {
   faqs: Faq[];
 };
 
-// The four engagement steps, lead sentence then detail. Home shows the lead sentences only.
+// The four engagement steps, lead then detail. Home, /custom-software and the distributor page all render stepsHtml.
 export const buildSteps: [string, string][] = [
   ['A call about how the work happens today.', 'Bring the forms, registers or spreadsheets.'],
   ['A fixed written scope and price.', 'Nothing starts until you agree to it.'],
-  ['Weekly progress you can click through.', 'You see it take shape, so there are no surprises at launch.'],
+  ['Weekly progress you can click through,', 'so there are no surprises.'],
   ['Support and changes after launch.', 'The people who built it keep it running.'],
 ];
-const stepsHtml = `<ol class="steps-list">${buildSteps.map(([lead, rest]) => `<li><strong>${lead}</strong> ${rest}</li>`).join('')}</ol>`;
+export const stepsHtml = `<ol class="steps-list">${buildSteps.map(([lead, rest]) => `<li><strong>${lead}</strong> ${rest}</li>`).join('')}</ol>`;
 
 export const faqSchema = (items: Faq[]) => ({
   '@type': 'FAQPage',
@@ -34,9 +34,9 @@ export const solutions: Solution[] = [
       {
         h2: 'The problem with WhatsApp and phone orders',
         body: [
-          'Most pharma distributors still take orders the same way. A medical shop sends a WhatsApp message, a photo of a handwritten list or a voice note, or simply calls the office. Someone at the counter then reads each one and types it into Marg or whatever billing software the business runs on.',
-          'So every order is written twice, once by the retailer and once by your staff. Quantities get misread, a strip becomes a box, and the wrong pack size or batch goes on the bill. The shop finds out when the parcel arrives, and the return and credit note cost more than the order was worth.',
-          'Orders sent after the office closes sit in a phone until the next morning. On a busy day some are missed completely, and the shop quietly orders from someone else.',
+          'Orders from medical shops arrive as WhatsApp messages, photos of handwritten lists, voice notes and phone calls. Someone at the counter reads each one and types it into Marg or whatever billing software you use.',
+          'So every order is written twice, once by the retailer and once by your staff. Quantities get misread, a strip becomes a box, and the wrong pack size or batch goes on the bill. The shop finds out when the parcel arrives, and then there is a return and a credit note to sort out.',
+          'Orders sent after the office closes sit in a phone until the next morning. On a busy day some are missed completely, and the shop orders from another distributor.',
         ],
       },
       {
@@ -51,7 +51,7 @@ export const solutions: Solution[] = [
         h2: 'What to look for',
         body: [
           'If you are comparing ordering apps, check these before you sign up:',
-          '<ul><li>It works on the basic Android phones your retailers already carry, and on a web link for shops that will not install an app.</li><li>It carries your name, not the vendor\'s. Retailers are ordering from you.</li><li>It shows live stock and applies your rates and schemes for each retailer.</li><li>It fits the billing software you already use, so your accounts and GST filing stay as they are.</li><li>Support answers during your working hours, in Indian time.</li></ul>',
+          '<ul><li>It works on the basic Android phones your retailers already carry, and on a web link for shops that will not install an app.</li><li>It carries your name. Retailers are ordering from you.</li><li>It shows live stock and applies your rates and schemes for each retailer.</li><li>It fits the billing software you already use, so your accounts and GST filing stay as they are.</li><li>Support answers during your working hours, in Indian time.</li></ul>',
           'Ask about collections too. Seeing what each shop owes, and following up without printed ledgers, matters as much as taking the order.',
         ],
       },
@@ -78,7 +78,7 @@ export const solutions: Solution[] = [
       {
         h2: 'Where transport billing goes wrong',
         body: [
-          'In most transport offices the lorry receipt is written on paper or entered in an Excel sheet when the goods are booked. The freight bill is made later, often by someone else, by copying LR numbers, weights and rates across.',
+          'In many transport offices the lorry receipt is written on paper or entered in an Excel sheet when the goods are booked. The freight bill is made later, often by someone else, by copying LR numbers, weights and rates across.',
           'That is where things slip. An LR is left off a bill, or billed twice. A rate is typed wrong. When the customer questions a bill, finding the original LR means going through files.',
           'Payments are harder still. Customers pay part of a bill, pay several bills in one transfer, or deduct TDS before paying. Matching each payment to the right bills by hand takes time, and your ledger drifts away from what the customer thinks they owe.',
           'Then a customer asks for their statement, and someone spends hours putting it together from the LR book, the bill file and the bank entries.',
@@ -93,15 +93,14 @@ export const solutions: Solution[] = [
       {
         h2: 'Built inside a working transport company',
         body: [
-          'We did not design this from the outside. We built it first for Naveen Logistics, a family-run transport business in Bengaluru, and it runs their operations daily.',
-          'That is why it handles the untidy cases, like a customer who pays three bills with one transfer and deducts TDS on all of them. The system was shaped by what happens in a real transport office, not by a feature list.',
+          'We built it first for Naveen Logistics, a family-run transport business in Bengaluru, and it runs their operations daily.',
+          'It handles the cases that come up in a real transport office, like a customer who pays three bills with one transfer and deducts TDS on all of them.',
         ],
       },
       {
         h2: 'Getting it for your business',
         body: [
-          'Every transport business bills a little differently. Rates may be per kg, per trip or per article. Some customers get one bill a month, others one bill per LR. Your bill carries your own layout.',
-          'We set the system up for your routes, rates and bill format, and show your office staff how to use it. Talk to us and tell us how billing works today. If you need more than billing, we can build that as <a class="link" href="/custom-software">custom software</a>.',
+          'We set the system up with your team to match how you already bill: your routes, your rates and your bill format. Talk to us and tell us how billing works today. If you need more than billing, we can build that as <a class="link" href="/custom-software">custom software</a>.',
         ],
       },
     ],
@@ -120,15 +119,15 @@ export const solutions: Solution[] = [
       {
         h2: "Signs you've outgrown spreadsheets",
         body: [
-          'Most distribution businesses start with Excel and Tally, and for a while that works. These are the signs it has stopped working:',
+          'Excel and Tally carry a distribution business a long way. These are the signs they have stopped keeping up:',
           '<ul><li>The same data is typed in two places: an order in a register or sheet, then again as a bill.</li><li>Stock in the system never matches stock in the godown, so someone checks the shelf before confirming an order.</li><li>A report the owner asks for, like dues by salesman or sales by area, takes a day to put together.</li><li>One person knows how all the sheets connect, and work slows down when they are on leave.</li></ul>',
-          'Working harder does not fix any of these. Having one system where each thing is entered once does.',
+          'The fix is one system where each thing is entered once and everyone sees the same numbers.',
         ],
       },
       {
         h2: 'What we build for distributors',
         body: [
-          'We build around how your business already runs, not around a generic list of modules. Depending on what you need, that can include:',
+          'We build around how your business already runs. Depending on what you need, that can include:',
           '<ul><li>Order capture from salesmen, retailers and your counter, in one place.</li><li>Billing rules for your schemes, rate slabs, credit limits and discounts.</li><li>Stock across godowns, with transfers between them.</li><li>Salesman and route tracking: which shops were visited and what was booked.</li><li>A retailer portal where shops place orders and check what they owe.</li><li>Dashboards for the owner with sales, dues and stock on one screen.</li></ul>',
           'If you are a pharma distributor and ordering is the main problem, read <a class="link" href="/solutions/pharma-distributor-ordering">online ordering for pharma distributors</a> first. A product we already run may cover it.',
         ],
@@ -136,8 +135,8 @@ export const solutions: Solution[] = [
       {
         h2: 'Keeping Tally, Busy or Marg',
         body: [
-          'Most distributors do not want to change their accounting software, and neither does their accountant. We do not ask you to.',
-          'We connect the new system to Tally, Busy or Marg, so bills, receipts and stock movements reach the books you already keep. Your accountant keeps working the way they do now, and the new system handles the parts those packages were never built for.',
+          'You keep your accounting software. We connect the new system to Tally, Busy or Marg, so bills, receipts and stock movements reach the books you already keep.',
+          'Your accountant keeps working the way they do now. The new system handles ordering, stock and the rest of the daily work.',
         ],
       },
       {
