@@ -61,7 +61,7 @@ export function checkSite(dist) {
     const url = `https://www.adiviath.com${path}`;
     if (!sitemap.includes(`<loc>${url}</loc>`)) failures.push(`${path}: not in sitemap.xml`);
     if (!full.includes(`(${url})`)) failures.push(`${path}: not in llms-full.txt`);
-    if (!llms.includes(url)) failures.push(`${path}: not in llms.txt`);
+    if (!llms.includes(`](${url})`)) failures.push(`${path}: not in llms.txt`);
   }
   return failures;
 }

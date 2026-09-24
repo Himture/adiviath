@@ -60,15 +60,16 @@ test('a page missing from sitemap.xml fails checkSite', () => {
   try { assert.ok(checkSite(dist).some((f) => f === `${missing}: not in sitemap.xml`)); } finally { rmSync(dist, { recursive: true, force: true }); }
 });
 
-test('a page missing from llms.txt fails checkSite', () => {
-  // "/about" (not "/", which is a URL prefix of every other page's URL and would still match by substring)
-  const missing = '/about';
-  const dist = writeFixture({ skipFromLlms: missing });
-  try { assert.ok(checkSite(dist).some((f) => f === `${missing}: not in llms.txt`)); } finally { rmSync(dist, { recursive: true, force: true }); }
-});
+// "/" and "/products" are URL prefixes of every other page under them, so a naive substring check
+// on llms.txt/llms-full.txt would still match after they're removed. Cover both explicitly.
+for (const missing of ['/', '/products', '/about']) {
+  test(`a page (${missing}) missing from llms.txt fails checkSite`, () => {
+    const dist = writeFixture({ skipFromLlms: missing });
+    try { assert.ok(checkSite(dist).some((f) => f === `${missing}: not in llms.txt`)); } finally { rmSync(dist, { recursive: true, force: true }); }
+  });
 
-test('a page missing from llms-full.txt fails checkSite', () => {
-  const missing = pages[0].path;
-  const dist = writeFixture({ skipFromFull: missing });
-  try { assert.ok(checkSite(dist).some((f) => f === `${missing}: not in llms-full.txt`)); } finally { rmSync(dist, { recursive: true, force: true }); }
-});
+  test(`a page (${missing}) missing from llms-full.txt fails checkSite`, () => {
+    const dist = writeFixture({ skipFromFull: missing });
+    try { assert.ok(checkSite(dist).some((f) => f === `${missing}: not in llms-full.txt`)); } finally { rmSync(dist, { recursive: true, force: true }); }
+  });
+}
