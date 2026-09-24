@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { handleLead } from '../src/pages/api/lead.ts';
+import { handleLead, UPSTREAM_TIMEOUT_MS } from '../src/pages/api/lead.ts';
 
 const env = { RESEND_API_KEY: 'k', TURNSTILE_SECRET_KEY: 's', ALLOWED_ORIGINS: ['https://www.adiviath.com'] };
 const body = { name: 'Ravi', business: 'Balaji Pharma', contact: 'ravi@balaji.in', interest: 'Pharmulo', message: 'Hi', company_site: '', token: 't' };
@@ -59,6 +59,7 @@ test('6th submission from one IP within 10 minutes is throttled', async () => {
   assert.equal(r.status, 429); assert.match((await r.json()).message, /contact@adiviath\.com/);
   assert.equal(c.filter((u) => u.includes('resend')).length, 5);
 });
+test('upstream timeout is 4 s, so two calls fit well inside the default function duration', () => assert.equal(UPSTREAM_TIMEOUT_MS, 4000));
 test('upstream calls carry a timeout signal', async () => {
   const signals: unknown[] = [];
   const f = (async (u: string, init: RequestInit) => { signals.push(init.signal); return new Response(JSON.stringify(String(u).includes('turnstile') ? passTs : { id: '1' })); }) as typeof fetch;

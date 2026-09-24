@@ -7,7 +7,8 @@ const MAX_BYTES = 8192;
 const FALLBACK = 'Could not send right now. Please email contact@adiviath.com.';
 type Env = { RESEND_API_KEY?: string; TURNSTILE_SECRET_KEY?: string; LEAD_TO?: string; LEAD_FROM?: string; ALLOWED_ORIGINS: string[] };
 const json = (status: number, data: object) => new Response(JSON.stringify(data), { status, headers: { 'content-type': 'application/json', 'cache-control': 'no-store' } });
-const timed = (f: typeof fetch, url: string, init: RequestInit) => f(url, { ...init, signal: AbortSignal.timeout(8000) });
+export const UPSTREAM_TIMEOUT_MS = 4000; // two sequential calls stay well inside Vercel's default function duration
+const timed = (f: typeof fetch, url: string, init: RequestInit) => f(url, { ...init, signal: AbortSignal.timeout(UPSTREAM_TIMEOUT_MS) });
 
 export async function handleLead(req: Request, env: Env, f: typeof fetch = fetch): Promise<Response> {
   if (req.method !== 'POST') return json(405, { ok: false, message: 'Method not allowed.' });
