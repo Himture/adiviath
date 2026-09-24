@@ -172,7 +172,7 @@ test('a compliant page passes', () => assert.deepEqual(checkHtml('/products', go
 test('two h1s fail', () => assert.ok(checkHtml('/x', good.replace('<h1>Products</h1>', '<h1>a</h1><h1>b</h1>')).some(f => f.includes('h1'))));
 test('inline executable script fails', () => assert.ok(checkHtml('/x', good.replace('</head>', '<script>alert(1)</script></head>')).some(f => f.includes('script'))));
 test('missing CIN fails', () => assert.ok(checkHtml('/x', good.replace('U62099KA2026PTC228442', '')).some(f => f.includes('CIN'))));
-test('em dash fails', () => assert.ok(checkHtml('/x', good.replace('Products</h1>', 'Products — all</h1>')).some(f => f.includes('dash'))));
+test('em dash fails', () => assert.ok(checkHtml('/x', good.replace('Products</h1>', 'Products \u2014 all</h1>')).some(f => f.includes('dash'))));
 test('other contact labels fail', () => assert.ok(checkHtml('/x', good.replace('Talk to us', 'Get in touch')).some(f => f.includes('label'))));
 test('missing Talk to us fails', () => assert.ok(checkHtml('/x', good.replace('Talk to us', 'Hello')).some(f => f.includes('Talk to us'))));
 ```
@@ -212,7 +212,7 @@ export function checkHtml(path, html) {
   const text = html.replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ').replace(/<[^>]+>/g, ' ');
   const attrText = [...html.matchAll(/\b(?:content|alt|aria-label|title|placeholder)="([^"]*)"/g)].map(([, v]) => v).join(' ');
   const all = `${text} ${attrText}`;
-  if (/[–—]/.test(all)) f.push('em or en dash in visible text');
+  if (/[\u2013\u2014]/.test(all)) f.push('em or en dash in visible text');
   for (const w of BANNED) if (new RegExp(`\\b${w}\\b`, 'i').test(all)) f.push(`banned word "${w}"`);
   if (OTHER_CTA.test(all)) f.push(`other contact label: "${all.match(OTHER_CTA)[0]}"`);
   if (!text.includes('Talk to us')) f.push('missing CTA "Talk to us"');
