@@ -1,5 +1,30 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import FounderForm from '../components/FounderForm.astro';
+import { buildSteps } from '../data/solutions';
+
+const builds = ['Ordering and billing systems', 'Inventory and stock tracking', 'Customer and retailer portals', 'Android and iOS apps', 'Tally, Busy and Marg integrations', 'WhatsApp and SMS notifications', 'Dashboards and reports'];
+const service = { '@type': 'Service', name: 'Custom business software', serviceType: 'Custom software development', provider: { '@id': `${new URL('/', Astro.site).href}#organization` }, areaServed: 'IN' };
 ---
 
-<BaseLayout path="/custom-software"><section class="section"><div class="wrap"><h1>Custom software</h1></div></section></BaseLayout>
+<BaseLayout path="/custom-software" jsonLd={[service]}>
+  <section class="section page-head">
+    <div class="wrap">
+      <h1>Custom software, built around how you already work</h1>
+      <p class="sub">When no product fits, we build one for your business and keep it running.</p>
+      <a class="btn head-btn" href="/contact">Talk to us</a>
+    </div>
+  </section>
+  <section class="section tint">
+    <div class="wrap">
+      <h2>What we build</h2>
+      <ul class="build-list">{builds.map((b) => <li>{b}</li>)}</ul>
+      <h2 class="dont">What we don't do</h2>
+      <p class="dont-text">Standalone brochure websites. We build software your business runs on.</p>
+    </div>
+  </section>
+  <FounderForm>
+    <h2>How it works</h2>
+    <ol class="steps-list detailed">{buildSteps.map(([lead, rest]) => <li><strong>{lead}</strong> {rest}</li>)}</ol>
+  </FounderForm>
+</BaseLayout>

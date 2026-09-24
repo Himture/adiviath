@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import LogoDraw from '../components/LogoDraw.astro';
 import ProductCard from '../components/ProductCard.astro';
+import FounderForm from '../components/FounderForm.astro';
 import products from '../data/products.json';
 
 const bySlug = (slug: string) => products.find((p) => p.slug === slug)!;
@@ -55,22 +56,13 @@ const testimonials = products.map((p) => p.testimonial as Testimonial | null).fi
     </section>
   )}
 
-  <section class="section">
-    <div class="wrap build">
-      <div>
-        <h2>How a custom build goes</h2>
-        <ol class="steps-list">
-          <li>A call about how the work happens today</li>
-          <li>A fixed written scope and price before anything starts</li>
-          <li>Weekly progress you can click through</li>
-          <li>Support and changes after launch</li>
-        </ol>
-        <p class="note">I read every message myself and reply within one business day.<br /><strong>Himanshu Agarwal, Director</strong></p>
-      </div>
-      <div>
-        {/* Interim until LeadForm lands in Task 7: replace this block with <LeadForm />. */}
-        <p class="form-fallback">Email us at <a class="link" href="mailto:contact@adiviath.com">contact@adiviath.com</a>. We reply within one business day.</p>
-      </div>
-    </div>
-  </section>
+  <FounderForm>
+    <h2>How a custom build goes</h2>
+    <ol class="steps-list">
+      <li>A call about how the work happens today</li>
+      <li>A fixed written scope and price before anything starts</li>
+      <li>Weekly progress you can click through</li>
+      <li>Support and changes after launch</li>
+    </ol>
+  </FounderForm>
 </BaseLayout>

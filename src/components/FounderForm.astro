@@ -1,0 +1,16 @@
+---
+// The closing block on Home, custom software and solution pages: whatever the page slots in (heading, steps),
+// the founder note under it, and the contact form beside it.
+---
+<section class="section">
+  <div class="wrap build">
+    <div>
+      <slot />
+      <p class="note">I read every message myself and reply within one business day.<br /><strong>Himanshu Agarwal, Director</strong></p>
+    </div>
+    <div>
+      {/* Interim until LeadForm lands in Task 7: replace this block with <LeadForm />. */}
+      <p class="form-fallback">Email us at <a class="link" href="mailto:contact@adiviath.com">contact@adiviath.com</a>. We reply within one business day.</p>
+    </div>
+  </div>
+</section>

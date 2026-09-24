@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Faq from '../../components/Faq.astro';
+import FounderForm from '../../components/FounderForm.astro';
+import { solutions, faqSchema, type Solution } from '../../data/solutions';
+
+export function getStaticPaths() { return solutions.map((s) => ({ params: { slug: s.slug }, props: { s } })); }
+const { s } = Astro.props as { s: Solution };
+---
+
+<BaseLayout path={`/solutions/${s.slug}`} jsonLd={[faqSchema(s.faqs)]}>
+  <section class="section page-head">
+    <div class="wrap">
+      <h1>{s.h1}</h1>
+      <p class="sub answer">{s.answer}</p>
+    </div>
+  </section>
+  <section class="section solution">
+    <div class="wrap"><div class="prose">
+      {s.sections.map(({ h2, body }) => (
+        <>
+          <h2>{h2}</h2>
+          {body.map((b) => (b.startsWith('<') ? <Fragment set:html={b} /> : <p set:html={b} />))}
+        </>
+      ))}
+      <p class="next"><a class="btn" href={s.leadsTo.href}>{s.leadsTo.label}</a></p>
+    </div></div>
+  </section>
+  <section class="section tint">
+    <div class="wrap">
+      <h2>Common questions</h2>
+      <Faq items={s.faqs} />
+    </div>
+  </section>
+  <FounderForm>
+    <h2>Tell us how the work happens today</h2>
+    <p class="build-lead">A short call is enough to know whether a product fits or a custom build makes sense.</p>
+  </FounderForm>
+</BaseLayout>
