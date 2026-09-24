@@ -32,7 +32,7 @@ export const solutions: Solution[] = [
   {
     slug: 'pharma-distributor-ordering',
     h1: 'Online ordering for pharma distributors',
-    answer: "A pharma distributor can stop retyping retailer orders by giving retailers an ordering app under the distributor's own name. Each order arrives as a GST bill in the distributor's system, ready to pack.",
+    answer: "A pharma distributor can stop retyping retailer orders by giving retailers an ordering app under the distributor's own name. Each order opens as a GST bill in the app, with no retyping, ready to pack.",
     sections: [
       {
         h2: 'The problem with WhatsApp and phone orders',
@@ -46,7 +46,7 @@ export const solutions: Solution[] = [
         h2: 'What an ordering app changes',
         body: [
           'With an ordering app, the retailer places the order themselves. They search your product list, see what is in stock right now, and see their own rates and schemes instead of a general price list.',
-          'The order reaches you as a GST bill in your system. Your staff check it, pack it and dispatch it. Nobody retypes anything, so the mistakes that come from reading messages and notes go away.',
+          'The order opens as a GST bill in the ordering app. Your staff check it, pack it and dispatch it. Nobody retypes anything, so the mistakes that come from reading messages and notes go away.',
           'Retailers can order late at night or on a Sunday. The order waits for you in the morning, complete and in the right format.',
         ],
       },
@@ -54,14 +54,14 @@ export const solutions: Solution[] = [
         h2: 'What to look for',
         body: [
           'If you are comparing ordering apps, check these before you sign up:',
-          '<ul><li>It works on the basic Android phones your retailers already carry, and on a web link for shops that will not install an app.</li><li>It carries your name. Retailers are ordering from you.</li><li>It shows live stock and applies your rates and schemes for each retailer.</li><li>It fits the billing software you already use, so your accounts and GST filing stay as they are.</li><li>Support answers during your working hours, on Indian time.</li></ul>',
+          '<ul><li>It works on the basic Android phones your retailers already carry, and on a web link for shops that will not install an app.</li><li>It carries your name. Retailers are ordering from you.</li><li>It shows live stock and applies your rates and schemes for each retailer.</li><li>It makes the GST bill from the order itself, so nobody types the order again.</li><li>Support answers during your working hours, on Indian time.</li></ul>',
           'Ask about collections too. Seeing what each shop owes, and following up without printed ledgers, matters as much as taking the order.',
         ],
       },
       {
         h2: 'How Pharmulo does it',
         body: [
-          'Pharmulo is the ordering app we built and run at Adiviath for pharma wholesalers and distributors. Retailers order from their phone under your name, and each order opens as a GST bill with no retyping. Stock, collections and supplier payments run in the same place.',
+          'Pharmulo is the ordering app we built and run at Adiviath for pharma wholesalers and distributors. Retailers order from their phone under your name, and each order opens as a GST bill in Pharmulo, with no retyping. Stock, collections and supplier payments run in the same place.',
           'Read more on the <a class="link" href="/products/pharmulo">Pharmulo page</a> or go straight to <a class="link" href="https://pharmulo.com" rel="noopener">pharmulo.com</a>. If your business needs something Pharmulo does not do, we can build it: see <a class="link" href="/solutions/distributor-software">custom software for distributors</a>.',
         ],
       },
@@ -70,8 +70,8 @@ export const solutions: Solution[] = [
     interest: 'Pharmulo',
     faqs: [
       { q: 'Do retailers need to install anything?', a: 'Retailers use an app or a web link on their phone.' },
-      { q: 'Can we keep using our existing billing software?', a: 'Yes. Orders arrive as bills in the system you use; tell us which one and we confirm on the first call.' },
-      { q: 'How long does it take to start?', a: 'Usually a few weeks, depending on your catalogue and billing software. We give you a date in the written scope.' },
+      { q: 'Where is the bill made?', a: 'In Pharmulo. Each order opens as a GST bill in Pharmulo, with no retyping. Stock, collections and supplier payments run in the same place.' },
+      { q: 'How long does it take to start?', a: 'After the first call, we give you a date in the written scope.' },
     ],
   },
   {
