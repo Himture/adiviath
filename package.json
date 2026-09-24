@@ -6,11 +6,13 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "node scripts/check-site.mjs",
+    "verify": "astro build && node scripts/check-site.mjs"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.18",
-    "astro": "^5.17.1",
-    "tailwindcss": "^4.1.18"
+    "@fontsource-variable/familjen-grotesk": "^5.3.0",
+    "@fontsource-variable/newsreader": "^5.3.0",
+    "astro": "^5.17.1"
   }
 }

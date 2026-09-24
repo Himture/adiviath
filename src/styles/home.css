@@ -1,0 +1,396 @@
+/* Home: The Dot. One fixed coral dot, five scroll-driven scenes.
+   Everything outside the @supports block is the static stacked fallback. */
+
+:root {
+  /* canonical mark: 380 tall per 70 of dot, counter at 44.62% / 55.53% */
+  --mark-h: calc(var(--dot) * 5.4286);
+  --mark-w: calc(var(--mark-h) * 1.026316);
+}
+
+/* ---------- the dot, the progress line, the cue ---------- */
+/* the fixed dot belongs to the choreography; the fallback uses one dot per scene */
+.fixed-dot { display: none; }
+.progress { display: none; }
+.cue { display: none; }
+
+/* ---------- acts and stages ---------- */
+.act {
+  position: relative;
+  /* ring unit: dot-relative, so the whole ring scales with the dot */
+  --ux: calc(var(--dot) * 1.93);
+  --uy: calc(var(--dot) * 1.75);
+}
+.stage {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 32px;
+  padding: var(--section) var(--gutter);
+  overflow: hidden;
+  background: var(--paper);
+}
+.route { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; justify-items: center; }
+
+/* ---------- the mark ---------- */
+.mark-only { width: var(--mark-w); height: var(--mark-h); }
+.mark-draw { width: 100%; height: 100%; color: var(--brand); }
+.mark-draw .draw { stroke-dasharray: 100 120; stroke-dashoffset: 110; }
+
+/* ---------- scene 1, the opening ---------- */
+.opening { display: grid; gap: 20px; justify-items: start; text-align: left; }
+.opening h1 { max-width: 15ch; }
+.opening .lead { max-width: 34ch; }
+.proof { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: 0.95rem; color: var(--muted); }
+/* block, not flex: flex would split the <strong> and the text after it into items with a gap before the comma */
+.proof li { position: relative; padding-left: 15px; }
+.proof li::before { content: ''; position: absolute; left: 0; top: 0.6em; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.proof strong { color: var(--ink); font-weight: 600; }
+.brandline { --y: 3; width: min(420px, calc(100% - 2 * var(--gutter))); font-size: clamp(1.05rem, 1.7vw, 1.4rem); font-weight: 500; letter-spacing: -0.01em; color: var(--brand); text-align: center; }
+
+/* ---------- scene 2, crops of the Pharmulo screen ---------- */
+.frame { --cm: 1; }
+.crop {
+  display: block;
+  width: calc(var(--cw) * var(--cs) * var(--cm) * 1px);
+  height: calc(var(--ch) * var(--cs) * var(--cm) * 1px);
+  max-width: calc(100vw - 2 * var(--gutter));
+  background-image: url('/pharmulo-home.webp');
+  background-repeat: no-repeat;
+  background-color: var(--paper);
+  background-size: calc(1600px * var(--cs) * var(--cm)) auto;
+  border: 1px solid var(--line);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--brand) 5%, transparent);
+}
+
+/* the three steps, read under the assembled storefront */
+/* max-content: as an .item it is positioned from left: 50%, so an auto width
+   would only get half the stage and wrap to three lines on a phone */
+.steps { --y: 4.5; --ra: 52%; --rb: 80%; list-style: none; margin: 0; padding: 0; width: max-content; max-width: calc(100% - 2 * var(--gutter)); display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 24px; counter-reset: step; font-size: 0.92rem; color: var(--muted); }
+.steps li { display: flex; align-items: baseline; gap: 8px; counter-increment: step; white-space: nowrap; }
+.steps li::before { content: counter(step); color: var(--brand); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* ---------- scene 3, the route ---------- */
+.node {
+  padding: 12px 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  font-size: 0.95rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.wire { width: 100%; max-width: 640px; height: 120px; fill: none; stroke: var(--line); stroke-width: 1; pointer-events: none; }
+.wire path { vector-effect: non-scaling-stroke; }
+/* the route itself is the drawn line, so it reads in petrol, not as a hairline */
+.act-3 .wire path { fill: none; stroke: var(--brand); stroke-width: 2; }
+
+/* ---------- captions ---------- */
+.caption { width: min(560px, calc(100% - 2 * var(--gutter))); display: grid; gap: 14px; justify-items: center; text-align: center; translate: 0 var(--lift, 0px); }
+.caption h2 { font-size: clamp(24px, 2.6vw, 34px); }
+.caption p { color: var(--muted); }
+.act-2 .caption { --y: 8 }
+.act-3 h2.item { width: min(620px, calc(100% - 2 * var(--gutter))); text-align: center; font-size: clamp(24px, 2.8vw, 36px); }
+
+/* ---------- proof hover: the rest of the stage steps back, the caption lifts ---------- */
+/* the dim is a filter, not opacity: the scroll-driven form/sharpen animations own
+   opacity, and an animation always beats a plain declaration */
+.caption { transition: translate 200ms ease; }
+.frame, .node, .steps { transition: filter 200ms ease; }
+.act-2 .stage:has(.caption a:hover, .caption a:focus-visible) .frame,
+.act-2 .stage:has(.caption a:hover, .caption a:focus-visible) .steps,
+.act-3 .stage:has(.caption a:hover, .caption a:focus-visible) .node { filter: opacity(0.35); }
+.act-2 .stage:has(.caption a:hover, .caption a:focus-visible) .caption,
+.act-3 .stage:has(.caption a:hover, .caption a:focus-visible) .caption { --lift: -4px; }
+
+/* ---------- scene 4, the ask ---------- */
+.talk-wrap { width: min(var(--wrap), 100%); }
+.act-4 .talk.brand { background: transparent; padding: 0; }
+.act-4 .stage { background: var(--brand); }
+
+/* ---------- scene 5, the landing ---------- */
+.closing { display: grid; gap: 18px; justify-items: center; text-align: center; }
+.closing p { color: var(--muted); font-size: 0.95rem; }
+.closing nav { display: flex; gap: 24px; }
+.closing nav a { color: var(--brand); font-weight: 500; text-decoration: none; border-bottom: 1px solid var(--line); padding-bottom: 2px; }
+.closing nav a:hover { border-bottom-color: var(--brand); }
+
+/* =========================================================
+   the choreography
+   ========================================================= */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .act-dot { display: none; }
+    .fixed-dot {
+      display: block;
+      position: fixed;
+      inset: 0;
+      margin: auto;
+      z-index: 30;
+      pointer-events: none;
+    }
+
+    .progress {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 100%;
+      background: var(--brand);
+      transform-origin: left;
+      scale: 0 1;
+      z-index: 30;
+      animation: grow linear both;
+      animation-timeline: scroll(root);
+    }
+    @keyframes grow { to { scale: 1 1 } }
+
+    .cue {
+      display: grid;
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      translate: -50% 0;
+      justify-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      z-index: 29;
+      animation: cue-out linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 10vh;
+    }
+    .cue i { display: block; width: 1px; height: 36px; background: var(--brand); transform-origin: top; animation: cue-grow 2s ease-in-out infinite; }
+    @keyframes cue-grow { 0% { scale: 1 0 } 60% { scale: 1 1 } 100% { scale: 1 1; opacity: 0 } }
+    @keyframes cue-out { to { opacity: 0; visibility: hidden } }
+
+    /* each act owns a view timeline; the stage inside it is fixed and veiled */
+    .act { view-timeline-name: --s; view-timeline-axis: block; }
+    .act-1 { height: 160svh }
+    .act-2, .act-3 { height: 180svh }
+    .act-4 { height: 160svh }
+    .act-5 { height: 100svh }
+
+    .stage {
+      position: fixed;
+      inset: 0;
+      display: block;
+      padding: 0;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      animation: veil linear both;
+      animation-timeline: --s;
+    }
+    .stage a { pointer-events: auto; }
+    .act-1 .stage { z-index: 11; animation-name: veil1; animation-range: cover 0% cover 100%; }
+    .act-2 .stage { z-index: 12 }
+    .act-3 .stage { z-index: 13 }
+    .act-4 .stage { z-index: 14 }
+    /* acts 2 to 4 hand over late: act 1 needs its scroll to draw the mark */
+    .act-2 .stage, .act-3 .stage, .act-4 .stage { animation-range: cover 17% cover 82%; }
+    .act-5 .stage { z-index: 15; animation-name: veil5; animation-range: cover 8% cover 60%; }
+
+    @keyframes veil {
+      0% { opacity: 0; visibility: hidden }
+      1% { visibility: visible }
+      20%, 80% { opacity: 1; visibility: visible }
+      100% { opacity: 0; visibility: hidden }
+    }
+    @keyframes veil1 {
+      0%, 88% { opacity: 1; visibility: visible }
+      100% { opacity: 0; visibility: hidden }
+    }
+    @keyframes veil5 {
+      0% { opacity: 0; visibility: hidden }
+      1% { visibility: visible }
+      22%, 100% { opacity: 1; visibility: visible }
+    }
+
+    /* every element is placed relative to the dot, never beside it */
+    .item {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      translate: calc(-50% + var(--x, 0) * var(--ux)) calc(-50% + var(--y, 0) * var(--uy) + var(--lift, 0px));
+      --fx: 0px;
+      --fy: 18px;
+      animation: form cubic-bezier(0.22, 0.7, 0.2, 1) both;
+      animation-timeline: --s;
+      animation-range: cover var(--ra, 8%) cover var(--rb, 80%);
+    }
+    .frame, .node { --fx: calc(var(--x, 0) * var(--ux) * 0.5); --fy: calc(var(--y, 0) * var(--uy) * 0.5); }
+
+    @keyframes form {
+      0% { opacity: 0; transform: translate(var(--fx), var(--fy)) scale(0.965) }
+      31% { opacity: 1; transform: translate(0, 0) scale(1) }
+      75% { opacity: 1; transform: translate(0, 0) scale(1) }
+      100% { opacity: 0; transform: translate(calc(var(--fx) * -0.34), calc(var(--fy) * -0.34)) scale(1.035) }
+    }
+    /* scene 5 arrives and stays: the page ends there */
+    .act-5 .item { animation-name: land }
+    @keyframes land {
+      0% { opacity: 0; transform: translate(var(--fx), var(--fy)) scale(0.965) }
+      34%, 100% { opacity: 1; transform: translate(0, 0) scale(1) }
+    }
+
+    /* the mark sits on the dot: its counter is at 44.62% / 55.53% of the box */
+    .mark-only {
+      translate: calc(var(--mark-w) * -0.4462) calc(var(--mark-h) * -0.5553);
+    }
+
+    /* scene 1: text left, dot centred in the right column */
+    .opening {
+      position: absolute;
+      left: var(--gutter);
+      top: 50%;
+      translate: 0 -50%;
+      width: min(520px, 40vw);
+      animation: ease-left cubic-bezier(0.32, 0.05, 0.16, 1) both;
+      animation-timeline: --s;
+      animation-range: cover 42% cover 62%;
+    }
+    @keyframes ease-left { to { transform: translateX(-24px) } }
+
+    /* the mark draws itself along its own centreline */
+    .act-1 .mark-draw .draw:nth-child(1) { animation: draw linear both; animation-timeline: --s; animation-range: cover 42% cover 54%; }
+    .act-1 .mark-draw .draw:nth-child(2) { animation: draw linear both; animation-timeline: --s; animation-range: cover 50% cover 62%; }
+    .act-5 .mark-draw .draw:nth-child(1) { animation: draw linear both; animation-timeline: --s; animation-range: cover 8% cover 22%; }
+    .act-5 .mark-draw .draw:nth-child(2) { animation: draw linear both; animation-timeline: --s; animation-range: cover 16% cover 32%; }
+    @keyframes draw { to { stroke-dashoffset: 0 } }
+
+    /* scene 2 and 3 scaffolding */
+    .route { position: absolute; inset: 0; display: block; }
+    .wire { width: calc(22.857 * var(--ux)); max-width: none; height: calc(28 * var(--uy)); }
+
+    /* scene 2: the five crops leave their scatter and lock into one storefront.
+       The assembly rides the crop, not the frame: the frame's `translate` is its
+       static placement and its `transform` is already owned by `form`, so a
+       second animation there would fight one or the other. The crop has both
+       free, and moving it moves the whole visible fragment. The offset cancels
+       the frame's own placement, so --gx/--gy read as absolute grid centres. */
+    .act-2 .crop {
+      animation: assemble cubic-bezier(0.22, 0.7, 0.2, 1) both;
+      animation-timeline: --s;
+      animation-range: cover 38% cover 52%;
+    }
+    @keyframes assemble {
+      to {
+        translate:
+          calc(var(--gx) * var(--cm) * 1px + var(--gs) * var(--split, 0px) - var(--x) * var(--ux))
+          calc(var(--gy) * var(--cm) * 1px - var(--y) * var(--uy));
+      }
+    }
+
+    /* scene 3: one route drawn through the four nodes in reading order, each
+       node sharpening as the line reaches it */
+    .act-3 .wire path {
+      /* the route's length as rendered: the viewBox is stretched to the node
+         grid, and non-scaling-stroke measures dashes in rendered px, so
+         pathLength normalisation would leave the line short of the last node.
+         3 runs of 560 and 2 drops of 50 viewBox units, in --ux/--uy terms. */
+      --len: calc(48 * var(--ux) + 7 * var(--uy));
+      stroke-dasharray: var(--len) calc(var(--len) * 1.2);
+      stroke-dashoffset: var(--len);
+      animation: draw linear both;
+      animation-timeline: --s;
+      animation-range: cover 14% cover 60%;
+    }
+    /* animation-name, not the `animation` shorthand: the shorthand resets
+       animation-timeline to auto, and these selectors outrank .item */
+    .act-3 .node:nth-child(1) { animation-name: form, sharpen; animation-range: cover 12% cover 80%, cover 16% cover 24%; }
+    .act-3 .node:nth-child(2) { animation-name: form, sharpen; animation-range: cover 18% cover 80%, cover 28% cover 36%; }
+    .act-3 .node:nth-child(3) { animation-name: form, sharpen; animation-range: cover 24% cover 80%, cover 40% cover 48%; }
+    .act-3 .node:nth-child(4) { animation-name: form, sharpen; animation-range: cover 30% cover 80%, cover 52% cover 60%; }
+    /* both ends stated: an implicit from would read `form`'s own opacity as its
+       underlying value, and every node would already be sharp. sharpen is the
+       sole owner of node opacity; the stage veil still fades the scene in and out */
+    @keyframes sharpen { from { opacity: 0.55 } to { opacity: 1 } }
+
+    /* scene 4: the petrol circle expands from the dot */
+    .act-4 .stage { background: transparent; }
+    .act-4 .stage::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 1px;
+      height: 1px;
+      border-radius: 50%;
+      background: var(--brand);
+      translate: -50% -50%;
+      scale: 0;
+      animation: circle linear both;
+      animation-timeline: --s;
+      animation-range: cover 5% cover 95%;
+    }
+    @keyframes circle { 0% { scale: 0 } 18% { scale: 3000 } 82% { scale: 3000 } 100% { scale: 0 } }
+  }
+}
+
+/* ---------- the static fallback: one full scene per act, each with its own dot ---------- */
+@supports not (animation-timeline: scroll()) {
+  .act { min-height: 100svh; display: grid }
+  .mark-draw .draw { stroke-dashoffset: 0 }
+}
+@media (prefers-reduced-motion: reduce) {
+  .act { min-height: 100svh; display: grid }
+  .mark-draw .draw { stroke-dashoffset: 0 }
+  .cue i { animation: none }
+}
+
+/* ---------- short desktop viewports: the opening tightens, scene 2 shrinks ---------- */
+@media (min-width: 901px) and (max-height: 740px) {
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .opening { gap: 14px; top: calc(50% + 32px); }
+      .opening h1 { font-size: min(clamp(40px, 6vw, 80px), 7vh); }
+      .opening .lead { font-size: 1rem; }
+      .opening .proof { font-size: 0.88rem; }
+      /* the dot hits its 18px floor on short viewports, so the ring is scaled
+         down by hand instead: same composition, less vertical room needed */
+      .act { --uy: calc(var(--dot) * 1.44); }
+      .frame { --cm: 0.72; }
+      .caption { gap: 10px; }
+      .caption h2 { font-size: clamp(20px, 2vw, 26px); }
+      .caption p { font-size: 0.92rem; }
+    }
+  }
+}
+
+/* ---------- small screens: the ring tightens, the text drops below the dot ---------- */
+@media (max-width: 900px) {
+  .act { --ux: calc(var(--dot) * 0.5); --uy: calc(var(--dot) * 1.13); }
+  /* the crops shrink but the dot does not: push the two cards out to clear it */
+  .frame { --cm: 0.46; --split: 8px }
+  .node { padding: 10px 14px; font-size: 0.85rem }
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      /* the dot holds the centre, so the opening drops into the lower half
+         and tightens up to clear both the mark and the scroll cue */
+      .opening {
+        left: var(--gutter);
+        right: var(--gutter);
+        top: auto;
+        bottom: 74px;
+        width: auto;
+        translate: 0 0;
+        gap: 12px;
+      }
+      .opening h1 { font-size: clamp(26px, 7.2vw, 32px); max-width: none }
+      .opening .lead { font-size: 0.88rem; max-width: none }
+      .opening .eyebrow { font-size: 0.76rem }
+      .opening .proof { font-size: 0.78rem; gap: 6px }
+      .opening .talk-actions { gap: 10px 16px; margin-top: 0 }
+      .opening .btn { min-height: 44px }
+      .act-1 .brandline { --y: -4 }
+      .act-2 .caption { --y: 10 }
+      .act-2 .steps { --y: 4.1 }
+      .cue { bottom: 14px }
+      .cue i { height: 26px }
+      @keyframes ease-left { to { transform: translateX(-12px) } }
+      .talk-wrap { width: calc(100vw - 2 * var(--gutter)) }
+    }
+  }
+}

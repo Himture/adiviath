@@ -1,92 +1,151 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Talk from '../components/Talk.astro';
+import contact from '../data/contact.json';
+import logo from '../data/logo-paths.json';
+import '../styles/home.css';
+
+const wa = contact.whatsapp
+  ? `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(contact.whatsappMessage)}`
+  : `mailto:${contact.email}?subject=${encodeURIComponent(contact.emailSubject)}`;
+const mail = `mailto:${contact.email}?subject=${encodeURIComponent(contact.emailSubject)}`;
+
+// The mark's skeleton: the top hook, then the bowl. Stroked wide enough to cover
+// the filled mark, used as a mask so the mark draws itself along its centreline.
+const skeleton = {
+  transform: 'translate(18 52) scale(5.073 4.786) translate(-19.5 -17.5)',
+  // tuned: 40 is the minimum that covers the filled mark, 44 leaves a margin
+  width: 44,
+  hook: 'M35.5 25.2H53.6A19.6 19.6 0 0 1 73.2 44.8V72.3',
+  bowl: 'M33.8 42.5A15.8 15.8 0 1 0 54.5 66.1',
+};
+
+// gx/gy: where each crop lands once the five assemble into one storefront.
+// Centre offsets in px at --cm 1, measured from the dot; the assembly scales
+// with --cm so the grid tracks the crops on short and small viewports.
+// top row: logo then headline, tops aligned; middle: buttons; bottom: two cards
+// either side of the dot.
+const crops = [
+  { x: -9, y: -6, ra: '20%', cw: 614, ch: 212, cs: 0.62, pos: '49.5% 34%', gx: 98, gy: -180 },
+  { x: 9, y: -6, ra: '23%', cw: 186, ch: 56, cs: 1, pos: '12.4% 2.1%', gx: -195, gy: -218 },
+  { x: 10, y: -2.2, ra: '26%', cw: 398, ch: 70, cs: 0.9, pos: '49.9% 69%', gx: 0, gy: -73 },
+  { x: -10, y: 2.4, ra: '28%', cw: 356, ch: 212, cs: 0.74, pos: '20.3% 100%', gx: -144, gy: 47, gs: -1 },
+  { x: 11, y: 2.4, ra: '32%', cw: 356, ch: 212, cs: 0.74, pos: '79.7% 100%', gx: 144, gy: 47, gs: 1 },
+];
 ---
 
 <BaseLayout
-  title="Adiviath Technologies | Software made to fit"
-  description="Adiviath Technologies builds focused software for specific real-world needs. Meet Pharmulo, our ordering platform for pharmaceutical wholesalers."
+  title="Adiviath Technologies | Software built around your work"
+  description="Adiviath builds and runs software for Indian businesses: Pharmulo for pharma wholesalers and custom systems like freight billing for Naveen Logistics."
+  footer={false}
 >
-  <section class="hero">
-    <div>
-      <p class="eyebrow">Adiviath Technologies</p>
-      <h1>Rooted in<br />real needs.</h1>
-      <p class="hero-copy">
-        We make software for the particular ways people work, from online ordering
-        for pharmaceutical wholesalers to managing freight bills and payments.
-      </p>
-      <div class="actions">
-        <a class="button" href="/products">See what we build</a>
-        <a class="quiet-link" href="/about">Why Adiviath</a>
+  <div class="progress" aria-hidden="true"></div>
+  <span class="dot-static fixed-dot" aria-hidden="true"></span>
+
+  <section class="act act-1" aria-label="Introduction">
+    <div class="stage">
+      <span class="dot-static act-dot" aria-hidden="true"></span>
+      <div class="opening">
+        <p class="eyebrow">Custom software for Indian businesses</p>
+        <h1>Software built around the way your business works.</h1>
+        <p class="lead">Adiviath builds and runs systems for operations where forms, spreadsheets and WhatsApp no longer keep up.</p>
+        <div class="talk-actions">
+          <a class="btn" href={wa}>Talk to the founder</a>
+          <a class="btn-quiet" href={mail}>{contact.whatsapp ? 'Prefer email? Write to ' : 'Or write to '}{contact.email}</a>
+        </div>
+        <ul class="proof" aria-label="Proof">
+          <li><strong>Pharmulo</strong>, live, built and operated by Adiviath</li>
+          <li><strong>Naveen Logistics</strong>, custom system in production</li>
+        </ul>
+      </div>
+
+      <div class="mark-only item" style="--ra:42%; --rb:95%">
+        <svg class="mark-draw" viewBox="0 0 390 380" aria-hidden="true">
+          <defs>
+            <mask id="draw-1" maskUnits="userSpaceOnUse" x="0" y="0" width="390" height="380">
+              <g fill="none" stroke="#fff" stroke-width={skeleton.width} stroke-linecap="round" stroke-linejoin="round" transform={skeleton.transform}>
+                <path class="draw" pathLength="100" d={skeleton.hook} />
+                <path class="draw" pathLength="100" d={skeleton.bowl} />
+              </g>
+            </mask>
+          </defs>
+          <path d={logo.mark} fill="currentColor" mask="url(#draw-1)" />
+        </svg>
+      </div>
+
+      <p class="brandline item" style="--ra:58%; --rb:99%">Your work. Your way. Your software.</p>
+    </div>
+    <p class="cue" aria-hidden="true">Scroll<i></i></p>
+  </section>
+
+  <section class="act act-2" aria-labelledby="pharmulo-h">
+    <div class="stage">
+      <span class="dot-static act-dot" aria-hidden="true"></span>
+      {crops.map((c) => (
+        <div class="frame item" style={`--x:${c.x}; --y:${c.y}; --ra:${c.ra}; --rb:82%; --gx:${c.gx}; --gy:${c.gy}; --gs:${c.gs ?? 0}`}>
+          <span class="crop" style={`--cw:${c.cw}; --ch:${c.ch}; --cs:${c.cs}; background-position: ${c.pos}`}></span>
+        </div>
+      ))}
+      <ol class="steps item" aria-label="How ordering works"><li>Find stock</li><li>Add quantity</li><li>Send order</li></ol>
+      <div class="caption item" style="--ra:34%; --rb:82%">
+        <h2 id="pharmulo-h">Pharmulo. Built and operated by Adiviath. Live.</h2>
+        <p>Wholesalers put their catalogue online; retailers order from any phone. Find stock, add quantity, send order.</p>
+        <a class="btn-quiet" href="https://pharmulo.com" target="_blank" rel="noreferrer">See the work</a>
       </div>
     </div>
-    <figure class="product-tree">
-      <svg viewBox="0 0 480 520" role="group" aria-labelledby="tree-title tree-desc">
-        <title id="tree-title">Products growing from real needs</title>
-        <desc id="tree-desc">A cocoa tree with two projects on its branches: Pharmulo and Naveen Logistics. Select a logo to learn more.</desc>
-        <path d="M72 341C-1 259 50 166 112 155C91 63 204 22 254 89C341 25 427 102 401 174C485 210 452 316 382 339Z" fill="#f1e5d5"/>
-        <g fill="none" stroke="#654332" stroke-linecap="round">
-          <path d="M241 411C231 328 265 268 244 159" stroke-width="19"/>
-          <path d="M241 312C185 304 143 272 126 219M247 252C293 253 329 221 343 178M245 207C211 199 192 173 190 141" stroke-width="12"/>
-          <path d="M239 406C211 420 185 430 165 448M242 406C262 425 295 421 321 442M240 416L238 457" stroke-width="7"/>
-        </g>
-        <g fill="#ba9b7d">
-          <path d="M125 221C86 222 75 188 79 164C112 164 137 188 125 221Z"/>
-          <path d="M188 158C155 152 148 118 162 95C191 108 206 136 188 158Z"/>
-          <path d="M251 181C250 147 275 127 302 130C302 161 279 180 251 181Z"/>
-          <path d="M329 205C319 169 341 145 367 143C381 174 360 200 329 205Z"/>
-          <path d="M184 292C173 258 148 250 127 258C131 285 155 301 184 292Z"/>
-        </g>
-        <path d="M68 412C177 397 299 403 415 412" fill="none" stroke="#d7c3ab" stroke-width="2"/>
-        <path d="M310 243V270" stroke="#654332" stroke-width="5" stroke-linecap="round"/>
-        <a href="/products#pharmulo" aria-label="Explore Pharmulo" class="tree-fruit">
-          <circle cx="310" cy="307" r="43" fill="#fffaf3" stroke="#edab78" stroke-width="3"/>
-          <image href="/pharmulo-symbol.svg" x="288" y="283" width="44" height="48" preserveAspectRatio="xMidYMid meet"/>
-        </a>
-        <path d="M137 255V283" stroke="#654332" stroke-width="5" stroke-linecap="round"/>
-        <a href="/products#naveen-logistics" aria-label="Explore the Naveen Logistics project" class="tree-fruit">
-          <circle cx="137" cy="326" r="43" fill="#fffaf3" stroke="#edab78" stroke-width="3"/>
-          <image href="/naveen-logistics-logo.png" x="109" y="298" width="56" height="56"/>
-        </a>
-      </svg>
-      <figcaption>Different kinds of work. The same roots.</figcaption>
-    </figure>
   </section>
 
-  <section class="product-feature">
-    <div class="product-copy">
-      <p class="eyebrow teal">Now running</p>
-      <h2 class="project-heading"><img src="/pharmulo-symbol.svg" alt="" width="48" height="52" />Pharmulo</h2>
-      <p class="lead">An online storefront for pharmaceutical wholesalers.</p>
-      <p>
-        Pharmulo lets retailers browse stock and place orders online while fitting
-        into the wholesale system the business already uses.
-      </p>
-      <a class="text-link" href="https://pharmulo.com" target="_blank" rel="noreferrer">
-        Visit pharmulo.com <span aria-hidden="true">↗</span>
-      </a>
+  <section class="act act-3" aria-labelledby="naveen-h">
+    <div class="stage">
+      <span class="dot-static act-dot" aria-hidden="true"></span>
+      <h2 id="naveen-h" class="item" style="--y:-7; --ra:20%; --rb:82%">How the Naveen Logistics system connects the paperwork.</h2>
+      <ol class="route" aria-label="Workflow">
+        <li class="node item" style="--x:-8; --y:-3; --ra:24%; --rb:82%">Lorry receipt</li>
+        <li class="node item" style="--x:8; --y:-3; --ra:27%; --rb:82%">Freight bill</li>
+        <li class="node item" style="--x:-8; --y:4; --ra:30%; --rb:82%">Payment</li>
+        <li class="node item" style="--x:8; --y:4; --ra:33%; --rb:82%">Settled account</li>
+      </ol>
+      {/* --ra matches the draw range below, so the wrapper is present as the line starts */}
+      <div class="item" style="--y:0.5; --ra:14%; --rb:82%">
+        <svg class="wire" viewBox="0 0 800 400" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M120 150 H680 V200 H120 V250 H680" />
+        </svg>
+      </div>
+      <div class="caption item" style="--y:9; --ra:38%; --rb:82%">
+        <p>Custom software for Naveen Logistics. In production.</p>
+        <a class="btn-quiet" href="https://www.naveenlogistics.com/" target="_blank" rel="noreferrer">See the work</a>
+      </div>
     </div>
-    <a class="product-window" href="https://pharmulo.com" target="_blank" rel="noreferrer" aria-label="Visit Pharmulo">
-      <div class="window-bar" aria-hidden="true"><i></i><i></i><i></i><span>pharmulo.com</span></div>
-      <img src="/pharmulo-home.webp" alt="Pharmulo website" width="1600" height="1000" loading="lazy" />
-    </a>
   </section>
 
-  <section class="product-feature logistics-feature">
-    <div class="product-copy">
-      <p class="eyebrow">Built for Naveen Logistics</p>
-      <h2>Naveen Logistics</h2>
-      <p class="lead">The paperwork behind every load, in one place.</p>
-      <p>We built software for lorry receipts, freight bills, payments, and customer ledgers. Customers can sign in to check their documents and account statements.</p>
-      <a class="text-link" href="https://www.naveenlogistics.com/" target="_blank" rel="noreferrer">Visit naveenlogistics.com <span aria-hidden="true">↗</span></a>
+  <section class="act act-4" aria-label="Talk to the founder">
+    <div class="stage">
+      <span class="dot-static act-dot" aria-hidden="true"></span>
+      <div class="item talk-wrap" style="--ra:20%; --rb:82%"><Talk variant="brand" /></div>
     </div>
-    <a class="logistics-logo-panel" href="https://www.naveenlogistics.com/" target="_blank" rel="noreferrer" aria-label="Visit Naveen Logistics">
-      <img src="/naveen-logistics-logo.png" alt="Naveen Logistics" width="512" height="512" loading="lazy" />
-    </a>
   </section>
 
-  <section class="closing-card">
-    <h2>What does your work need?</h2>
-    <p>Tell us what takes too long, what you still do by hand, or where your current tools fall short.</p>
-    <a class="button dark" href="/contact">Get in touch</a>
+  <section class="act act-5" aria-label="Closing">
+    <div class="stage">
+      <span class="dot-static act-dot" aria-hidden="true"></span>
+      <div class="mark-only item" style="--ra:8%; --rb:40%">
+        <svg class="mark-draw" viewBox="0 0 390 380" aria-hidden="true">
+          <defs>
+            <mask id="draw-5" maskUnits="userSpaceOnUse" x="0" y="0" width="390" height="380">
+              <g fill="none" stroke="#fff" stroke-width={skeleton.width} stroke-linecap="round" stroke-linejoin="round" transform={skeleton.transform}>
+                <path class="draw" pathLength="100" d={skeleton.hook} />
+                <path class="draw" pathLength="100" d={skeleton.bowl} />
+              </g>
+            </mask>
+          </defs>
+          <path d={logo.mark} fill="currentColor" mask="url(#draw-5)" />
+        </svg>
+      </div>
+      <div class="closing item" style="--y:7; --ra:20%; --rb:50%">
+        <a class="btn" href={wa}>Talk to the founder</a>
+        <p>Adiviath Technologies Private Limited. Registered in India.</p>
+        <nav aria-label="Pages"><a href="/products">Work</a><a href="/about">About</a><a href="/contact">Contact</a></nav>
+      </div>
+    </div>
   </section>
 </BaseLayout>

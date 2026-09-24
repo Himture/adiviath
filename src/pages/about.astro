@@ -1,39 +1,58 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Logo from '../components/Logo.astro';
+import Talk from '../components/Talk.astro';
+import contact from '../data/contact.json';
+const faqs = [
+  ['What does Adiviath mean?', 'Adiviath is the founder\'s spelling of Advaita, a Sanskrit word for oneness. It stands for software that is one with the work it serves.'],
+  ['What does Adiviath build?', 'Adiviath builds and runs its own products, such as Pharmulo for pharmaceutical wholesalers, and builds custom systems for specific businesses, such as freight billing for Naveen Logistics.'],
+  ['Where is Adiviath registered?', 'Adiviath Technologies Private Limited is registered with the Ministry of Corporate Affairs, India.'],
+];
+const faqLd = { '@type': 'FAQPage', mainEntity: faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) };
 ---
 
-<BaseLayout title="About | Adiviath Technologies" description="Adiviath Technologies makes niche software for specific real-world needs.">
-  <section class="page-hero about-hero">
-    <p class="eyebrow">About Adiviath</p>
-    <h1>A company built around specific needs.</h1>
-    <p>Adiviath Technologies builds niche software: products we run ourselves and tools built for specific businesses.</p>
+<BaseLayout title="About Adiviath Technologies | Software company in India" description="Adiviath Technologies Private Limited is a founder-led software company registered in India. It builds and runs products and custom business systems." jsonLd={[faqLd]}>
+  <section class="section wrap about-intro">
+    <p class="eyebrow">About</p>
+    <h1>A software company built around specific needs.</h1>
+    <p class="lead">Adiviath Technologies Private Limited is a software company registered in India. It builds and runs its own products and builds custom systems for specific businesses.</p>
   </section>
 
-  <section class="about-grid">
-    <h2>Why we exist</h2>
+  <section class="wrap about-name">
+    <div class="about-mark"><Logo /></div>
     <div>
-      <p class="lead">Some jobs need a tool of their own.</p>
-      <p>
-        We start by understanding how the work gets done today: the tools people
-        use, the records they keep, and the tasks they repeat by hand.
-        That helps us decide what the software actually needs to do.
-      </p>
-      <p>With Pharmulo, that means letting retailers order online while wholesalers continue using their existing system.</p>
-      <p>For Naveen Logistics, it means bringing lorry receipts, freight bills, payments, and customer accounts into one system.</p>
+      <p class="advaita">Adiviath is the founder's spelling of Advaita, a Sanskrit word for oneness.</p>
+      <p>Your work. Your way. Your software. The dot in our mark is the need. The form is shaped around it.</p>
     </div>
   </section>
 
-  <section class="mark-story">
-    <Logo />
-    <div>
-      <p class="eyebrow">Our mark</p>
-      <h2>Software shaped around the need.</h2>
-      <p>
-        A small apricot center, with a cocoa form shaped around it. Our mark is a
-        reminder to start with the need and build from there.
-      </p>
-    </div>
+  <section class="section wrap about-how">
+    <h2>How we work</h2>
+    <ol class="steps-list">
+      <li><h3>Understand the workflow</h3><p>You show us the forms, registers and threads as they are. We map what happens today.</p></li>
+      <li><h3>Agree the scope</h3><p>You get a short written scope, an indicative timeline and a price. Nothing starts until it is clear.</p></li>
+      <li><h3>Build and launch</h3><p>We build in the open, launch with your team, and stay on for what comes after.</p></li>
+    </ol>
   </section>
 
+  <section class="wrap about-founder">
+    <h2>Founder-led</h2>
+    <p>The person you brief is the person who scopes and builds the work, and who answers within one business day.</p>
+  </section>
+
+  <section class="section wrap about-facts">
+    <h2>Company</h2>
+    <dl>
+      <dt>Legal name</dt><dd>Adiviath Technologies Private Limited</dd>
+      <dt>Registration</dt><dd>Registered with the Ministry of Corporate Affairs, India</dd>
+      <dt>Email</dt><dd><a href={`mailto:${contact.email}`}>{contact.email}</a></dd>
+    </dl>
+  </section>
+
+  <section class="wrap faq">
+    <h2>Questions</h2>
+    {faqs.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}
+  </section>
+
+  <section class="wrap" style="padding-block: var(--section)"><Talk /></section>
 </BaseLayout>

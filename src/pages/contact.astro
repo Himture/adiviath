@@ -1,20 +1,21 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Talk from '../components/Talk.astro';
+import DotStage from '../components/DotStage.astro';
 ---
 
-<BaseLayout title="Contact | Adiviath Technologies" description="Contact Adiviath Technologies about focused software and Pharmulo.">
-  <section class="contact-hero">
-    <div>
-      <p class="eyebrow">Contact</p>
-      <h1>Tell us where the work gets stuck.</h1>
-    </div>
-    <div class="contact-copy">
-      <p>
-        Tell us what you do and what is getting in the way. A few lines about
-        the problem and the tools you use are enough to start.
-      </p>
-      <a class="button" href="mailto:hello@adiviath.com">hello@adiviath.com</a>
-      <p class="contact-note">For product enquiries, visit <a href="https://pharmulo.com" target="_blank" rel="noreferrer">pharmulo.com</a>.</p>
-    </div>
+<BaseLayout title="Contact Adiviath Technologies | Talk to the founder" description="Tell the founder where work gets stuck: forms filled twice, registers kept by hand, reports nobody can pull. Replies within one business day.">
+  <section class="section wrap">
+    <h1>Tell us where the work gets stuck.</h1>
+    <DotStage label="What your work might need">
+      <div slot="n" class="dot-slot">a form someone fills twice</div>
+      <div slot="e" class="dot-slot">a register kept by hand</div>
+      <div slot="s" class="dot-slot">a report nobody can pull</div>
+      <div slot="w" class="dot-slot you">your work</div>
+    </DotStage>
+  </section>
+  <section class="wrap contact-talk">
+    <Talk />
+    <p class="muted contact-alt">Pharmulo enquiries: <a href="https://pharmulo.com" target="_blank" rel="noreferrer">pharmulo.com</a></p>
   </section>
 </BaseLayout>

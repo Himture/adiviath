@@ -1,44 +1,40 @@
 ---
 import '../styles/global.css';
 import Wordmark from '../components/Wordmark.astro';
+import contact from '../data/contact.json';
 
-interface Props {
-  title: string;
-  description: string;
-}
+interface Props { title: string; description: string; jsonLd?: object[]; footer?: boolean }
+const { title, description, jsonLd = [], footer = true } = Astro.props;
 
-const { title, description } = Astro.props;
 const path = Astro.url.pathname;
 const canonical = new URL(path === '/' ? '/' : path.replace(/\/$/, ''), Astro.site).href;
 const socialImage = new URL('/brand/social-card.png', Astro.site).href;
 const organizationId = new URL('/#organization', Astro.site).href;
-const structuredData = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    { '@type': 'Organization', '@id': organizationId, name: 'Adiviath Technologies Pvt Ltd', url: Astro.site?.href, logo: new URL('/brand/symbol-cocoa.png', Astro.site).href, description: 'Software products and tools built for specific business needs.' },
-    { '@type': 'WebSite', '@id': new URL('/#website', Astro.site).href, url: Astro.site?.href, name: 'Adiviath Technologies', publisher: { '@id': organizationId } },
-    { '@type': path === '/about' ? 'AboutPage' : path === '/contact' ? 'ContactPage' : 'WebPage', '@id': canonical, url: canonical, name: title, description, isPartOf: { '@id': new URL('/#website', Astro.site).href } },
-    ...(path === '/products' ? [{ '@type': 'SoftwareApplication', '@id': 'https://pharmulo.com/#software', name: 'Pharmulo', url: 'https://pharmulo.com', applicationCategory: 'BusinessApplication', operatingSystem: 'Web', description: 'An online ordering storefront for pharmaceutical wholesalers and their retailers.', publisher: { '@id': organizationId } }] : []),
-  ],
-};
-const year = new Date().getFullYear();
+const graph = [
+  { '@type': 'Organization', '@id': organizationId, name: 'Adiviath Technologies Private Limited', alternateName: 'Adiviath', url: Astro.site?.href, logo: new URL('/brand/symbol-flat.svg', Astro.site).href, email: contact.email, sameAs: ['https://pharmulo.com'], areaServed: 'IN', knowsAbout: ['custom business software', 'pharmaceutical wholesale ordering', 'freight billing'], contactPoint: { '@type': 'ContactPoint', email: contact.email, contactType: 'sales', availableLanguage: ['en', 'hi'] }, description: 'Software company registered in India. Builds and runs its own products and builds custom systems for specific businesses.' },
+  { '@type': 'WebSite', '@id': new URL('/#website', Astro.site).href, url: Astro.site?.href, name: 'Adiviath Technologies', publisher: { '@id': organizationId } },
+  { '@type': path === '/about' ? 'AboutPage' : path === '/contact' ? 'ContactPage' : 'WebPage', '@id': canonical, url: canonical, name: title, description, isPartOf: { '@id': new URL('/#website', Astro.site).href } },
+  ...jsonLd,
+];
 const links = [
-  { href: '/', label: 'Home' },
-  { href: '/products', label: 'Products' },
+  { href: '/products', label: 'Work' },
   { href: '/about', label: 'About' },
   { href: '/contact', label: 'Contact' },
 ];
+const wa = contact.whatsapp ? `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(contact.whatsappMessage)}` : `mailto:${contact.email}?subject=${encodeURIComponent(contact.emailSubject)}`;
+const year = new Date().getFullYear();
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#fffaf3" />
+    <meta name="theme-color" content="#ffffff" />
     <link rel="canonical" href={canonical} />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_IN" />
     <meta property="og:site_name" content="Adiviath Technologies" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -46,57 +42,44 @@ const links = [
     <meta property="og:image" content={socialImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Adiviath Technologies — software made to fit" />
+    <meta property="og:image:alt" content="Adiviath Technologies. Software built around the way your business works." />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImage} />
-    <script type="application/ld+json" set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')} />
+    <script type="application/ld+json" set:html={JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c')} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/brand/icons/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/brand/icons/favicon-16.png" />
+    <link rel="apple-touch-icon" href="/brand/icons/apple-touch-icon.png" />
+    <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
     <title>{title}</title>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
-      <a class="brand" href="/" aria-label="Adiviath Technologies home">
-        <Wordmark />
-      </a>
-      <nav class="desktop-nav" aria-label="Main navigation">
-        {links.map(({ href, label }) => (
-          <a href={href} aria-current={path === href ? 'page' : undefined}>{label}</a>
-        ))}
+      <a class="brand" href="/" aria-label="Adiviath Technologies home"><Wordmark /></a>
+      <nav aria-label="Main navigation">
+        {links.map(({ href, label }) => <a href={href} aria-current={path === href ? 'page' : undefined}>{label}</a>)}
+        <a class="btn" href={wa}>Talk to the founder</a>
       </nav>
-      <details class="mobile-menu">
-        <summary>Menu <span class="menu-icon" aria-hidden="true"></span></summary>
-        <nav aria-label="Mobile navigation">
-          {links.map(({ href, label }) => (
-            <a href={href} aria-current={path === href ? 'page' : undefined}>{label}</a>
-          ))}
-        </nav>
-      </details>
+      <a class="btn" href={wa}>Talk to the founder</a>
     </header>
-
-    <script>
-      const menu = document.querySelector<HTMLDetailsElement>('.mobile-menu');
-      document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && menu?.open) {
-          menu.open = false;
-          menu.querySelector('summary')?.focus();
-        }
-      });
-      document.addEventListener('click', (event) => {
-        if (menu?.open && event.target instanceof Node && !menu.contains(event.target)) menu.open = false;
-      });
-    </script>
-
     <main id="main-content" tabindex="-1"><slot /></main>
-
-    <footer>
-      <div class="footer-brand">
-        <Wordmark />
-        <p>Focused software for specific work.</p>
-      </div>
-      <p>© {year} Adiviath Technologies Pvt Ltd</p>
-    </footer>
+    {footer && (
+      <footer class="site-footer">
+        <div class="wrap">
+          <div>
+            <Wordmark />
+            <p>Adiviath Technologies Private Limited. Registered in India.</p>
+            <p><a href={`mailto:${contact.email}`}>{contact.email}</a></p>
+          </div>
+          <nav aria-label="Footer navigation">
+            {links.map(({ href, label }) => <a href={href}>{label}</a>)}
+          </nav>
+          <p>© {year} Adiviath Technologies Private Limited</p>
+        </div>
+      </footer>
+    )}
   </body>
 </html>
